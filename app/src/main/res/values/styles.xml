@@ -1,0 +1,6 @@
+<resources>
+
+    <style name="FoodSwahaTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
+
+</resources>
