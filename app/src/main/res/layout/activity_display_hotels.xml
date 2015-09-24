@@ -12,13 +12,12 @@ android:layout_width="match_parent" android:layout_height="match_parent" android
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/areaText"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:typeface="monospace"
             />
 
         <ImageButton
@@ -33,11 +32,27 @@ android:layout_width="match_parent" android:layout_height="match_parent" android
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/searchButton3"
-            android:src="@drawable/search_launcher"
+            android:src="@drawable/search_art"
             android:layout_gravity="right"
             android:background="#3B5998"/>
 
     </android.support.v7.widget.Toolbar>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="?attr/colorPrimary"
+        android:elevation="6dp"
+        android:minHeight="?attr/actionBarSize"
+        style="@style/MyCustomTabLayout"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/tab_layout"/>
 
 
 

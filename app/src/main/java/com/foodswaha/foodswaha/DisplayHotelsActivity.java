@@ -11,6 +11,8 @@ import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
@@ -127,10 +129,18 @@ public class DisplayHotelsActivity extends AppCompatActivity
         //networkConnectivityStatusChangeReceiver = new NetworkConnectivityStatusChangeReceiver();
         //networkConnectivityStatusChangeReceiver.addListener(this, this);
         //registerReceiver(networkConnectivityStatusChangeReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-         setSupportActionBar(toolbar);
-         getSupportActionBar().setDisplayShowTitleEnabled(false);
-         getSupportActionBar().setDisplayUseLogoEnabled(false);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter
+                (getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+
         try {
             displayHotels(new JSONObject("{\"area\" : \"btm 3rd stage\"}"));
         } catch (JSONException e) {
