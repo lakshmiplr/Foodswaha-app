@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 /**
  * Created by pharshar on 9/24/2015.
@@ -12,6 +13,14 @@ import android.view.ViewGroup;
 public class HotelsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_hotels, container, false);
+        View view = inflater.inflate(R.layout.fragment_hotels, container, false);
+        HotelItemAdapter adapter = DisplayHotelsActivity.getHotelItemAdapter();
+        if(adapter!=null){
+            ListView listView1 = (ListView)view.findViewById(R.id.hotelList);
+            listView1.setAdapter(adapter);
+        }
+        return view;
     }
+
+
 }

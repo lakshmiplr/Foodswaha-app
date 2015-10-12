@@ -1,22 +1,18 @@
 package com.foodswaha.foodswaha;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -38,9 +34,12 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -120,32 +119,131 @@ public class DisplayHotelsActivity extends AppCompatActivity
 
     private boolean checkLocationSettings_called_flag = true;
 
-    private String GET_HOTEL_DETAILS_URL = "http://192.168.1.105:3000/hotels";
+    private String GET_HOTEL_DETAILS_URL = "http://104.155.202.28:8080/location";
+   // private String GET_HOTEL_DETAILS_URL = "http://192.168.1.107:3000/location";
+
+    private static HotelItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_hotels);
-        //networkConnectivityStatusChangeReceiver = new NetworkConnectivityStatusChangeReceiver();
-        //networkConnectivityStatusChangeReceiver.addListener(this, this);
-        //registerReceiver(networkConnectivityStatusChangeReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
+        networkConnectivityStatusChangeReceiver = new NetworkConnectivityStatusChangeReceiver();
+        networkConnectivityStatusChangeReceiver.addListener(this, this);
+        registerReceiver(networkConnectivityStatusChangeReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
 
-        try {
-            displayHotels(new JSONObject("{\"area\" : \"btm 3rd stage\"}"));
+            switch(i) {
+                case 0 :
+                    tabLayout.getTabAt(i).setIcon(R.drawable.hotels_select_blue);
+                    break;
+
+                case 1 :
+                    tabLayout.getTabAt(i).setIcon(R.drawable.orders1_unselect);
+                    break;
+
+                case 2 :
+                    tabLayout.getTabAt(i).setIcon(R.drawable.kart_unselect);
+                    break;
+
+                case 3 :
+                    tabLayout.getTabAt(i).setIcon(R.drawable.deals_unselect);
+                    break;
+
+                case 4 :
+                    tabLayout.getTabAt(i).setIcon(R.drawable.menu1_unselect);
+                    break;
+
+                default :
+                    break;
+            }
+
+        }
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+                int i =tab.getPosition();
+                switch(i) {
+                    case 0 :
+                        tabLayout.getTabAt(i).setIcon(R.drawable.hotels_select_blue);
+                        break;
+
+                    case 1 :
+                        tabLayout.getTabAt(i).setIcon(R.drawable.orders1_select_blue);
+                        break;
+
+                    case 2 :
+                        tabLayout.getTabAt(i).setIcon(R.drawable.kart_select_blue);
+                        break;
+
+                    case 3 :
+                        tabLayout.getTabAt(i).setIcon(R.drawable.deals_select_blue);
+                        break;
+
+                    case 4 :
+                        tabLayout.getTabAt(i).setIcon(R.drawable.menu1_select_blue);
+                        break;
+
+                    default :
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                int i =tab.getPosition();
+                switch(i) {
+                    case 0 :
+                        tabLayout.getTabAt(i).setIcon(R.drawable.hotels_unselect);
+                        break;
+
+                    case 1 :
+                        tabLayout.getTabAt(i).setIcon(R.drawable.orders1_unselect);
+                        break;
+
+                    case 2 :
+                        tabLayout.getTabAt(i).setIcon(R.drawable.kart_unselect);
+                        break;
+
+                    case 3 :
+                        tabLayout.getTabAt(i).setIcon(R.drawable.deals_unselect);
+                        break;
+
+                    case 4 :
+                        tabLayout.getTabAt(i).setIcon(R.drawable.menu1_unselect);
+                        break;
+
+                    default :
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        /*try {
+            displayHotels(new JSONObject("{\"area\" : \"btm 2nd stage\"}"));
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 
@@ -315,13 +413,13 @@ public class DisplayHotelsActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        //networkConnectivityStatusChangeReceiver.addListener(this, this);
+        networkConnectivityStatusChangeReceiver.addListener(this, this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-       // networkConnectivityStatusChangeReceiver.removeListener(this);
+       networkConnectivityStatusChangeReceiver.removeListener(this);
     }
 
     @Override
@@ -376,7 +474,7 @@ public class DisplayHotelsActivity extends AppCompatActivity
         }
     }
 
-    /*Send Location data to server to get hotels list .
+    /*Send Location data to server to get hotels_select_blue list .
      pass it to DisplayHotelsActivity to show them to user.*/
     protected void SendLocationDataToServer(Location location) {
         Log.d(TAG, "Current Location is" + location);
@@ -387,36 +485,6 @@ public class DisplayHotelsActivity extends AppCompatActivity
         //address.setText("facebookId :"+mFacebookId+" ,gmailId: "+mGmailId+" ,mobileNumber: "+mMobileNumber);
         //setContentView(address);
 
-    }
-
-
-    protected void testVoice(){
-        gatherSpeech("FoodSwaha", 1);
-    }
-
-    public void gatherSpeech(String prompt,int maxResults)
-    {
-        Intent recognizeIntent = getRecognizeIntent(prompt,maxResults);
-        try
-        {
-            startActivityForResult(recognizeIntent, VOICE_RECOGNITION_REQUEST_CODE);
-        }
-        catch (ActivityNotFoundException actNotFound)
-        {
-            Log.w(TAG, "did not find the speech activity, not doing it");
-        }
-    }
-    public Intent getRecognizeIntent(String promptToUse, int maxResultsToReturn)
-    {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, maxResultsToReturn);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, promptToUse);
-        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 1000);
-        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 10);
-        intent.putExtra("android.speech.extra.DICTATION_MODE", true);
-        return intent;
     }
 
     protected void buildJsonObjectRequest(Location location) {
@@ -457,7 +525,7 @@ public class DisplayHotelsActivity extends AppCompatActivity
             buildGoogleApiClient();
             buildLocationRequest();
             buildLocationSettingsRequest();
-            //mGoogleApiClient.connect();
+            mGoogleApiClient.connect();
             Log.i(TAG, "GoogleApiClient connected to check location settings.");
             if(checkLocationSettings_called_flag){
                 checkLocationSettings_called_flag =false;
@@ -483,24 +551,6 @@ public class DisplayHotelsActivity extends AppCompatActivity
         startActivity(noInternetConnection);
     }
 
-    protected void getAccountDetails(){
-        AccountManager accountManager = AccountManager.get(this);
-        Account[] accounts = accountManager.getAccounts();
-        for (Account account : accounts) {
-            String accountName = account.name;
-            String accountType = account.type;
-            if(accountType.contains("com.facebook")){
-                mFacebookId = account.name;
-            }
-            else if(accountType.contains("com.google")){
-                mGmailId  = account.name;
-            }
-
-        }
-        TelephonyManager telephonyManager = (TelephonyManager)getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
-        mMobileNumber = telephonyManager.getLine1Number();
-    }
-
     protected void displayHotels(JSONObject response){
 
         TextView areaText = (TextView)findViewById(R.id.areaText);
@@ -508,9 +558,37 @@ public class DisplayHotelsActivity extends AppCompatActivity
             String area = response.getString("area");
             areaText.setText(area);
 
+            JSONArray hotelsJSONArray = response.getJSONArray("hotels");
+            List hotelList = new ArrayList<HotelItem>();
+            JSONObject hotelItem;
+            for(int i = 0; i < hotelsJSONArray.length(); i++){
+                hotelItem = hotelsJSONArray.getJSONObject(i);
+                hotelList.add(
+                        new HotelItem(
+                                hotelItem.getString("id"),
+                                hotelItem.getString("name"),
+                                hotelItem.getString("area"),
+                                hotelItem.getString("delivery time"),
+                                hotelItem.getString("delivery fees"),
+                                hotelItem.getString("min order"),
+                                hotelItem.getString("on time"),
+                                hotelItem.getString("rating"),
+                                hotelItem.getString("timings")
+                        )
+                );
+            }
+
+            adapter = new HotelItemAdapter(this,
+                    R.layout.hote_item, hotelList);
+
+            ListView listView1 = (ListView)findViewById(R.id.hotelList);
+            listView1.setAdapter(adapter);
         } catch (JSONException e) {
             Log.i(TAG,"error occured while parsing server data");
         }
+    }
+    public static HotelItemAdapter getHotelItemAdapter(){
+        return adapter;
     }
 
 

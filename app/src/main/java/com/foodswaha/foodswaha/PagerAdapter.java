@@ -9,8 +9,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class PagerAdapter extends FragmentPagerAdapter {
-    private int mNumOfTabs =4;
-    private String tabTitles[] = new String[] { "Hotels", "Orders", "Places","Deals" };
+    private int mNumOfTabs =5;
+    //private String tabTitles[] = new String[] { "Hotels", "Orders", "Places","Deals" };
 
     public PagerAdapter(FragmentManager fm) {
         super(fm);
@@ -26,12 +26,21 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 1:
                 OrdersFragment ordersFragment = new OrdersFragment();
                 return ordersFragment;
-            case 2:
+            /*case 2:
                 UserAddressesFragment userAddressesFragment = new UserAddressesFragment();
                 return userAddressesFragment;
             case 3:
+                FavFragment favFragment = new FavFragment();
+                return favFragment;*/
+            case 2:
+                KartFragment kartFragment = new KartFragment();
+                return kartFragment;
+            case 3:
                 DealsFragment dealsFragment = new DealsFragment();
                 return dealsFragment;
+            case 4:
+                MenuFragment menuFragment = new MenuFragment();
+                return menuFragment;
             default:
                 return null;
         }
@@ -42,9 +51,9 @@ public class PagerAdapter extends FragmentPagerAdapter {
         return mNumOfTabs;
     }
 
-    @Override
+    /*@Override
     public CharSequence getPageTitle(int position) {
         // Generate title based on item position
         return tabTitles[position];
-    }
+    }*/
 }

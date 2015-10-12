@@ -18,7 +18,7 @@ public class InternetCheckActivity extends Activity {
     /*constants end*/
 
 
-    /*checking internet connection.if available going to display hotels.else no internet.*/
+    /*checking internet connection.if available going to display hotels_select_blue.else no internet.*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG,"onCreate method called.");
@@ -28,8 +28,7 @@ public class InternetCheckActivity extends Activity {
             gotoDisplayHotels();
         }
         else{
-            gotoDisplayHotels();
-            //gotoNoInternetActivity();
+            gotoNoInternetActivity();
         }
     }
 
@@ -41,8 +40,7 @@ public class InternetCheckActivity extends Activity {
             gotoDisplayHotels();
         }
         else{
-            //gotoNoInternetActivity();
-            gotoDisplayHotels();
+            gotoNoInternetActivity();
         }
     }
 
@@ -59,7 +57,7 @@ public class InternetCheckActivity extends Activity {
         return false;
     }
 
-    /*method to redirect control to display hotels activity.*/
+    /*method to redirect control to display hotels_select_blue activity.*/
     protected  void gotoDisplayHotels() {
         Log.i(TAG,"gotoDisplayHotels is getting called.");
         Intent displayHotelsIntent = new Intent(this,DisplayHotelsActivity.class);
