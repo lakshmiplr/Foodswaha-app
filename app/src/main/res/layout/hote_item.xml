@@ -24,7 +24,6 @@
         android:id="@+id/hotelImage"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:src="@drawable/dominos"
         android:adjustViewBounds="true"
         />
 

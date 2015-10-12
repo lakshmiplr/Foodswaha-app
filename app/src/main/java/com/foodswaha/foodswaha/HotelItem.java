@@ -1,5 +1,7 @@
 package com.foodswaha.foodswaha;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by pharshar on 10/10/2015.
  */
@@ -14,6 +16,7 @@ public class HotelItem {
     String rating;
     String timings;
     String imageUrl;
+    Bitmap hotelImage = null;
 
     public HotelItem(String id, String name, String address, String deliveryTime, String deliveryFee, String minOrder, String onTime, String rating, String timings,String imageUrl) {
         this.id = id;
@@ -66,5 +69,13 @@ public class HotelItem {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public Bitmap getHotelImage() {
+        return hotelImage;
+    }
+
+    public void setHotelImage(Bitmap hotelImage) {
+        this.hotelImage = hotelImage;
     }
 }

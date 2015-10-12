@@ -16,11 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -488,7 +486,6 @@ public class DisplayHotelsActivity extends AppCompatActivity
     }
 
     protected void buildJsonObjectRequest(Location location) {
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         JsonObjectRequest jsonObjectRequest = null;
         String latitude = String.valueOf(location.getLatitude());
         String longitude = String.valueOf(location.getLongitude());
@@ -515,7 +512,7 @@ public class DisplayHotelsActivity extends AppCompatActivity
             e.printStackTrace();
         }
 // Add the request to the RequestQueue.
-        queue.add(jsonObjectRequest);
+        VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
     }
 
     @Override

@@ -76,8 +76,14 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         holder.hotelOnTime.setText("on time : "+hotelItem.getOnTime()+" % ");
         holder.hotelRatings.setText(": "+hotelItem.getRating());
         holder.hotelTimings.setText("timings : " + hotelItem.getTimings());
-        String imageUrl = "http://104.155.202.28:8080"+hotelItem.getImageUrl();
-        setImage(holder.hotelImage,imageUrl);
+        if(hotelItem.getHotelImage() == null){
+            String imageUrl = "http://104.155.202.28:8080"+hotelItem.getImageUrl();
+            setImage(holder.hotelImage,imageUrl,hotelItem);
+        }
+        else{
+            holder.hotelImage.setImageBitmap(hotelItem.getHotelImage());
+        }
+
         return row;
     }
     class HotelItemHolder{
@@ -92,12 +98,13 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         TextView hotelTimings;
         ImageView hotelImage;
     }
-    public void setImage(final ImageView image,final String url) {
+    public void setImage(final ImageView image,final String url, final HotelItem hotelItem) {
         ImageRequest request = new ImageRequest(url,
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
                         image.setImageBitmap(bitmap);
+                        hotelItem.setHotelImage(bitmap);
                     }
                 }, 0, 0, ImageView.ScaleType.CENTER_INSIDE, null,
                 new Response.ErrorListener() {
