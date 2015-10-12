@@ -573,7 +573,8 @@ public class DisplayHotelsActivity extends AppCompatActivity
                                 hotelItem.getString("min order"),
                                 hotelItem.getString("on time"),
                                 hotelItem.getString("rating"),
-                                hotelItem.getString("timings")
+                                hotelItem.getString("timings"),
+                                hotelItem.getString("image url")
                         )
                 );
             }

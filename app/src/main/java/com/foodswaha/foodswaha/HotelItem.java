@@ -13,8 +13,9 @@ public class HotelItem {
     String onTime;
     String rating;
     String timings;
+    String imageUrl;
 
-    public HotelItem(String id, String name, String address, String deliveryTime, String deliveryFee, String minOrder, String onTime, String rating, String timings) {
+    public HotelItem(String id, String name, String address, String deliveryTime, String deliveryFee, String minOrder, String onTime, String rating, String timings,String imageUrl) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -24,6 +25,7 @@ public class HotelItem {
         this.onTime = onTime;
         this.rating = rating;
         this.timings = timings;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {
@@ -60,5 +62,9 @@ public class HotelItem {
 
     public String getTimings() {
         return timings;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }
