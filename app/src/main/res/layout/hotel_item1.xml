@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/test">
+
+    <RatingBar
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/foodRatingBar"
+        android:numStars="4"
+        android:stepSize="1"
+        android:isIndicator="true"
+        android:rating="2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/area" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hotelImage"
+        android:adjustViewBounds="true"
+        android:src="@drawable/dominos"
+        android:layout_below="@+id/rating"
+        android:layout_alignLeft="@+id/rating"
+        android:layout_alignStart="@+id/rating"
+        android:layout_alignRight="@+id/rating"
+        android:layout_alignEnd="@+id/rating" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="ontime:100%"
+        android:id="@+id/onTime"
+        android:layout_below="@+id/hotelImage"
+        android:layout_alignLeft="@+id/hotelImage"
+        android:layout_alignStart="@+id/hotelImage"
+        android:layout_alignRight="@+id/hotelImage"
+        android:layout_alignEnd="@+id/hotelImage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Hotel Name"
+        android:id="@+id/hotelName"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/rating"
+        android:layout_toEndOf="@+id/rating"
+        android:layout_marginLeft="48dp"
+        android:layout_marginStart="48dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="BTM Layout"
+        android:id="@+id/area"
+        android:layout_below="@+id/hotelName"
+        android:layout_alignLeft="@+id/hotelName"
+        android:layout_alignStart="@+id/hotelName" />
+
+
+</RelativeLayout>

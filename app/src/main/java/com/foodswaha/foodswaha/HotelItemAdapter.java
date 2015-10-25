@@ -3,6 +3,7 @@ package com.foodswaha.foodswaha;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,16 @@ import java.util.List;
  * Created by pharshar on 10/10/2015.
  */
 public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
+    private static final String TAG = "HotelItemAdapter";
+
     Context context;
     int layoutResourceId;
     List data = null;
 
     public HotelItemAdapter(Context context, int resource, List<HotelItem> objects) {
+
         super(context, resource, objects);
+        Log.e(TAG, " HotelItemAdapter constructor  started.");
         this.context = context;
         this.layoutResourceId = resource;
         this.data = objects;
@@ -34,6 +39,8 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        Log.e(TAG, " getView method called with position,"+position);
         View row = convertView;
         HotelItemHolder holder = null;
 
