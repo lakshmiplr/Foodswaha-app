@@ -82,6 +82,7 @@ public class AppInitializerActivity extends AppCompatActivity {
                         break;
                     case Activity.RESULT_CANCELED:
                         Log.e(TAG," REQUEST_CHECK_LOCATION_SETTINGS is RESULT_CANCELED");
+                        finish();
                         break;
                     default:
                         Log.e(TAG," REQUEST_CHECK_LOCATION_SETTINGS is default");

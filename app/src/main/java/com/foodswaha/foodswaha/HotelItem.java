@@ -17,9 +17,9 @@ public class HotelItem {
     String timings;
     String imageUrl;
     Bitmap hotelImage = null;
-    String foodType;
+    String foodTypes;
 
-    public HotelItem(String id, String name, String address, String deliveryTime, String deliveryFee, String minOrder, String onTime, String rating, String timings,String imageUrl,String foodType) {
+    public HotelItem(String id, String name, String address, String deliveryTime, String deliveryFee, String minOrder, String onTime, String rating, String timings,String imageUrl,String foodTypes) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -30,7 +30,7 @@ public class HotelItem {
         this.rating = rating;
         this.timings = timings;
         this.imageUrl = imageUrl;
-        this.foodType = foodType;
+        this.foodTypes = foodTypes;
     }
 
     public String getId() {
@@ -81,7 +81,7 @@ public class HotelItem {
         this.hotelImage = hotelImage;
     }
 
-    public String getFoodType() {
-        return foodType;
+    public String getFoodTypes() {
+        return foodTypes;
     }
 }

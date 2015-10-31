@@ -191,7 +191,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
             }
 
             adapter = new HotelItemAdapter(this,
-                    R.layout.hote_item, hotelList);
+                    R.layout.hotel_item1, hotelList);
 
             Log.e(TAG, " HotelItemAdapter created using hoteldata from server as "+adapter);
 

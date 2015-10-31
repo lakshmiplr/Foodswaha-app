@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -53,13 +54,15 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
 
             holder.hotelName = (TextView)row.findViewById(R.id.hotelName);
             holder.hotelAddress = (TextView)row.findViewById(R.id.hotelAddress);
-            holder.hotelDTime = (TextView)row.findViewById(R.id.hotelDtime);
+            holder.hotelDTime = (TextView)row.findViewById(R.id.hotelDTime);
             holder.hotelDFee = (TextView)row.findViewById(R.id.hotelDFee);
             holder.hotelMinOrder = (TextView)row.findViewById(R.id.hotelMinOrder);
             holder.hotelOnTime = (TextView)row.findViewById(R.id.hotelOnTime);
-            holder.hotelRatings = (TextView)row.findViewById(R.id.hotelRatings);
-            holder.hotelTimings = (TextView)row.findViewById(R.id.hotelTimings);
+            holder.hotelRatings = (RatingBar)row.findViewById(R.id.hotelRatings);
+            //holder.hotelTimings = (TextView)row.findViewById(R.id.hotelTimings);
             holder.hotelImage = (ImageView)row.findViewById(R.id.hotelImage);
+            holder.hotelFoodTypes = (TextView)row.findViewById(R.id.hotelFoodTypes);
+           // holder.rating = (TextView)row.findViewById(R.id.rating);
 
             row.setTag(holder);
         }
@@ -73,16 +76,18 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         holder.hotelAddress.setText(hotelItem.getAddress());
         holder.hotelDTime.setText(": "+hotelItem.getDeliveryTime()+" min ");
         if(hotelItem.getDeliveryFee().equals("25")){
-            ImageView deliveryCharge = (ImageView)row.findViewById(R.id.delivercharge);
+            ImageView deliveryCharge = (ImageView)row.findViewById(R.id.deliveryCharge);
             deliveryCharge.setImageResource(R.drawable.free_delivery);
         }
         else{
             holder.hotelDFee.setText(" : " +hotelItem.getDeliveryFee()+" Rs");
         }
-        holder.hotelMinOrder.setText("min order : "+hotelItem.getMinOrder()+" Rs");
-        holder.hotelOnTime.setText("on time : "+hotelItem.getOnTime()+" % ");
-        holder.hotelRatings.setText(": "+hotelItem.getRating());
-        holder.hotelTimings.setText("timings : " + hotelItem.getTimings());
+        holder.hotelMinOrder.setText(hotelItem.getMinOrder()+" Rs");
+        holder.hotelOnTime.setText(hotelItem.getOnTime() + "%");
+        holder.hotelRatings.setRating(Float.valueOf(hotelItem.getRating()));
+        //holder.hotelTimings.setText("timings : " + hotelItem.getTimings());
+        //holder.rating.setText(hotelItem.getRating());
+        holder.hotelFoodTypes.setText(hotelItem.getFoodTypes());
         if(hotelItem.getHotelImage() == null){
             String imageUrl = "http://104.155.202.28:8080"+hotelItem.getImageUrl();
             setImage(holder.hotelImage,imageUrl,hotelItem);
@@ -101,9 +106,11 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         TextView hotelDFee;
         TextView hotelMinOrder;
         TextView hotelOnTime;
-        TextView hotelRatings;
+        RatingBar hotelRatings;
         TextView hotelTimings;
         ImageView hotelImage;
+        TextView hotelFoodTypes;
+        TextView rating;
     }
     public void setImage(final ImageView image,final String url, final HotelItem hotelItem) {
         ImageRequest request = new ImageRequest(url,
