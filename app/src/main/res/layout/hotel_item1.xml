@@ -190,6 +190,6 @@
         style="?android:attr/ratingBarStyleSmall"
         android:layout_above="@+id/hotelImage"
         android:layout_marginBottom="10dp"
-        android:layout_alignParentStart="false" />
+         />
 
 </RelativeLayout>

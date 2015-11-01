@@ -19,6 +19,13 @@ android:layout_width="match_parent" android:layout_height="match_parent" android
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             />
+        <EditText android:id="@+id/inputSearch"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search hotels.."
+            android:inputType="textVisiblePassword"
+            android:visibility="gone"
+            android:textColor="#ffffff" />
 
         <ImageButton
             android:layout_width="wrap_content"
