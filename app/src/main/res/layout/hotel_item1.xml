@@ -18,7 +18,7 @@
         android:layout_alignTop="@+id/hotelName"
         android:layout_marginTop="-3dp" />-->
 
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:id="@+id/hotelImage"
