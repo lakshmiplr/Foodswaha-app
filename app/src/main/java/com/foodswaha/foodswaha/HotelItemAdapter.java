@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
 
@@ -60,7 +62,7 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
             holder.hotelOnTime = (TextView)row.findViewById(R.id.hotelOnTime);
             holder.hotelRatings = (RatingBar)row.findViewById(R.id.hotelRatings);
             //holder.hotelTimings = (TextView)row.findViewById(R.id.hotelTimings);
-            holder.hotelImage = (ImageView)row.findViewById(R.id.hotelImage);
+            holder.hotelImage = (NetworkImageView)row.findViewById(R.id.hotelImage);
             holder.hotelFoodTypes = (TextView)row.findViewById(R.id.hotelFoodTypes);
            // holder.rating = (TextView)row.findViewById(R.id.rating);
 
@@ -75,7 +77,7 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         holder.hotelName.setText(hotelItem.getName());
         holder.hotelAddress.setText(hotelItem.getAddress());
         holder.hotelDTime.setText(": "+hotelItem.getDeliveryTime()+" min ");
-        if(hotelItem.getDeliveryFee().equals("25")){
+        if(hotelItem.getDeliveryFee().equals("0")){
             ImageView deliveryCharge = (ImageView)row.findViewById(R.id.deliveryCharge);
             deliveryCharge.setImageResource(R.drawable.free_delivery);
         }
@@ -108,24 +110,12 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         TextView hotelOnTime;
         RatingBar hotelRatings;
         TextView hotelTimings;
-        ImageView hotelImage;
+        NetworkImageView hotelImage;
         TextView hotelFoodTypes;
         TextView rating;
     }
-    public void setImage(final ImageView image,final String url, final HotelItem hotelItem) {
-        ImageRequest request = new ImageRequest(url,
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap bitmap) {
-                        image.setImageBitmap(bitmap);
-                        hotelItem.setHotelImage(bitmap);
-                    }
-                }, 0, 0, ImageView.ScaleType.CENTER_INSIDE, null,
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        //image.setImageResource(R.drawable.image_load_error);
-                    }
-                });
-        VolleyRequestQueueFactory.getInstance().getRequestQueue().add(request);
+    public void setImage(final NetworkImageView image,final String url, final HotelItem hotelItem) {
+        ImageLoader imageLoader = VolleyRequestQueueFactory.getInstance().getImageLoader();
+        image.setImageUrl(url, imageLoader);
     }
 }
