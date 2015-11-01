@@ -2,7 +2,6 @@ package com.foodswaha.foodswaha;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
@@ -64,6 +60,7 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
             //holder.hotelTimings = (TextView)row.findViewById(R.id.hotelTimings);
             holder.hotelImage = (NetworkImageView)row.findViewById(R.id.hotelImage);
             holder.hotelFoodTypes = (TextView)row.findViewById(R.id.hotelFoodTypes);
+            holder.hoteldeliveryChargeImage = (ImageView)row.findViewById(R.id.deliveryCharge);
            // holder.rating = (TextView)row.findViewById(R.id.rating);
 
             row.setTag(holder);
@@ -78,10 +75,11 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         holder.hotelAddress.setText(hotelItem.getAddress());
         holder.hotelDTime.setText(": "+hotelItem.getDeliveryTime()+" min ");
         if(hotelItem.getDeliveryFee().equals("0")){
-            ImageView deliveryCharge = (ImageView)row.findViewById(R.id.deliveryCharge);
-            deliveryCharge.setImageResource(R.drawable.free_delivery);
+            holder.hoteldeliveryChargeImage.setImageResource(R.drawable.free_delivery);
+            holder.hotelDFee.setText("");
         }
         else{
+            holder.hoteldeliveryChargeImage.setImageResource(R.drawable.delivercharge);
             holder.hotelDFee.setText(" : " +hotelItem.getDeliveryFee()+" Rs");
         }
         holder.hotelMinOrder.setText(hotelItem.getMinOrder()+" Rs");
@@ -90,13 +88,8 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         //holder.hotelTimings.setText("timings : " + hotelItem.getTimings());
         //holder.rating.setText(hotelItem.getRating());
         holder.hotelFoodTypes.setText(hotelItem.getFoodTypes());
-        if(hotelItem.getHotelImage() == null){
-            String imageUrl = "http://104.155.202.28:8080"+hotelItem.getImageUrl();
-            setImage(holder.hotelImage,imageUrl,hotelItem);
-        }
-        else{
-            holder.hotelImage.setImageBitmap(hotelItem.getHotelImage());
-        }
+        String imageUrl = "http://104.155.202.28:8080"+hotelItem.getImageUrl();
+        setImage(holder.hotelImage,imageUrl);
 
         return row;
     }
@@ -112,9 +105,10 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         TextView hotelTimings;
         NetworkImageView hotelImage;
         TextView hotelFoodTypes;
+        ImageView hoteldeliveryChargeImage;
         TextView rating;
     }
-    public void setImage(final NetworkImageView image,final String url, final HotelItem hotelItem) {
+    public void setImage(final NetworkImageView image,final String url) {
         ImageLoader imageLoader = VolleyRequestQueueFactory.getInstance().getImageLoader();
         image.setImageUrl(url, imageLoader);
     }
