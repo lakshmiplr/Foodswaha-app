@@ -33,7 +33,7 @@ public class HotelsFragment extends Fragment {
     private static JSONObject mJsonResponse =null;
     private JsonObjectRequest jsonObjectRequest;
     private static HotelItemAdapter.HotelItemHolder  holder;
-    private static Map hotelToMenuMap = new HashMap<String,JSONObject>();
+    private  Map hotelToMenuMap = new HashMap<String,JSONObject>();
 
 
     @Override
