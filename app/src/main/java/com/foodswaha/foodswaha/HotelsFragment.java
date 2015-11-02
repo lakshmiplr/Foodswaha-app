@@ -73,6 +73,8 @@ public class HotelsFragment extends Fragment {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Log.e(TAG, " gotoDisplayHotelMenuActivity method onErrorResponse got exception. " + error);
+                                    gotoDisplayHotelMenuActivity();
+                                    mJsonResponse = new JSONObject();
                                 }
                             });
                         } catch (Exception e) {
