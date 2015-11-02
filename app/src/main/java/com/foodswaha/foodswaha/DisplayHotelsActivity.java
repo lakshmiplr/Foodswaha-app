@@ -1,14 +1,21 @@
 package com.foodswaha.foodswaha;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,6 +33,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
     private static String AREA ="";
 
     private static HotelItemAdapter adapter;
+    private static boolean isInitialInputSearchVisibile=false;
 
 
     @Override
@@ -36,12 +44,20 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_hotels);
         final ImageButton search = (ImageButton) findViewById(R.id.searchButton3);
         final EditText inputSearch = (EditText) findViewById(R.id.inputSearch);
-        search.setOnClickListener(new View.OnClickListener(){
+        search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView areaText = (TextView) findViewById(R.id.areaText);
                 areaText.setVisibility(View.GONE);
                 inputSearch.setVisibility(View.VISIBLE);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                final Drawable upArrow = ContextCompat.getDrawable(DisplayHotelsActivity.this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+                upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+
+                inputSearch.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(inputSearch, InputMethodManager.SHOW_IMPLICIT);
+
             }
         });
         inputSearch.addTextChangedListener(new TextWatcher() {
@@ -49,7 +65,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
-                Log.e(TAG," on input search method "+cs);
+                Log.e(TAG, " on input search method " + cs);
                 adapter.getFilter().filter(cs);
             }
 
@@ -69,6 +85,9 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
+
+
+
         final TextView areaText = (TextView)findViewById(R.id.areaText);
         final ImageButton edit = (ImageButton)findViewById(R.id.editButton);
 
@@ -110,6 +129,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         }
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
@@ -117,37 +137,76 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 switch(i) {
                     case 0 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.hotels_select_blue);
-                        areaText.setText(AREA);
-                        edit.setImageResource(R.drawable.edit);
-                        search.setImageResource(R.drawable.search_art);
+                        if(isInitialInputSearchVisibile){
+                            edit.setVisibility(View.GONE);
+                            search.setVisibility(View.GONE);
+                            areaText.setVisibility(View.GONE);
+                            inputSearch.setVisibility(View.VISIBLE);
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                            //imm.showSoftInput(inputSearch, InputMethodManager.SHOW_IMPLICIT);
+                        }
+                        else{
+                            areaText.setText(AREA);
+                            edit.setImageResource(R.drawable.edit);
+                            search.setImageResource(R.drawable.search_art);
+                            edit.setVisibility(View.VISIBLE);
+                            search.setVisibility(View.VISIBLE);
+                            areaText.setVisibility(View.VISIBLE);
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                        }
+
                         break;
 
                     case 1 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.orders1_select_blue);
+                        areaText.setVisibility(View.VISIBLE);
                         areaText.setText("Orders");
-                        edit.setImageDrawable(null);
-                        search.setImageDrawable(null);
+                        edit.setVisibility(View.GONE);
+                        search.setVisibility(View.GONE);
+                        if(inputSearch.getVisibility() == View.VISIBLE){
+                            inputSearch.setVisibility(View.GONE);
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                            imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
+                        }
                         break;
 
                     case 2 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.kart_select_blue);
                         areaText.setText("Kart");
-                        edit.setImageDrawable(null);
-                        search.setImageDrawable(null);
+                        areaText.setVisibility(View.VISIBLE);
+                        edit.setVisibility(View.GONE);
+                        search.setVisibility(View.GONE);
+                        if(inputSearch.getVisibility() == View.VISIBLE){
+                            inputSearch.setVisibility(View.GONE);
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                            imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
+                        }
                         break;
 
                     case 3 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.deals_select_blue);
                         areaText.setText("Deals");
-                        edit.setImageDrawable(null);
-                        search.setImageDrawable(null);
+                        areaText.setVisibility(View.VISIBLE);
+                        edit.setVisibility(View.GONE);
+                        search.setVisibility(View.GONE);
+                        if(inputSearch.getVisibility() == View.VISIBLE){
+                            inputSearch.setVisibility(View.GONE);
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                            imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
+                        }
                         break;
 
                     case 4 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.menu1_select_blue);
                         areaText.setText("More");
-                        edit.setImageDrawable(null);
-                        search.setImageDrawable(null);
+                        areaText.setVisibility(View.VISIBLE);
+                        edit.setVisibility(View.GONE);
+                        search.setVisibility(View.GONE);
+                        if(inputSearch.getVisibility() == View.VISIBLE){
+                            inputSearch.setVisibility(View.GONE);
+                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                            imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
+                        }
                         break;
 
                     default :
@@ -161,6 +220,12 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 switch(i) {
                     case 0 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.hotels_unselect);
+                        if(inputSearch.getVisibility() == View.VISIBLE){
+                            isInitialInputSearchVisibile =true;
+                        }
+                        else{
+                            isInitialInputSearchVisibile =false;
+                        }
                         break;
 
                     case 1 :
@@ -256,6 +321,32 @@ public class DisplayHotelsActivity extends AppCompatActivity {
     public static HotelItemAdapter getHotelItemAdapter(){
         Log.e(TAG, " getHotelItemAdapter method started.");
         return adapter;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                final TextView areaText = (TextView)findViewById(R.id.areaText);
+                final ImageButton edit = (ImageButton)findViewById(R.id.editButton);
+                final ImageButton search = (ImageButton) findViewById(R.id.searchButton3);
+                final EditText inputSearch = (EditText) findViewById(R.id.inputSearch);
+                areaText.setText(AREA);
+                areaText.setVisibility(View.VISIBLE);
+                edit.setVisibility(View.VISIBLE);
+                search.setVisibility(View.VISIBLE);
+                inputSearch.setVisibility(View.GONE);
+                inputSearch.setText("");
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                adapter.getFilter().filter("");
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                View view = this.getCurrentFocus();
+                if(view!=null){
+                    imm.hideSoftInputFromWindow(view.getWindowToken(),InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                }
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
     }
 
 }

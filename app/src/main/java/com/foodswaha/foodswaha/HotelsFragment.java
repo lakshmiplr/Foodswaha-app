@@ -1,5 +1,6 @@
 package com.foodswaha.foodswaha;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -39,14 +42,15 @@ public class HotelsFragment extends Fragment {
         if(adapter!=null){
             ListView listView1 = (ListView)view.findViewById(R.id.hotelList);
             listView1.setAdapter(adapter);
+
             listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
 
-                    holder = (HotelItemAdapter.HotelItemHolder)view.getTag();
+                    holder = (HotelItemAdapter.HotelItemHolder) view.getTag();
                     try {
-                        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GET_HOTEL_MENU_URL+holder.hotelId,
+                        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GET_HOTEL_MENU_URL + holder.hotelId,
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
@@ -54,9 +58,8 @@ public class HotelsFragment extends Fragment {
                                             mJsonResponse = response;
                                             Log.e(TAG, "JsonResponse received from server.response is " + mJsonResponse);
                                             gotoDisplayHotelMenuActivity(mJsonResponse);
-                                        }
-                                        catch (Exception e) {
-                                            Log.e(TAG, " gotoDisplayHotelMenuActivity method got exception. "+e);
+                                        } catch (Exception e) {
+                                            Log.e(TAG, " gotoDisplayHotelMenuActivity method got exception. " + e);
                                         }
                                     }
                                 }, new Response.ErrorListener() {
@@ -69,6 +72,20 @@ public class HotelsFragment extends Fragment {
                     }
                     VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
 
+
+                }
+            });
+            listView1.setOnScrollListener(new AbsListView.OnScrollListener() {
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    if(view!=null){
+                        imm.hideSoftInputFromWindow(view.getWindowToken(),InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                    }
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
                 }
             });
