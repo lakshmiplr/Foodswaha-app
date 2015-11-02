@@ -5,7 +5,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -30,14 +34,43 @@ public class DisplayHotelsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_hotels);
+        final ImageButton search = (ImageButton) findViewById(R.id.searchButton3);
+        final EditText inputSearch = (EditText) findViewById(R.id.inputSearch);
+        search.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                TextView areaText = (TextView) findViewById(R.id.areaText);
+                areaText.setVisibility(View.GONE);
+                inputSearch.setVisibility(View.VISIBLE);
+            }
+        });
+        inputSearch.addTextChangedListener(new TextWatcher() {
 
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                Log.e(TAG," on input search method "+cs);
+                adapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
         final TextView areaText = (TextView)findViewById(R.id.areaText);
         final ImageButton edit = (ImageButton)findViewById(R.id.editButton);
-        final ImageButton search = (ImageButton)findViewById(R.id.searchButton3);
 
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);

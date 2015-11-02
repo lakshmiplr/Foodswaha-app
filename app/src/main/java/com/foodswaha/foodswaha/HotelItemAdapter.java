@@ -7,24 +7,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Filter;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by pharshar on 10/10/2015.
  */
-public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
+public class HotelItemAdapter extends ArrayAdapter<HotelItem> implements Filterable{
     private static final String TAG = "HotelItemAdapter";
 
     Context context;
     int layoutResourceId;
     List data = null;
+    List origData;
 
     public HotelItemAdapter(Context context, int resource, List<HotelItem> objects) {
 
@@ -33,6 +37,7 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         this.context = context;
         this.layoutResourceId = resource;
         this.data = objects;
+        this.origData = objects;
     }
 
 
@@ -88,7 +93,7 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         //holder.rating.setText(hotelItem.getRating());
         holder.hotelFoodTypes.setText(hotelItem.getFoodTypes());
         String imageUrl = "http://104.155.202.28:8080"+hotelItem.getImageUrl();
-        setImage(holder.hotelImage,imageUrl);
+        setImage(holder.hotelImage, imageUrl);
 
         return row;
     }
@@ -110,5 +115,47 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
     public void setImage(final NetworkImageView image,final String url) {
         ImageLoader imageLoader = VolleyRequestQueueFactory.getInstance().getImageLoader();
         image.setImageUrl(url, imageLoader);
+    }
+
+    @Override
+    public int getCount(){
+        return data.size();
+    }
+
+    public Filter getFilter()
+    {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                Log.e(TAG, " performFiltering called");
+
+                String filterString = constraint.toString().toLowerCase();
+
+                FilterResults results = new FilterResults();
+
+                final List<HotelItem> list = origData;
+
+                final List newlist = new ArrayList<HotelItem>();
+
+                String filterableString ;
+
+                for (HotelItem hotelItem : list) {
+                    filterableString = hotelItem.getName();
+                    if (filterableString.toLowerCase().startsWith(filterString)) {
+                        newlist.add(hotelItem);
+                    }
+                }
+                results.values = newlist;
+                results.count = newlist.size();
+                return results;            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                Log.e(TAG, " publishResults called "+results.count);
+
+                    data = (ArrayList<HotelItem>) results.values;
+                    notifyDataSetChanged();
+            }
+        };
     }
 }
