@@ -20,6 +20,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by pharshar on 9/24/2015.
  */
@@ -27,9 +30,10 @@ public class HotelsFragment extends Fragment {
 
     private static final String TAG = "HotelsFragment";
     private static final String GET_HOTEL_MENU_URL = "http://104.155.202.28:8080/hotel/";
-    private static JSONObject mJsonResponse;
+    private static JSONObject mJsonResponse =null;
     private JsonObjectRequest jsonObjectRequest;
     private static HotelItemAdapter.HotelItemHolder  holder;
+    private static Map hotelToMenuMap = new HashMap<String,JSONObject>();
 
 
     @Override
@@ -47,40 +51,47 @@ public class HotelsFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
-
                     holder = (HotelItemAdapter.HotelItemHolder) view.getTag();
-                    try {
-                        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GET_HOTEL_MENU_URL + holder.hotelId,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        try {
-                                            mJsonResponse = response;
-                                            Log.e(TAG, "JsonResponse received from server.response is " + mJsonResponse);
-                                            gotoDisplayHotelMenuActivity(mJsonResponse);
-                                        } catch (Exception e) {
-                                            Log.e(TAG, " gotoDisplayHotelMenuActivity method got exception. " + e);
-                                        }
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
+                    mJsonResponse = (JSONObject) hotelToMenuMap.get(holder.hotelId);
+                    if (mJsonResponse == null) {
+                        try {
+                            jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GET_HOTEL_MENU_URL + holder.hotelId,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            try {
 
+                                                hotelToMenuMap.put(holder.hotelId, response);
+                                                mJsonResponse = response;
+                                                Log.e(TAG, "JsonResponse received from server.response is " + mJsonResponse);
+                                                gotoDisplayHotelMenuActivity();
+                                            } catch (Exception e) {
+                                                Log.e(TAG, " gotoDisplayHotelMenuActivity method got exception. " + e);
+                                            }
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e(TAG, " gotoDisplayHotelMenuActivity method onErrorResponse got exception. " + error);
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
+                    } else {
+                        gotoDisplayHotelMenuActivity();
+                    }
 
                 }
             });
             listView1.setOnScrollListener(new AbsListView.OnScrollListener() {
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
-                    if(view!=null){
-                        imm.hideSoftInputFromWindow(view.getWindowToken(),InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                    if (view != null) {
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                     }
                 }
 
@@ -101,7 +112,7 @@ public class HotelsFragment extends Fragment {
         return holder;
     }
 
-    public void gotoDisplayHotelMenuActivity(JSONObject mJsonResponse) {
+    public void gotoDisplayHotelMenuActivity() {
         Log.e(TAG, " gotoDisplayHotelMenuActivity method started.");
         Intent displayHotelMenuIntent = new Intent(getContext(), DisplayHotelMenuActivity.class);
         startActivity(displayHotelMenuIntent);
