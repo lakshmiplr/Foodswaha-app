@@ -3,4 +3,15 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Large Text"
+        android:id="@+id/hotelMenuItem"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:paddingLeft="4dp"
+
+        android:textSize="20dp" />
 </LinearLayout>

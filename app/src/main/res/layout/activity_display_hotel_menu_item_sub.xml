@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.foodswaha.foodswaha.DisplayHotelMenuActivity"
+    tools:context="com.foodswaha.foodswaha.DisplayHotelMenuItemSub"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/hotelNameText"
+            android:id="@+id/menuNameText"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:textColor="#FFFFFF"
@@ -24,7 +24,7 @@
     </android.support.v7.widget.Toolbar>
 
     <ListView
-        android:id="@+id/hotelMenu"
+        android:id="@+id/hotelMenuSub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"

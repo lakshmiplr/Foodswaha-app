@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Large Text"
+        android:id="@+id/hotelMenuSubItem"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:paddingLeft="4dp"
+
+        android:textSize="20dp"
+        android:gravity="left" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Large Text"
+        android:id="@+id/hotelMenuSubItemPrice"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:paddingLeft="4dp"
+
+        android:textSize="20dp"
+        android:gravity="right"
+        android:paddingRight="15dp" />
+</LinearLayout>

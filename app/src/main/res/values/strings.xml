@@ -2,9 +2,13 @@
     <string name="app_name">foodswaha</string>
 
     <string name="action_settings">Settings</string>
+    <string name="hotel_menu">Menu</string>
     <string name="title_activity_display_hotels">Restuarents</string>
     <string name="title_activity_display_no_internet">FoodSwaha</string>
     <string name="no_Internet_Text">No Internet Connection.</string>
     <string name="title_activity_internet_check">FoodSwaha</string>
+    <string name="title_activity_display_hotel_menu_item_sub">DisplayHotelMenuItemSub</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

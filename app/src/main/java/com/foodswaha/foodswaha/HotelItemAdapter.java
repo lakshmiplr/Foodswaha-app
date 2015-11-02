@@ -48,7 +48,6 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new HotelItemHolder();
 
-            //holder.hotelId =  (TextView)row.findViewById(R.id.hotelId);
 
             holder.hotelName = (TextView)row.findViewById(R.id.hotelName);
             holder.hotelAddress = (TextView)row.findViewById(R.id.hotelAddress);
@@ -70,7 +69,7 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         }
 
         HotelItem hotelItem = (HotelItem)data.get(position);
-       // holder.hotelId.setText(hotelItem.getId());
+        holder.hotelId = hotelItem.getId();
         holder.hotelName.setText(hotelItem.getName());
         holder.hotelAddress.setText(hotelItem.getAddress());
         holder.hotelDTime.setText(": "+hotelItem.getDeliveryTime()+" min ");
@@ -94,7 +93,7 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> {
         return row;
     }
     class HotelItemHolder{
-        //TextView hotelId;
+        String hotelId;
         TextView hotelName;
         TextView hotelAddress;
         TextView hotelDTime;

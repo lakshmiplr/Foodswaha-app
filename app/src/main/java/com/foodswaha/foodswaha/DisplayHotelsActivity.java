@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -18,6 +19,7 @@ import java.util.List;
 public class DisplayHotelsActivity extends AppCompatActivity {
 
     private static final String TAG = "DisplayHotels";
+    private static String AREA ="";
 
     private static HotelItemAdapter adapter;
 
@@ -33,6 +35,10 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
+        final TextView areaText = (TextView)findViewById(R.id.areaText);
+        final ImageButton edit = (ImageButton)findViewById(R.id.editButton);
+        final ImageButton search = (ImageButton)findViewById(R.id.searchButton3);
+
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -78,22 +84,37 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 switch(i) {
                     case 0 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.hotels_select_blue);
+                        areaText.setText(AREA);
+                        edit.setImageResource(R.drawable.edit);
+                        search.setImageResource(R.drawable.search_art);
                         break;
 
                     case 1 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.orders1_select_blue);
+                        areaText.setText("Orders");
+                        edit.setImageDrawable(null);
+                        search.setImageDrawable(null);
                         break;
 
                     case 2 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.kart_select_blue);
+                        areaText.setText("Kart");
+                        edit.setImageDrawable(null);
+                        search.setImageDrawable(null);
                         break;
 
                     case 3 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.deals_select_blue);
+                        areaText.setText("Deals");
+                        edit.setImageDrawable(null);
+                        search.setImageDrawable(null);
                         break;
 
                     case 4 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.menu1_select_blue);
+                        areaText.setText("More");
+                        edit.setImageDrawable(null);
+                        search.setImageDrawable(null);
                         break;
 
                     default :
@@ -162,6 +183,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         try {
             String area = response.getString("area");
             areaText.setText(area);
+            AREA = area;
 
             Log.e(TAG, " received area of user from server as "+area);
 

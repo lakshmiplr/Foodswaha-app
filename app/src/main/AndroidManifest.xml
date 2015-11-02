@@ -16,8 +16,7 @@
         android:theme="@style/FoodSwahaTheme" >
         <activity
             android:name=".AppInitializerActivity"
-            android:label="@string/app_name"
-             >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +27,22 @@
             android:name=".DisplayHotelsActivity"
             android:label="@string/app_name" >
         </activity>
-
+        <activity
+            android:name=".DisplayHotelMenuActivity"
+            android:label="@string/hotel_menu"
+            android:parentActivityName=".DisplayHotelsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DisplayHotelsActivity" />
+        </activity>
+        <activity
+            android:name=".DisplayHotelMenuItemSub"
+            android:label="@string/title_activity_display_hotel_menu_item_sub"
+            android:parentActivityName=".DisplayHotelMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DisplayHotelMenuActivity" />
+        </activity>
     </application>
 
 </manifest>
