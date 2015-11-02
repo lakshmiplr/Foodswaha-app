@@ -26,6 +26,14 @@ android:layout_width="match_parent" android:layout_height="match_parent" android
             android:inputType="textVisiblePassword"
             android:visibility="gone"
             android:textColor="#ffffff" />
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end|center_vertical"
+            android:background="@drawable/clearimage"
+            android:visibility="gone"
+             />
 
         <ImageButton
             android:layout_width="wrap_content"

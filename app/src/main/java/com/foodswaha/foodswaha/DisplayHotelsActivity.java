@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_hotels);
         final ImageButton search = (ImageButton) findViewById(R.id.searchButton3);
         final EditText inputSearch = (EditText) findViewById(R.id.inputSearch);
+        final Button btnClear = (Button)findViewById(R.id.btn_clear);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,12 +62,26 @@ public class DisplayHotelsActivity extends AppCompatActivity {
 
             }
         });
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inputSearch.setText("");
+                btnClear.setVisibility(View.GONE);
+            }
+        });
         inputSearch.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
                 Log.e(TAG, " on input search method " + cs);
+                if (!inputSearch.getText().toString().equals("")) {
+                    btnClear.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    btnClear.setVisibility(View.GONE);
+                }
                 adapter.getFilter().filter(cs);
             }
 
@@ -142,6 +158,9 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                             search.setVisibility(View.GONE);
                             areaText.setVisibility(View.GONE);
                             inputSearch.setVisibility(View.VISIBLE);
+                            if (!inputSearch.getText().toString().equals("")) {
+                                btnClear.setVisibility(View.VISIBLE);
+                            }
                             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                             //imm.showSoftInput(inputSearch, InputMethodManager.SHOW_IMPLICIT);
                         }
@@ -165,6 +184,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         search.setVisibility(View.GONE);
                         if(inputSearch.getVisibility() == View.VISIBLE){
                             inputSearch.setVisibility(View.GONE);
+                            btnClear.setVisibility(View.GONE);
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                             imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
                         }
@@ -178,6 +198,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         search.setVisibility(View.GONE);
                         if(inputSearch.getVisibility() == View.VISIBLE){
                             inputSearch.setVisibility(View.GONE);
+                            btnClear.setVisibility(View.GONE);
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                             imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
                         }
@@ -191,6 +212,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         search.setVisibility(View.GONE);
                         if(inputSearch.getVisibility() == View.VISIBLE){
                             inputSearch.setVisibility(View.GONE);
+                            btnClear.setVisibility(View.GONE);
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                             imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
                         }
@@ -204,6 +226,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         search.setVisibility(View.GONE);
                         if(inputSearch.getVisibility() == View.VISIBLE){
                             inputSearch.setVisibility(View.GONE);
+                            btnClear.setVisibility(View.GONE);
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                             imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
                         }
