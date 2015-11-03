@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:clickable="true">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,10 +16,11 @@
         android:paddingLeft="4dp"
 
         android:textSize="20dp"
-        android:gravity="left" />
+        android:gravity="left"
+        android:layout_alignParentStart="true" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Large Text"
@@ -28,5 +31,61 @@
 
         android:textSize="20dp"
         android:gravity="right"
-        android:paddingRight="15dp" />
-</LinearLayout>
+        android:paddingRight="15dp"
+        android:layout_gravity="right"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/plus"
+        android:src="@drawable/plus"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:maxHeight="32dp"
+        android:maxWidth="32dp"
+        android:minHeight="32dp"
+        android:minWidth="32dp"
+        android:clickable="true"
+        android:background="@android:color/transparent"
+        android:layout_below="@+id/hotelMenuSubItemPrice"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:padding="5dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/minus"
+        android:src="@drawable/minus"
+        android:layout_below="@+id/hotelMenuSubItemPrice"
+        android:layout_toLeftOf="@+id/quantity"
+        android:maxHeight="32dp"
+        android:maxWidth="32dp"
+        android:minHeight="32dp"
+        android:minWidth="32dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        android:padding="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="0"
+        android:id="@+id/quantity"
+        android:layout_toLeftOf="@+id/plus"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="#3B5998"
+        android:visibility="gone"
+        android:layout_alignTop="@+id/plus"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignBottom="@+id/plus" />
+
+
+</RelativeLayout>

@@ -26,6 +26,7 @@ public class DisplayHotelMenuActivity extends AppCompatActivity {
     private static final String TAG = "DisplayHotelMenu";
     private static HotelMenuItemAdapter.HotelMenuItemHolder  holder;
     private static Map<String,List<HotelMenuItemSub>> hotelMenuItemMap;
+    private static List mHotelMenuItemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,49 +55,56 @@ public class DisplayHotelMenuActivity extends AppCompatActivity {
             Log.e(TAG, " received hotelMenuJSONArray from server as " + hotelMenuJSONArray);
 
             if(hotelMenuJSONArray!=null){
-                hotelMenuItemMap = new HashMap<String,List<HotelMenuItemSub>>();
-                String hotelMenuItem;
-                List hotelMenuItemSubList;
-                List mHotelMenuItemList = new ArrayList<HotelMenuItem>();
-                HotelMenuItemSub mHotelMenuItemSub;
-                for(int i = 0; i < hotelMenuJSONArray.length(); i++){
 
-                    hotelMenuItemSubList = new ArrayList<HotelMenuItemSub>();
-                    hotelMenuItem = hotelMenuJSONArray.optString(i);
-                    JSONArray hotelMenuItemSubJSONArray = mHotelMenu.optJSONArray(hotelMenuItem);
+                if(hotelMenuItemMap==null) {
+                    hotelMenuItemMap = new HashMap<String, List<HotelMenuItemSub>>();
+                    mHotelMenuItemList = new ArrayList<HotelMenuItem>();
+                    String hotelMenuItem;
+                    List hotelMenuItemSubList;
 
-                    if(hotelMenuItemSubJSONArray!=null){
-                        for(int j = 0; j < hotelMenuItemSubJSONArray.length(); j++){
+                    HotelMenuItemSub mHotelMenuItemSub;
+                    for (int i = 0; i < hotelMenuJSONArray.length(); i++) {
 
-                            JSONObject mHotelMenuItemSubJSONObject = hotelMenuItemSubJSONArray.optJSONObject(j);
-                            mHotelMenuItemSub = new HotelMenuItemSub(
-                                    mHotelMenuItemSubJSONObject.optString("itemname"),
-                                    mHotelMenuItemSubJSONObject.optString("cost"),
-                                    mHotelMenuItemSubJSONObject.optString("itemdesc")
-                            );
-                            hotelMenuItemSubList.add(mHotelMenuItemSub);
+                        hotelMenuItemSubList = new ArrayList<HotelMenuItemSub>();
+                        hotelMenuItem = hotelMenuJSONArray.optString(i);
+                        JSONArray hotelMenuItemSubJSONArray = mHotelMenu.optJSONArray(hotelMenuItem);
+
+                        if (hotelMenuItemSubJSONArray != null) {
+                            for (int j = 0; j < hotelMenuItemSubJSONArray.length(); j++) {
+
+                                JSONObject mHotelMenuItemSubJSONObject = hotelMenuItemSubJSONArray.optJSONObject(j);
+                                mHotelMenuItemSub = new HotelMenuItemSub(
+                                        mHotelMenuItemSubJSONObject.optString("itemname"),
+                                        mHotelMenuItemSubJSONObject.optString("cost"), 0
+
+                                );
+                                hotelMenuItemSubList.add(mHotelMenuItemSub);
+                            }
+
+                            mHotelMenuItemList.add(new HotelMenuItem(hotelMenuItem));
+                            hotelMenuItemMap.put(hotelMenuItem, hotelMenuItemSubList);
                         }
 
-                        mHotelMenuItemList.add(new HotelMenuItem(hotelMenuItem));
-                        hotelMenuItemMap.put(hotelMenuItem, hotelMenuItemSubList);
                     }
+                }
+                if(mHotelMenuItemList!=null){
+                    ListView listView1 = (ListView)findViewById(R.id.hotelMenu);
+                    listView1.setAdapter(new HotelMenuItemAdapter(this,
+                            R.layout.activity_display_hotel_menu_item, mHotelMenuItemList));
+                    listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                                long id) {
 
+                            holder = (HotelMenuItemAdapter.HotelMenuItemHolder) view.getTag();
+                            gotoDisplayHotelMenuSubActivity();
+
+                        }
+                    });
                 }
 
-                ListView listView1 = (ListView)findViewById(R.id.hotelMenu);
-                listView1.setAdapter(new HotelMenuItemAdapter(this,
-                        R.layout.activity_display_hotel_menu_item, mHotelMenuItemList));
 
-                listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position,
-                                            long id) {
 
-                        holder = (HotelMenuItemAdapter.HotelMenuItemHolder) view.getTag();
-                        gotoDisplayHotelMenuSubActivity();
-
-                    }
-                });
             }
 
         } catch (Exception e) {

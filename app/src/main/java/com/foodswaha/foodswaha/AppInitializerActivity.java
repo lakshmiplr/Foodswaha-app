@@ -17,6 +17,8 @@ public class AppInitializerActivity extends AppCompatActivity {
 
     private static final int REQUEST_CHECK_LOCATION_SETTINGS = 3;
 
+    private static Cart mCart = new Cart();
+
 
     final LocationFinderUtil lfu = new LocationFinderUtil(this,this,this);
 
@@ -59,7 +61,7 @@ public class AppInitializerActivity extends AppCompatActivity {
 
     }
     private void getHotelsDataFromServer(LocationFinderUtil lfu){
-        Log.e(TAG," getHotelsDataFromServer method started.");
+        Log.e(TAG, " getHotelsDataFromServer method started.");
         if(lfu.checkGooglePlayServiceAvailablity()){
             lfu.buildGoogleApiClient();
             lfu.buildLocationRequest();
@@ -96,5 +98,11 @@ public class AppInitializerActivity extends AppCompatActivity {
         Intent displayHotelsIntent = new Intent(this, DisplayHotelsActivity.class);
         startActivity(displayHotelsIntent);
         finish();
+    }
+
+    public synchronized static Cart  getCartInstance() {
+        Log.e(TAG, " getCartInstance method started.");
+        return mCart;
+
     }
 }

@@ -26,12 +26,17 @@ public class HotelMenuItem {
 class HotelMenuItemSub{
     String name;
     String cost;
-    String description;
+    int quantity;
 
-    public HotelMenuItemSub(String name, String cost, String description) {
+    public HotelMenuItemSub(String name, String cost) {
         this.name = name;
         this.cost = cost;
-        this.description = description;
+    }
+
+    public HotelMenuItemSub(String name, String cost, int quantity) {
+        this.name = name;
+        this.cost = cost;
+        this.quantity = quantity;
     }
 
     public String getName() {
@@ -50,11 +55,24 @@ class HotelMenuItemSub{
         this.cost = cost;
     }
 
-    public String getDescription() {
-        return description;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof HotelMenuItemSub)
+            return name.equals(((HotelMenuItemSub) obj).getName());
+        else
+            return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }
