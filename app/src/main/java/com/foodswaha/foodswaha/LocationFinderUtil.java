@@ -220,6 +220,8 @@ public class LocationFinderUtil implements
         JsonObjectRequest jsonObjectRequest = null;
         String latitude = String.valueOf(location.getLatitude());
         String longitude = String.valueOf(location.getLongitude());
+        latitude = "12.92";
+        longitude="77.61";
         try {
             jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, GET_HOTEL_DETAILS_URL,new JSONObject("{\"latitude\":\""+latitude+"\",\"longitude\":\""+longitude+"\"}"),
                     new Response.Listener<JSONObject>() {
