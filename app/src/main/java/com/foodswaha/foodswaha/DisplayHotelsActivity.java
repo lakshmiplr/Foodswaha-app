@@ -55,7 +55,6 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 final Drawable upArrow = ContextCompat.getDrawable(DisplayHotelsActivity.this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
                 upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
                 getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
                 inputSearch.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(inputSearch, InputMethodManager.SHOW_IMPLICIT);
