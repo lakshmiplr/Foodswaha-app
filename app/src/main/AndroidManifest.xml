@@ -28,16 +28,14 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            >
-
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name=".DisplayHotelMenuActivity"
             android:label="@string/hotel_menu"
-            android:parentActivityName=".DisplayHotelsActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:parentActivityName=".DisplayHotelsActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DisplayHotelsActivity" />
@@ -45,12 +43,16 @@
         <activity
             android:name=".DisplayHotelMenuItemSub"
             android:label="@string/title_activity_display_hotel_menu_item_sub"
-            android:parentActivityName=".DisplayHotelMenuActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:parentActivityName=".DisplayHotelMenuActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DisplayHotelMenuActivity" />
+        </activity>
+        <activity
+            android:name=".EditLocationActivity"
+            android:label="@string/title_activity_edit_location" >
         </activity>
     </application>
 

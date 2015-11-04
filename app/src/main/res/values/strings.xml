@@ -10,5 +10,6 @@
     <string name="title_activity_display_hotel_menu_item_sub">DisplayHotelMenuItemSub</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_edit_location">EditLocationActivity</string>
 
 </resources>

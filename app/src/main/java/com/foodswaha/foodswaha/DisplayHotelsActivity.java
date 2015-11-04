@@ -1,6 +1,7 @@
 package com.foodswaha.foodswaha;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -105,7 +106,12 @@ public class DisplayHotelsActivity extends AppCompatActivity {
 
         final TextView areaText = (TextView)findViewById(R.id.areaText);
         final ImageButton edit = (ImageButton)findViewById(R.id.editButton);
-
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoEditLocationActivity();
+            }
+        });
 
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -288,6 +294,11 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }*/
+    }
+
+    private void gotoEditLocationActivity() {
+        Intent editLocationActivity = new Intent(this, EditLocationActivity.class);
+        startActivity(editLocationActivity);
     }
 
 
