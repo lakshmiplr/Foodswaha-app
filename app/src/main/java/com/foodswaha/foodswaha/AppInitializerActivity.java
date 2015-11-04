@@ -24,7 +24,7 @@ public class AppInitializerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e(TAG," onCreate method started.");
+        Log.e(TAG, " onCreate method started.");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_initializer);
@@ -42,7 +42,7 @@ public class AppInitializerActivity extends AppCompatActivity {
             noInternet.setText("No Internet Connection");
 
             final ImageButton retry = (ImageButton) findViewById(R.id.retry);
-            retry.setImageResource(R.drawable.retry);
+            retry.setImageResource(R.drawable.retry_blue);
 
             final Context context = this;
             retry.setOnClickListener(new View.OnClickListener() {
