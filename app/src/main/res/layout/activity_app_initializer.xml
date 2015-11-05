@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.foodswaha.foodswaha.AppInitializerActivity"
-    android:background="@drawable/initial_skyblue"
+    android:background="@drawable/blue_init"
     android:id="@+id/appinitial"
     android:padding="7dp">
 

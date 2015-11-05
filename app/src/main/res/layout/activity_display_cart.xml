@@ -1,12 +1,58 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.foodswaha.foodswaha.DisplayCartActivity">
+    android:layout_height="match_parent"
+    tools:context="com.foodswaha.foodswaha.DisplayCartActivity"
+    android:orientation="vertical"
+    android:id="@+id/cart_show_linear">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="#3B5998"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cart_show"
+            android:layout_weight="0.1"
+            android:background="@drawable/cart_skyblue"
+            android:textColor="#ffffff"
+            android:gravity="top|center_horizontal"
+            android:layout_gravity="left|center"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            style="@style/bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/cart_show_total"
+            android:layout_weight="0.6"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textSize="25dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cart_show_checkOut"
+            android:layout_gravity="center|right"
+            android:background="@android:color/transparent"
+            android:src="@drawable/next"
+            android:layout_marginRight="20dp" />
+    </android.support.v7.widget.Toolbar>
+    <ListView
+        android:id="@+id/cart_items"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        >
+    </ListView>
+
+</LinearLayout>

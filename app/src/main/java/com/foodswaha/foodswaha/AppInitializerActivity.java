@@ -42,7 +42,7 @@ public class AppInitializerActivity extends AppCompatActivity {
             noInternet.setText("No Internet Connection");
 
             final ImageButton retry = (ImageButton) findViewById(R.id.retry);
-            retry.setImageResource(R.drawable.retry_blue);
+            retry.setImageResource(R.drawable.retry);
 
             final Context context = this;
             retry.setOnClickListener(new View.OnClickListener() {

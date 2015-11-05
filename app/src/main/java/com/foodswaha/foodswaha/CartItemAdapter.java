@@ -43,7 +43,6 @@ public class CartItemAdapter extends ArrayAdapter<HotelMenuItemSub> {
         View row = convertView;
         HotelMenuItemSubHolder holder = null;
 
-
         if(row == null) {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
@@ -61,7 +60,8 @@ public class CartItemAdapter extends ArrayAdapter<HotelMenuItemSub> {
             final TextView itemName = holder.hotelMenuItemSubName;
             final TextView itemCost = holder.hotelMenuItemSubCost;
             final TextView mposition = holder.position;
-            final ViewGroup mLinearLayout = parent;
+            final ViewGroup mListView = (ViewGroup)parent.getParent();
+            final View mLinearLayout = mListView.findViewById(R.id.cart_show_linear);
 
             holder.plus.setOnClickListener(new View.OnClickListener() {
 
@@ -87,10 +87,6 @@ public class CartItemAdapter extends ArrayAdapter<HotelMenuItemSub> {
                         ((TextView)mLinearLayout.findViewById(R.id.cart_show)).setText(String.valueOf(mCart.getCountOfItems()));
                         ((TextView)mLinearLayout.findViewById(R.id.cart_show_total)).setText(String.valueOf(mCart.getTotalBill()));
                     }
-                    int index = Integer.parseInt(mposition.getText().toString());
-                    HotelMenuItemSub hotelMenuItemSub = (HotelMenuItemSub)data.get(index);
-                    hotelMenuItemSub.setQuantity(mCount);
-
                 }
             });
             holder.minus.setOnClickListener(new View.OnClickListener() {
@@ -106,19 +102,20 @@ public class CartItemAdapter extends ArrayAdapter<HotelMenuItemSub> {
                     }
                     HotelMenuItemSub mHotelMenuItemSub = new HotelMenuItemSub(itemName.getText().toString(),itemCost.getText().toString(),mCount);
                     if(mCart.getFoodItems().contains(mHotelMenuItemSub)){
-                        mCart.getFoodItems().remove(mHotelMenuItemSub);
+                        int count = ((HotelMenuItemSub)mCart.getFoodItems().get(mCart.getFoodItems().indexOf(mHotelMenuItemSub))).getQuantity();
+                        if( count>1 ){
+                            ((HotelMenuItemSub)mCart.getFoodItems().get(mCart.getFoodItems().indexOf(mHotelMenuItemSub))).setQuantity(count-1);
+                        }else{
+                            mCart.getFoodItems().remove(mHotelMenuItemSub);
+                        }
                         mCart.setCountOfItems(mCart.getCountOfItems() - 1);
                         mCart.setTotalBill(mCart.getTotalBill() - Integer.parseInt(mHotelMenuItemSub.getCost().replace("Rs", "").trim()));
                         ((TextView)mLinearLayout.findViewById(R.id.cart_show)).setText(String.valueOf(mCart.getCountOfItems()));
                         ((TextView)mLinearLayout.findViewById(R.id.cart_show_total)).setText(String.valueOf(mCart.getTotalBill()));
                     }
                     if(mCart.getCountOfItems()==0){
-
+                        ((Activity)context).finish();
                     }
-                    int index = Integer.parseInt(mposition.getText().toString());
-                    HotelMenuItemSub hotelMenuItemSub = (HotelMenuItemSub)data.get(index);
-                    hotelMenuItemSub.setQuantity(mCount);
-
                 }
             });
 

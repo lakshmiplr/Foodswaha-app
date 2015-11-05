@@ -159,14 +159,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="onTime :"
+        android:text=" onTime "
         android:id="@+id/onTime"
         android:textSize="12dp"
         android:layout_below="@+id/hotelImage"
-        android:layout_alignLeft="@+id/hotelImage"
-        android:layout_alignStart="@+id/hotelImage"
         android:layout_marginTop="7dp"
-        android:textColor="#3B5998" />
+        android:textColor="#3B5998"
+        android:layout_toRightOf="@+id/hotelOnTime" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -175,9 +174,10 @@
         android:text="100%"
         android:id="@+id/hotelOnTime"
         android:layout_alignBottom="@+id/onTime"
-        android:layout_toRightOf="@+id/onTime"
         android:layout_below="@+id/hotelImage"
-        android:layout_marginTop="6dp" />
+        android:layout_marginTop="6dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignStart="@id/hotelImage" />
 
     <RatingBar
         android:layout_width="wrap_content"

@@ -2,6 +2,7 @@ package com.foodswaha.foodswaha;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,7 @@ public class HotelMenuItemSubAdapter extends ArrayAdapter<HotelMenuItemSub> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Log.e(TAG, " getView method called with position,"+position);
+        Log.e(TAG, " getView method called with position," + position);
         View row = convertView;
          HotelMenuItemSubHolder holder = null;
 
@@ -51,6 +52,7 @@ public class HotelMenuItemSubAdapter extends ArrayAdapter<HotelMenuItemSub> {
             holder.hotelMenuItemSubName = (TextView)row.findViewById(R.id.hotelMenuSubItem);
             holder.hotelMenuItemSubCost = (TextView)row.findViewById(R.id.hotelMenuSubItemPrice);
             holder.quantity = (TextView) row.findViewById(R.id.quantity);
+            holder.quantity.setTypeface(null, Typeface.BOLD);
             holder.minus = (ImageButton) row.findViewById(R.id.minus);
             holder.plus = (ImageButton) row.findViewById(R.id.plus);
             final TextView quantity = holder.quantity;
@@ -73,17 +75,23 @@ public class HotelMenuItemSubAdapter extends ArrayAdapter<HotelMenuItemSub> {
                         quantity.setVisibility(View.VISIBLE);
                         minus.setVisibility(View.VISIBLE);
                     }
-                    HotelMenuItemSub mHotelMenuItemSub = new HotelMenuItemSub(itemName.getText().toString(),itemCost.getText().toString(),mCount);
+                    HotelMenuItemSub mHotelMenuItemSub = new HotelMenuItemSub(itemName.getText().toString(),itemCost.getText().toString().replace("Rs", "").trim(),mCount);
+                    if(mCart.getFoodItems().contains(mHotelMenuItemSub)){
+                        mCart.getFoodItems().remove(mHotelMenuItemSub);
+                    }
+
                     mCart.getFoodItems().add(mHotelMenuItemSub);
                     mCart.setCountOfItems(mCart.getCountOfItems() + 1);
-                    mCart.setTotalBill(mCart.getTotalBill() + Integer.parseInt(mHotelMenuItemSub.getCost().replace("Rs", "").trim()));
+                    mCart.setTotalBill(mCart.getTotalBill() + Integer.parseInt(mHotelMenuItemSub.getCost()));
 
                     if(mCart.getCountOfItems()>0){
 
+                         mcartLinearLayout.setVisibility(View.VISIBLE);
                         ((TextView)mcartLinearLayout.findViewById(R.id.cart)).setVisibility(View.VISIBLE);
                         ((TextView)mcartLinearLayout.findViewById(R.id.total)).setVisibility(View.VISIBLE);
                         ((ImageButton)mcartLinearLayout.findViewById(R.id.checkout)).setVisibility(View.VISIBLE);
                         ((TextView)mcartLinearLayout.findViewById(R.id.cart)).setText(String.valueOf(mCart.getCountOfItems()));
+                        ((TextView)mcartLinearLayout.findViewById(R.id.cart)).setTypeface(null, Typeface.BOLD);
                         ((TextView)mcartLinearLayout.findViewById(R.id.total)).setText(String.valueOf(mCart.getTotalBill()));
                     }
                     int index = Integer.parseInt(mposition.getText().toString());
@@ -105,21 +113,28 @@ public class HotelMenuItemSubAdapter extends ArrayAdapter<HotelMenuItemSub> {
                     }
                     HotelMenuItemSub mHotelMenuItemSub = new HotelMenuItemSub(itemName.getText().toString(),itemCost.getText().toString(),mCount);
                     if(mCart.getFoodItems().contains(mHotelMenuItemSub)){
-                        mCart.getFoodItems().remove(mHotelMenuItemSub);
+                        int count = ((HotelMenuItemSub)mCart.getFoodItems().get(mCart.getFoodItems().indexOf(mHotelMenuItemSub))).getQuantity();
+                        if( ((HotelMenuItemSub)mCart.getFoodItems().get(mCart.getFoodItems().indexOf(mHotelMenuItemSub))).getQuantity()>1 ){
+                            ((HotelMenuItemSub)mCart.getFoodItems().get(mCart.getFoodItems().indexOf(mHotelMenuItemSub))).setQuantity(count-1);
+                        }else{
+                            mCart.getFoodItems().remove(mHotelMenuItemSub);
+                        }
                         mCart.setCountOfItems(mCart.getCountOfItems() - 1);
-                        mCart.setTotalBill(mCart.getTotalBill() - Integer.parseInt(mHotelMenuItemSub.getCost().replace("Rs","").trim()));
+                        mCart.setTotalBill(mCart.getTotalBill() - Integer.parseInt(mHotelMenuItemSub.getCost().replace("Rs", "").trim()));
                         ((TextView)mcartLinearLayout.findViewById(R.id.cart)).setText(String.valueOf(mCart.getCountOfItems()));
                         ((TextView)mcartLinearLayout.findViewById(R.id.total)).setText(String.valueOf(mCart.getTotalBill()));
+                        ((TextView)mcartLinearLayout.findViewById(R.id.cart)).setTypeface(null,Typeface.BOLD);
                     }
                     if(mCart.getCountOfItems()==0){
                         ((TextView)mcartLinearLayout.findViewById(R.id.cart)).setVisibility(View.GONE);
                         ((TextView)mcartLinearLayout.findViewById(R.id.total)).setVisibility(View.GONE);
                         ((ImageButton)mcartLinearLayout.findViewById(R.id.checkout)).setVisibility(View.GONE);
                     }
-                    int index = Integer.parseInt(mposition.getText().toString());
-                    HotelMenuItemSub hotelMenuItemSub = (HotelMenuItemSub)data.get(index);
-                    hotelMenuItemSub.setQuantity(mCount);
-
+                    else{
+                        int index = Integer.parseInt(mposition.getText().toString());
+                        HotelMenuItemSub hotelMenuItemSub = (HotelMenuItemSub)data.get(index);
+                        hotelMenuItemSub.setQuantity(mCount);
+                    }
                 }
             });
 
@@ -132,6 +147,10 @@ public class HotelMenuItemSubAdapter extends ArrayAdapter<HotelMenuItemSub> {
         holder.position.setText(String.valueOf(position));
 
         HotelMenuItemSub hotelMenuItemSub = (HotelMenuItemSub)data.get(position);
+       if( mCart.getFoodItems().contains(hotelMenuItemSub)){
+           hotelMenuItemSub.setQuantity(( (HotelMenuItemSub)mCart.getFoodItems().get(mCart.getFoodItems().indexOf(hotelMenuItemSub))).getQuantity());
+       }
+
         try{
             holder.hotelMenuItemSubName.setText(hotelMenuItemSub.getName());
             holder.hotelMenuItemSubCost.setText(hotelMenuItemSub.getCost()+" Rs");
