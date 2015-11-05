@@ -43,6 +43,7 @@
         <activity
             android:name=".DisplayHotelMenuItemSub"
             android:label="@string/title_activity_display_hotel_menu_item_sub"
+            android:launchMode="singleTop"
             android:parentActivityName=".DisplayHotelMenuActivity"
             android:screenOrientation="portrait" >
             <meta-data
