@@ -14,11 +14,13 @@ import java.util.List;
 public class DisplayCartActivity extends AppCompatActivity {
 
     Cart mCart = AppInitializerActivity.getCartInstance();
+    String from;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_cart);
+        from = getIntent().getStringExtra("from");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,8 +41,8 @@ public class DisplayCartActivity extends AppCompatActivity {
         List<HotelMenuItemSub> mCartItemList = (List<HotelMenuItemSub>) mCart.getFoodItems();
 
         ListView listView1 = (ListView)findViewById(R.id.cart_items);
-        listView1.setAdapter(new CartItemAdapter(this,
-                R.layout.activity_display_cart_items, mCartItemList ));
+        listView1.setAdapter(new CartItemAdapter(DisplayCartActivity.this,
+                R.layout.activity_display_cart_items, mCartItemList));
     }
 
 }

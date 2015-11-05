@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.foodswaha.foodswaha.DisplayHotelMenuActivity"
@@ -28,7 +28,61 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp">
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/cart_linear_menu">
     </ListView>
 
-</LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#3B5998"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/cart_linear_menu"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:id="@+id/cart"
+            android:background="@drawable/cart_skyblue"
+            android:textColor="#ffffff"
+            android:gravity="top|center_horizontal"
+            android:layout_weight="0.1"
+            android:textStyle="bold"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:textSize="15dp"
+            android:layout_marginTop="0dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0"
+            android:id="@+id/total"
+            android:textColor="#ffffff"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:visibility="visible"
+            android:layout_weight="0.6" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkout"
+            android:layout_weight="0.3"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:src="@drawable/next" />
+    </LinearLayout>
+
+</RelativeLayout>

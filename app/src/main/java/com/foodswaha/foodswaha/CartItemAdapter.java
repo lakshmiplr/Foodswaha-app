@@ -2,6 +2,7 @@ package com.foodswaha.foodswaha;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by pharshar on 11/2/2015.
@@ -25,6 +27,8 @@ public class CartItemAdapter extends ArrayAdapter<HotelMenuItemSub> {
 
     Cart mCart = AppInitializerActivity.getCartInstance();
     List mHotelMenuItemSubList;
+    Map menuItemMap = DisplayHotelMenuActivity.getHotelMenuItemMap();
+
 
     public CartItemAdapter(Context context, int resource, List<HotelMenuItemSub> objects) {
 
@@ -60,6 +64,8 @@ public class CartItemAdapter extends ArrayAdapter<HotelMenuItemSub> {
             final TextView itemName = holder.hotelMenuItemSubName;
             final TextView itemCost = holder.hotelMenuItemSubCost;
             final TextView mposition = holder.position;
+            final TextView hotelName = holder.hotelName;
+            final TextView menuName = holder.menuName;
             final ViewGroup mListView = (ViewGroup)parent.getParent();
             final View mLinearLayout = mListView.findViewById(R.id.cart_show_linear);
 
@@ -74,13 +80,13 @@ public class CartItemAdapter extends ArrayAdapter<HotelMenuItemSub> {
                         quantity.setVisibility(View.VISIBLE);
                         minus.setVisibility(View.VISIBLE);
                     }
-                    HotelMenuItemSub mHotelMenuItemSub = new HotelMenuItemSub(itemName.getText().toString(),itemCost.getText().toString(),mCount);
+                    HotelMenuItemSub mHotelMenuItemSub = new HotelMenuItemSub(itemName.getText().toString(),itemCost.getText().toString().replace("Rs", "").trim(),mCount,menuName.getText().toString(),hotelName.getText().toString());
                     if(mCart.getFoodItems().contains(mHotelMenuItemSub)){
                         mCart.getFoodItems().remove(mHotelMenuItemSub);
                     }
                     mCart.getFoodItems().add(mHotelMenuItemSub);
                     mCart.setCountOfItems(mCart.getCountOfItems() + 1);
-                    mCart.setTotalBill(mCart.getTotalBill() + Integer.parseInt(mHotelMenuItemSub.getCost().replace("Rs", "").trim()));
+                    mCart.setTotalBill(mCart.getTotalBill() + Integer.parseInt(mHotelMenuItemSub.getCost()));
 
                     if(mCart.getCountOfItems()>0){
 
@@ -100,21 +106,38 @@ public class CartItemAdapter extends ArrayAdapter<HotelMenuItemSub> {
                         quantity.setVisibility(View.GONE);
                         minus.setVisibility(View.GONE);
                     }
-                    HotelMenuItemSub mHotelMenuItemSub = new HotelMenuItemSub(itemName.getText().toString(),itemCost.getText().toString(),mCount);
-                    if(mCart.getFoodItems().contains(mHotelMenuItemSub)){
+                    HotelMenuItemSub mHotelMenuItemSub = new HotelMenuItemSub(itemName.getText().toString(),itemCost.getText().toString().replace("Rs", "").trim(),mCount,menuName.getText().toString(),hotelName.getText().toString());
+                    if(mCart.getFoodItems().contains(mHotelMenuItemSub) ){
                         int count = ((HotelMenuItemSub)mCart.getFoodItems().get(mCart.getFoodItems().indexOf(mHotelMenuItemSub))).getQuantity();
                         if( count>1 ){
                             ((HotelMenuItemSub)mCart.getFoodItems().get(mCart.getFoodItems().indexOf(mHotelMenuItemSub))).setQuantity(count-1);
-                        }else{
+                        }
+                        else if (count==1){
+
+                            List<HotelMenuItemSub> mHotelMenuItemSubList = (List<HotelMenuItemSub>) menuItemMap.get(menuName.getText().toString());
+                            ((HotelMenuItemSub)mHotelMenuItemSubList.get(mHotelMenuItemSubList.indexOf(mHotelMenuItemSub))).setQuantity(0);
+                            menuItemMap.put(menuName.getText().toString(),mHotelMenuItemSubList);
                             mCart.getFoodItems().remove(mHotelMenuItemSub);
                         }
                         mCart.setCountOfItems(mCart.getCountOfItems() - 1);
-                        mCart.setTotalBill(mCart.getTotalBill() - Integer.parseInt(mHotelMenuItemSub.getCost().replace("Rs", "").trim()));
+                        mCart.setTotalBill(mCart.getTotalBill() - Integer.parseInt(mHotelMenuItemSub.getCost()));
                         ((TextView)mLinearLayout.findViewById(R.id.cart_show)).setText(String.valueOf(mCart.getCountOfItems()));
                         ((TextView)mLinearLayout.findViewById(R.id.cart_show_total)).setText(String.valueOf(mCart.getTotalBill()));
+                        notifyDataSetChanged();
                     }
                     if(mCart.getCountOfItems()==0){
-                        ((Activity)context).finish();
+
+                        if(context instanceof DisplayCartActivity){
+                            if(( (DisplayCartActivity)context).from.equals("submenu")){
+                                Intent i = new Intent(context,DisplayHotelMenuItemSub.class);
+                                ((Activity)getContext()).startActivity(i);
+                            }
+                            else{
+                                Intent i = new Intent(context,DisplayHotelMenuActivity.class);
+                                ((Activity)getContext()).startActivity(i);
+                            }
+                        }
+
                     }
                 }
             });
@@ -129,6 +152,8 @@ public class CartItemAdapter extends ArrayAdapter<HotelMenuItemSub> {
 
         HotelMenuItemSub hotelMenuItemSub = (HotelMenuItemSub)data.get(position);
         try{
+            holder.menuName.setText(hotelMenuItemSub.getMenuName());
+            holder.hotelName.setText(hotelMenuItemSub.getHotelName());
             holder.hotelMenuItemSubName.setText(hotelMenuItemSub.getName());
             holder.hotelMenuItemSubCost.setText(hotelMenuItemSub.getCost()+" Rs");
             if(hotelMenuItemSub.getQuantity()>0){
@@ -151,6 +176,8 @@ public class CartItemAdapter extends ArrayAdapter<HotelMenuItemSub> {
         ImageButton plus;
         ImageButton minus;
         TextView position = new TextView(getContext());
+        TextView hotelName = new TextView(getContext());
+        TextView menuName = new TextView(getContext());
 
     }
 }

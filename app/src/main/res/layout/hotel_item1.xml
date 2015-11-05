@@ -120,7 +120,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/deliveryCharge"
-        android:src="@drawable/delivercharge"
+        android:src="@drawable/deliverycharge_blue"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="-12dp"
         android:maxHeight="44dp"

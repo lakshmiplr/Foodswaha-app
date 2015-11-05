@@ -35,6 +35,8 @@ public class DisplayHotelsActivity extends AppCompatActivity {
 
     private static HotelItemAdapter adapter;
     private static boolean isInitialInputSearchVisibile=false;
+    Cart mCart = AppInitializerActivity.getCartInstance();
+    TabLayout.Tab cartTab;
 
 
     @Override
@@ -120,6 +122,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 (getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
 
             switch(i) {
@@ -132,7 +135,12 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                     break;
 
                 case 2 :
+
+
+                    tabLayout.getTabAt(i).setText(String.valueOf(mCart.getCountOfItems()));
                     tabLayout.getTabAt(i).setIcon(R.drawable.kart_unselect);
+                    cartTab = tabLayout.getTabAt(i);
+
                     break;
 
                 case 3 :
@@ -197,7 +205,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
 
                     case 2 :
                         tabLayout.getTabAt(i).setIcon(R.drawable.kart_select_blue);
-                        areaText.setText("Kart");
+                        areaText.setText("Cart");
                         areaText.setVisibility(View.VISIBLE);
                         edit.setVisibility(View.GONE);
                         search.setVisibility(View.GONE);

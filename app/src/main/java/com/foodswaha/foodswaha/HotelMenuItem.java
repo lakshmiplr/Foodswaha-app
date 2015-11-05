@@ -27,16 +27,15 @@ class HotelMenuItemSub{
     String name;
     String cost;
     int quantity;
+    String menuName;
+    String hotelName;
 
-    public HotelMenuItemSub(String name, String cost) {
-        this.name = name;
-        this.cost = cost;
-    }
-
-    public HotelMenuItemSub(String name, String cost, int quantity) {
+    public HotelMenuItemSub(String name, String cost, int quantity,String menuName,String hotelName) {
         this.name = name;
         this.cost = cost;
         this.quantity = quantity;
+        this.menuName =menuName;
+        this.hotelName = hotelName;
     }
 
     public String getName() {
@@ -74,5 +73,21 @@ class HotelMenuItemSub{
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public String getMenuName() {
+        return menuName;
+    }
+
+    public void setMenuName(String menuName) {
+        this.menuName = menuName;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
     }
 }

@@ -63,13 +63,17 @@ public class DisplayHotelMenuItemSub extends AppCompatActivity {
         ((TextView) mcartLinearLayout.findViewById(R.id.cart)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoDisplayCart = new Intent(getBaseContext(), DisplayCartActivity.class);
+                Intent gotoDisplayCart = new Intent(DisplayHotelMenuItemSub.this, DisplayCartActivity.class);
+                gotoDisplayCart.putExtra("from", "submenu");
                 startActivity(gotoDisplayCart);
             }
         });
 
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        displayHotelMenuItemSub();
+    }
 }

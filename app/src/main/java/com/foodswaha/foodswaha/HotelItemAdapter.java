@@ -83,7 +83,7 @@ public class HotelItemAdapter extends ArrayAdapter<HotelItem> implements Filtera
             holder.hotelDFee.setText("");
         }
         else{
-            holder.hoteldeliveryChargeImage.setImageResource(R.drawable.delivercharge);
+            holder.hoteldeliveryChargeImage.setImageResource(R.drawable.deliverycharge_blue);
             holder.hotelDFee.setText(" : " +hotelItem.getDeliveryFee()+" Rs");
         }
         holder.hotelMinOrder.setText(hotelItem.getMinOrder()+" Rs");

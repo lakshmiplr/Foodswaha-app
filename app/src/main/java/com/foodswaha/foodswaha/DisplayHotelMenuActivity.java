@@ -24,9 +24,10 @@ import java.util.Map;
 public class DisplayHotelMenuActivity extends AppCompatActivity {
 
     private static final String TAG = "DisplayHotelMenu";
-    private static HotelMenuItemAdapter.HotelMenuItemHolder  holder;
-    private static Map<String,List<HotelMenuItemSub>> hotelMenuItemMap;
+    private static HotelMenuItemAdapter.HotelMenuItemHolder holder;
+    private static Map<String, List<HotelMenuItemSub>> hotelMenuItemMap;
     private static List mHotelMenuItemList;
+    Cart mCart = AppInitializerActivity.getCartInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +43,33 @@ public class DisplayHotelMenuActivity extends AppCompatActivity {
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-        final TextView areaText = (TextView)findViewById(R.id.hotelNameText);
+        final TextView areaText = (TextView) findViewById(R.id.hotelNameText);
         areaText.setText(HotelsFragment.getHolder().hotelName.getText());
 
-        displayHotelMenu();
+        final View mcartLinearLayout = findViewById(R.id.cart_linear_menu);
+        ((TextView) mcartLinearLayout.findViewById(R.id.cart)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotoDisplayCart = new Intent(DisplayHotelMenuActivity.this, DisplayCartActivity.class);
+                gotoDisplayCart.putExtra("from", "menu");
+                startActivity(gotoDisplayCart);
+            }
+        });
 
+        showCartIfAvailable();
+
+        displayHotelMenu();
     }
-    private void displayHotelMenu(){
+
+    private void displayHotelMenu() {
         JSONObject mHotelMenu = HotelsFragment.getHotelMenuData();
         try {
             JSONArray hotelMenuJSONArray = mHotelMenu.optJSONArray("categories");
             Log.e(TAG, " received hotelMenuJSONArray from server as " + hotelMenuJSONArray);
 
-            if(hotelMenuJSONArray!=null){
+            if (hotelMenuJSONArray != null) {
 
-                if(hotelMenuItemMap==null) {
+                if (hotelMenuItemMap == null) {
                     hotelMenuItemMap = new HashMap<String, List<HotelMenuItemSub>>();
                     mHotelMenuItemList = new ArrayList<HotelMenuItem>();
                     String hotelMenuItem;
@@ -75,7 +88,8 @@ public class DisplayHotelMenuActivity extends AppCompatActivity {
                                 JSONObject mHotelMenuItemSubJSONObject = hotelMenuItemSubJSONArray.optJSONObject(j);
                                 mHotelMenuItemSub = new HotelMenuItemSub(
                                         mHotelMenuItemSubJSONObject.optString("itemname"),
-                                        mHotelMenuItemSubJSONObject.optString("cost"), 0
+                                        mHotelMenuItemSubJSONObject.optString("cost"), 0,
+                                        hotelMenuItem, HotelsFragment.getHolder().hotelName.getText().toString()
 
                                 );
                                 hotelMenuItemSubList.add(mHotelMenuItemSub);
@@ -87,8 +101,8 @@ public class DisplayHotelMenuActivity extends AppCompatActivity {
 
                     }
                 }
-                if(mHotelMenuItemList!=null){
-                    ListView listView1 = (ListView)findViewById(R.id.hotelMenu);
+                if (mHotelMenuItemList != null) {
+                    ListView listView1 = (ListView) findViewById(R.id.hotelMenu);
                     listView1.setAdapter(new HotelMenuItemAdapter(this,
                             R.layout.activity_display_hotel_menu_item, mHotelMenuItemList));
                     listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,8 +116,6 @@ public class DisplayHotelMenuActivity extends AppCompatActivity {
                         }
                     });
                 }
-
-
 
             }
 
@@ -125,4 +137,23 @@ public class DisplayHotelMenuActivity extends AppCompatActivity {
         Intent displayHotelMenuIntent = new Intent(getBaseContext(), DisplayHotelMenuItemSub.class);
         startActivity(displayHotelMenuIntent);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showCartIfAvailable();
+    }
+
+    private void showCartIfAvailable() {
+        final View mcartLinearLayout = findViewById(R.id.cart_linear_menu);
+        if (mCart.getCountOfItems() > 0) {
+
+             mcartLinearLayout.setVisibility(View.VISIBLE);
+            ((TextView) mcartLinearLayout.findViewById(R.id.cart)).setText(String.valueOf(mCart.getCountOfItems()));
+            ((TextView) mcartLinearLayout.findViewById(R.id.total)).setText(String.valueOf(mCart.getTotalBill()));
+        } else {
+            mcartLinearLayout.setVisibility(View.GONE);
+        }
+    }
+
 }

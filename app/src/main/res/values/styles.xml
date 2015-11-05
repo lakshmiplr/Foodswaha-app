@@ -24,5 +24,8 @@
         <item name="android:minWidth">50dip</item>
         <item name="android:maxWidth">50dip</item>
     </style>
+    <style name="bold" >
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>
