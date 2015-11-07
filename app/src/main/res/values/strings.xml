@@ -12,5 +12,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_edit_location">EditLocationActivity</string>
     <string name="title_activity_display_cart">DisplayCartActivity</string>
+    <string name="speech_prompt">Listening...</string>
+    <string name="speech_not_supported">Speech not supported</string>
 
 </resources>

@@ -34,6 +34,16 @@ android:layout_width="match_parent" android:layout_height="match_parent" android
             android:background="@drawable/clearimage"
             android:visibility="gone"
              />
+        <Button
+            android:id="@+id/voice"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end|center_vertical"
+            android:background="@drawable/voicewhite"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -46,7 +56,7 @@ android:layout_width="match_parent" android:layout_height="match_parent" android
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/searchButton3"
+            android:id="@+id/searchButton"
             android:src="@drawable/search_art"
             android:layout_gravity="right"
             android:background="#3B5998"/>

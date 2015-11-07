@@ -59,9 +59,11 @@ public class LocationAdapter<String> extends ArrayAdapter<String> implements Fil
 
                 final List newlist = new ArrayList<String>();
 
-                for (String area : list) {
-                    if (area.toString().toLowerCase().startsWith(filterString)) {
-                        newlist.add(area);
+                if (!filterString.equals("")){
+                    for (String area : list) {
+                        if (area.toString().toLowerCase().startsWith(filterString)) {
+                            newlist.add(area);
+                        }
                     }
                 }
                 results.values = newlist;

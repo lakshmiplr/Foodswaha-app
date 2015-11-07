@@ -22,6 +22,15 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
          />
+    <Button
+        android:id="@+id/voice"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end|center_vertical"
+        android:background="@drawable/voice"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
     <ListView
         android:id="@+id/areaList"
         android:layout_width="match_parent"

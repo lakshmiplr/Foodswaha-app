@@ -1,10 +1,12 @@
 package com.foodswaha.foodswaha;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -20,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,9 +30,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DisplayHotelsActivity extends AppCompatActivity {
 
+    private static final int REQ_CODE_SPEECH_INPUT = 1;
     private static final String TAG = "DisplayHotels";
     private static String AREA ="";
 
@@ -45,15 +50,23 @@ public class DisplayHotelsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_hotels);
-        final ImageButton search = (ImageButton) findViewById(R.id.searchButton3);
+        final ImageButton search = (ImageButton) findViewById(R.id.searchButton);
         final EditText inputSearch = (EditText) findViewById(R.id.inputSearch);
         final Button btnClear = (Button)findViewById(R.id.btn_clear);
+        final Button voice = (Button) findViewById(R.id.voice);
+        voice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                promptSpeechInput();
+            }
+        });
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView areaText = (TextView) findViewById(R.id.areaText);
                 areaText.setVisibility(View.GONE);
                 inputSearch.setVisibility(View.VISIBLE);
+                voice.setVisibility(View.VISIBLE);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 final Drawable upArrow = ContextCompat.getDrawable(DisplayHotelsActivity.this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
                 upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
@@ -69,6 +82,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 inputSearch.setText("");
                 btnClear.setVisibility(View.GONE);
+                voice.setVisibility(View.VISIBLE);
             }
         });
         inputSearch.addTextChangedListener(new TextWatcher() {
@@ -79,10 +93,12 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 Log.e(TAG, " on input search method " + cs);
                 if (!inputSearch.getText().toString().equals("")) {
                     btnClear.setVisibility(View.VISIBLE);
+                    voice.setVisibility(View.GONE);
                 }
                 else
                 {
                     btnClear.setVisibility(View.GONE);
+                    voice.setVisibility(View.VISIBLE);
                 }
                 adapter.getFilter().filter(cs);
             }
@@ -137,7 +153,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 case 2 :
 
 
-                   // tabLayout.getTabAt(i).setText(String.valueOf(mCart.getCountOfItems()));
+                    //tabLayout.getTabAt(i).setText(String.valueOf(mCart.getCountOfItems()));
                     tabLayout.getTabAt(i).setIcon(R.drawable.kart_unselect);
                     cartTab = tabLayout.getTabAt(i);
 
@@ -171,8 +187,10 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                             search.setVisibility(View.GONE);
                             areaText.setVisibility(View.GONE);
                             inputSearch.setVisibility(View.VISIBLE);
+                            //voice.setVisibility(View.VISIBLE);
                             if (!inputSearch.getText().toString().equals("")) {
                                 btnClear.setVisibility(View.VISIBLE);
+                                voice.setVisibility(View.GONE);
                             }
                             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                             //imm.showSoftInput(inputSearch, InputMethodManager.SHOW_IMPLICIT);
@@ -185,6 +203,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                             search.setVisibility(View.VISIBLE);
                             areaText.setVisibility(View.VISIBLE);
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                            voice.setVisibility(View.GONE);
                         }
 
                         break;
@@ -198,6 +217,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         if(inputSearch.getVisibility() == View.VISIBLE){
                             inputSearch.setVisibility(View.GONE);
                             btnClear.setVisibility(View.GONE);
+                            voice.setVisibility(View.GONE);
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                             imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
                         }
@@ -212,6 +232,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         if(inputSearch.getVisibility() == View.VISIBLE){
                             inputSearch.setVisibility(View.GONE);
                             btnClear.setVisibility(View.GONE);
+                            voice.setVisibility(View.GONE);
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                             imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
                         }
@@ -226,6 +247,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         if(inputSearch.getVisibility() == View.VISIBLE){
                             inputSearch.setVisibility(View.GONE);
                             btnClear.setVisibility(View.GONE);
+                            voice.setVisibility(View.GONE);
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                             imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
                         }
@@ -240,6 +262,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         if(inputSearch.getVisibility() == View.VISIBLE){
                             inputSearch.setVisibility(View.GONE);
                             btnClear.setVisibility(View.GONE);
+                            voice.setVisibility(View.GONE);
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                             imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
                         }
@@ -370,14 +393,16 @@ public class DisplayHotelsActivity extends AppCompatActivity {
             case android.R.id.home:
                 final TextView areaText = (TextView)findViewById(R.id.areaText);
                 final ImageButton edit = (ImageButton)findViewById(R.id.editButton);
-                final ImageButton search = (ImageButton) findViewById(R.id.searchButton3);
+                final ImageButton search = (ImageButton) findViewById(R.id.searchButton);
                 final EditText inputSearch = (EditText) findViewById(R.id.inputSearch);
+                Button voice = (Button) findViewById(R.id.voice);
                 areaText.setText(AREA);
                 areaText.setVisibility(View.VISIBLE);
                 edit.setVisibility(View.VISIBLE);
                 search.setVisibility(View.VISIBLE);
                 inputSearch.setVisibility(View.GONE);
                 inputSearch.setText("");
+                voice.setVisibility(View.GONE);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 adapter.getFilter().filter("");
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -387,6 +412,42 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 }
                 return true;
             default: return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    // here the string converted from your voice
+                    String converted_text = result.get(0);
+                    EditText inputSearch = (EditText) findViewById(R.id.inputSearch);
+                    inputSearch.setText(converted_text);
+                }
+                break;
+            }
+
         }
     }
 

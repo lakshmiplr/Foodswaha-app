@@ -23,7 +23,7 @@
             android:layout_gravity="left|center"
             android:textStyle="bold"
             android:textSize="15dp"
-            style="@style/bold" />
+             />
 
         <TextView
             android:layout_width="wrap_content"
