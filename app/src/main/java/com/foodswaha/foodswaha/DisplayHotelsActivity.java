@@ -151,8 +151,6 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                     break;
 
                 case 2 :
-
-
                     //tabLayout.getTabAt(i).setText(String.valueOf(mCart.getCountOfItems()));
                     tabLayout.getTabAt(i).setIcon(R.drawable.kart_unselect);
                     cartTab = tabLayout.getTabAt(i);
@@ -187,7 +185,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                             search.setVisibility(View.GONE);
                             areaText.setVisibility(View.GONE);
                             inputSearch.setVisibility(View.VISIBLE);
-                            //voice.setVisibility(View.VISIBLE);
+                            voice.setVisibility(View.VISIBLE);
                             if (!inputSearch.getText().toString().equals("")) {
                                 btnClear.setVisibility(View.VISIBLE);
                                 voice.setVisibility(View.GONE);

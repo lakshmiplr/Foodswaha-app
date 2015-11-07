@@ -3,9 +3,13 @@ package com.foodswaha.foodswaha;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.speech.RecognizerIntent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -18,6 +22,7 @@ import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.Filter;
 import android.widget.Toast;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +38,17 @@ public class EditLocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_location);
-        ListView areaList = (ListView) findViewById(R.id.areaList);
-        areaList.setAdapter(getAreaAdapter());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
         final EditText area = (EditText) findViewById(R.id.areaSearch);
         final Button clear = (Button) findViewById(R.id.clearArea);
         final Button voice = (Button) findViewById(R.id.voice);
@@ -76,27 +90,13 @@ public class EditLocationActivity extends AppCompatActivity {
 
             }
         });
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_edit_location, menu);
-        return true;
+
+        displayAreas();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    private void displayAreas() {
+        ListView areaList = (ListView) findViewById(R.id.areaList);
+        areaList.setAdapter(getAreaAdapter());
     }
 
     public ArrayAdapter getAreaAdapter() {
