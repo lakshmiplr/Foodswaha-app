@@ -8,28 +8,26 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Large Text"
         android:id="@+id/hotelMenuSubItem"
         android:paddingTop="7dp"
         android:paddingBottom="7dp"
         android:paddingLeft="4dp"
 
-        android:textSize="20dp"
+        android:textSize="17dp"
         android:gravity="left"
         android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Large Text"
         android:id="@+id/hotelMenuSubItemPrice"
         android:paddingTop="7dp"
         android:paddingBottom="7dp"
         android:paddingLeft="4dp"
 
-        android:textSize="20dp"
+        android:textSize="17dp"
         android:gravity="right"
         android:paddingRight="15dp"
         android:layout_gravity="right"
@@ -42,10 +40,10 @@
         android:src="@drawable/plus"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:maxHeight="32dp"
-        android:maxWidth="32dp"
-        android:minHeight="32dp"
-        android:minWidth="32dp"
+        android:maxHeight="25dp"
+        android:maxWidth="25dp"
+        android:minHeight="25dp"
+        android:minWidth="25dp"
         android:clickable="true"
         android:background="@android:color/transparent"
         android:layout_below="@+id/hotelMenuSubItemPrice"
@@ -60,14 +58,13 @@
         android:src="@drawable/minus"
         android:layout_below="@+id/hotelMenuSubItemPrice"
         android:layout_toLeftOf="@+id/quantity"
-        android:maxHeight="32dp"
-        android:maxWidth="32dp"
-        android:minHeight="32dp"
-        android:minWidth="32dp"
+        android:maxHeight="25dp"
+        android:maxWidth="25dp"
+        android:minHeight="25dp"
+        android:minWidth="25dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:background="@android:color/transparent"
-        android:layout_marginBottom="8dp"
         android:visibility="gone"
         android:padding="5dp" />
 
@@ -79,13 +76,13 @@
         android:id="@+id/quantity"
         android:layout_toLeftOf="@+id/plus"
         android:textStyle="bold"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:textColor="#3B5998"
         android:visibility="gone"
         android:layout_alignTop="@+id/plus"
-        android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_alignBottom="@+id/plus" />
+        android:layout_alignBottom="@+id/plus"
+        android:layout_marginLeft="15dp" />
 
 
 </RelativeLayout>

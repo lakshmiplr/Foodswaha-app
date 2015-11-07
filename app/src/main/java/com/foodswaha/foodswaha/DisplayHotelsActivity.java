@@ -137,7 +137,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 case 2 :
 
 
-                    tabLayout.getTabAt(i).setText(String.valueOf(mCart.getCountOfItems()));
+                   // tabLayout.getTabAt(i).setText(String.valueOf(mCart.getCountOfItems()));
                     tabLayout.getTabAt(i).setIcon(R.drawable.kart_unselect);
                     cartTab = tabLayout.getTabAt(i);
 

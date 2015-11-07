@@ -92,7 +92,7 @@ public class CartItemAdapterForHome extends ArrayAdapter<HotelMenuItemSub> {
 
                         ((TextView)mLinearLayout.findViewById(R.id.cart_show)).setText(String.valueOf(mCart.getCountOfItems()));
                         ((TextView)mLinearLayout.findViewById(R.id.cart_show_total)).setText(String.valueOf(mCart.getTotalBill()));
-                        ((DisplayHotelsActivity)context).cartTab.setText(String.valueOf(mCart.getCountOfItems()));
+                        //((DisplayHotelsActivity)context).cartTab.setText(String.valueOf(mCart.getCountOfItems()));
                     }
                 }
             });
@@ -124,7 +124,7 @@ public class CartItemAdapterForHome extends ArrayAdapter<HotelMenuItemSub> {
                         mCart.setTotalBill(mCart.getTotalBill() - Integer.parseInt(mHotelMenuItemSub.getCost()));
                         ((TextView)mLinearLayout.findViewById(R.id.cart_show)).setText(String.valueOf(mCart.getCountOfItems()));
                         ((TextView)mLinearLayout.findViewById(R.id.cart_show_total)).setText(String.valueOf(mCart.getTotalBill()));
-                        ((DisplayHotelsActivity)context).cartTab.setText(String.valueOf(mCart.getCountOfItems()));
+                        //((DisplayHotelsActivity)context).cartTab.setText(String.valueOf(mCart.getCountOfItems()));
                         notifyDataSetChanged();
                     }
                     if(mCart.getCountOfItems()==0){

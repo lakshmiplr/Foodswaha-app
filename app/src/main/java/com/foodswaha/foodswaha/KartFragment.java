@@ -29,7 +29,7 @@ public class KartFragment extends Fragment {
             view.findViewById(R.id.emptyCart).setVisibility(View.GONE);
             view.findViewById(R.id.cart_show_linear).setVisibility(View.VISIBLE);
 
-            ((DisplayHotelsActivity)getActivity()).cartTab.setText(String.valueOf(mCart.getCountOfItems()));
+            //((DisplayHotelsActivity)getActivity()).cartTab.setText(String.valueOf(mCart.getCountOfItems()));
             ((TextView)view.findViewById(R.id.cart_show)).setText(String.valueOf(mCart.getCountOfItems()));
             ((TextView)view.findViewById(R.id.cart_show_total)).setText(String.valueOf(mCart.getTotalBill()));
 
