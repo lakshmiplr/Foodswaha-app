@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DisplayCartActivity extends AppCompatActivity {
 
-    Cart mCart = AppInitializerActivity.getCartInstance();
+    Cart cartInstance = Cart.getInstance();
     String from;
 
     @Override
@@ -27,22 +27,26 @@ public class DisplayCartActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        ((TextView)findViewById(R.id.title)).setText("Cart");
 
         dispalycart();
     }
     private void dispalycart(){
 
-        ((TextView)findViewById(R.id.cart_show)).setText(String.valueOf(mCart.getCountOfItems()));
-        ((TextView)findViewById(R.id.cart_show_total)).setText(String.valueOf(mCart.getTotalBill()));
+        ((TextView)findViewById(R.id.cart)).setText(String.valueOf(cartInstance.getCountOfItems()));
+        ((TextView)findViewById(R.id.total)).setText(String.valueOf(cartInstance.getTotalBill()));
 
-        List<HotelMenuItemSub> mCartItemList = (List<HotelMenuItemSub>) mCart.getFoodItems();
+        List<SubMenu> cartItemList = (List<SubMenu>) cartInstance.getAllCartItems();
 
-        ListView listView1 = (ListView)findViewById(R.id.cart_items);
-        listView1.setAdapter(new CartItemAdapter(DisplayCartActivity.this,
-                R.layout.activity_display_cart_items, mCartItemList));
+        ListView cartItemsListView = (ListView)findViewById(R.id.cart_items);
+        cartItemsListView.setAdapter(new CartAdapter(DisplayCartActivity.this,
+                R.layout.activity_display_cart_items, cartItemList));
     }
+
 
 }

@@ -1,41 +1,33 @@
 package com.foodswaha.foodswaha;
 
-import java.util.List;
+import java.io.Serializable;
 
 /**
- * Created by pharshar on 11/1/2015.
+ * Created by pharshar on 11/8/2015.
  */
-public class HotelMenuItem {
-
-    String name;
-    List HotelMenuItemSub;
-
-    public HotelMenuItem(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-}
-class HotelMenuItemSub{
+public class SubMenu implements Serializable {
+    int id;
     String name;
     String cost;
     int quantity;
     String menuName;
     String hotelName;
 
-    public HotelMenuItemSub(String name, String cost, int quantity,String menuName,String hotelName) {
+    public SubMenu(int id,String name, String cost, int quantity,String menuName,String hotelName) {
+        this.id = id;
         this.name = name;
         this.cost = cost;
         this.quantity = quantity;
         this.menuName =menuName;
         this.hotelName = hotelName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -64,8 +56,8 @@ class HotelMenuItemSub{
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof HotelMenuItemSub)
-            return name.equals(((HotelMenuItemSub) obj).getName());
+        if (obj instanceof SubMenu)
+            return id == ((SubMenu)obj).getId();
         else
             return false;
     }

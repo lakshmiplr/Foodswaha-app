@@ -30,10 +30,10 @@ public class HotelsFragment extends Fragment {
 
     private static final String TAG = "HotelsFragment";
     private static final String GET_HOTEL_MENU_URL = "http://104.155.202.28:8080/hotel/";
-    private static JSONObject mJsonResponse =null;
+    private static JSONObject menuJSONObject =null;
     private JsonObjectRequest jsonObjectRequest;
-    private static HotelItemAdapter.HotelItemHolder  holder;
-    private  Map hotelToMenuMap = new HashMap<String,JSONObject>();
+    private static HotelAdapter.Holder  holder;
+    private  Map hotelToMenuJSONObjectDataMap = new HashMap<String,JSONObject>();
 
 
     @Override
@@ -41,19 +41,20 @@ public class HotelsFragment extends Fragment {
 
         Log.e(TAG, " onCreateView method started.");
         View view = inflater.inflate(R.layout.fragment_hotels, container, false);
-        HotelItemAdapter adapter = DisplayHotelsActivity.getHotelItemAdapter();
+        HotelAdapter adapter = DisplayHotelsActivity.getHotelAdapter();
         Log.e(TAG, " got HotelItemAdapter from  DisplayHotelsActivity as,"+adapter);
         if(adapter!=null){
-            ListView listView1 = (ListView)view.findViewById(R.id.hotelList);
-            listView1.setAdapter(adapter);
+            ListView hotelListView = (ListView)view.findViewById(R.id.hotelList);
+            hotelListView.setAdapter(adapter);
 
-            listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            hotelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
-                    holder = (HotelItemAdapter.HotelItemHolder) view.getTag();
-                    mJsonResponse = (JSONObject) hotelToMenuMap.get(holder.hotelId);
-                    if (mJsonResponse == null) {
+                    holder = (HotelAdapter.Holder) view.getTag();
+                    DisplayMenuActivity.setMenuToSubMenuMap(null);
+                    menuJSONObject = (JSONObject) hotelToMenuJSONObjectDataMap.get(holder.hotelId);
+                    if (menuJSONObject == null) {
                         try {
                             jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GET_HOTEL_MENU_URL + holder.hotelId,
                                     new Response.Listener<JSONObject>() {
@@ -61,10 +62,11 @@ public class HotelsFragment extends Fragment {
                                         public void onResponse(JSONObject response) {
                                             try {
 
-                                                hotelToMenuMap.put(holder.hotelId, response);
-                                                mJsonResponse = response;
-                                                Log.e(TAG, "JsonResponse received from server.response is " + mJsonResponse);
-                                                gotoDisplayHotelMenuActivity();
+                                                hotelToMenuJSONObjectDataMap.put(holder.hotelId, response);
+                                                Log.e(TAG, "Menu JsonResponse received from server.response is " + response);
+                                                Intent displayHotelMenuIntent = new Intent(getContext(), DisplayMenuActivity.class);
+                                                displayHotelMenuIntent.putExtra("menuData",response.toString());
+                                                startActivity(displayHotelMenuIntent);
                                             } catch (Exception e) {
                                                 Log.e(TAG, " gotoDisplayHotelMenuActivity method got exception. " + e);
                                             }
@@ -73,8 +75,9 @@ public class HotelsFragment extends Fragment {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Log.e(TAG, " gotoDisplayHotelMenuActivity method onErrorResponse got exception. " + error);
-                                    gotoDisplayHotelMenuActivity();
-                                    mJsonResponse = new JSONObject();
+                                    Intent displayHotelMenuIntent = new Intent(getContext(), DisplayMenuActivity.class);
+                                    displayHotelMenuIntent.putExtra("menuData",new JSONObject().toString());
+                                    startActivity(displayHotelMenuIntent);
                                 }
                             });
                         } catch (Exception e) {
@@ -82,12 +85,14 @@ public class HotelsFragment extends Fragment {
                         }
                         VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
                     } else {
-                        gotoDisplayHotelMenuActivity();
+                        Intent displayHotelMenuIntent = new Intent(getContext(), DisplayMenuActivity.class);
+                        displayHotelMenuIntent.putExtra("menuData", menuJSONObject.toString());
+                        startActivity(displayHotelMenuIntent);
                     }
 
                 }
             });
-            listView1.setOnScrollListener(new AbsListView.OnScrollListener() {
+            hotelListView.setOnScrollListener(new AbsListView.OnScrollListener() {
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
                 @Override
@@ -96,7 +101,6 @@ public class HotelsFragment extends Fragment {
                         imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                     }
                 }
-
                 @Override
                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
@@ -106,19 +110,8 @@ public class HotelsFragment extends Fragment {
         return view;
     }
 
-    public static JSONObject getHotelMenuData(){
-        return mJsonResponse;
-    }
-
-    public static HotelItemAdapter.HotelItemHolder getHolder() {
+    public static HotelAdapter.Holder getHolder() {
         return holder;
     }
-
-    public void gotoDisplayHotelMenuActivity() {
-        Log.e(TAG, " gotoDisplayHotelMenuActivity method started.");
-        Intent displayHotelMenuIntent = new Intent(getContext(), DisplayHotelMenuActivity.class);
-        startActivity(displayHotelMenuIntent);
-    }
-
 
 }

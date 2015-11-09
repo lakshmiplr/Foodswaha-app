@@ -230,7 +230,7 @@ public class LocationFinderUtil implements
                             try {
                                 mJsonResponse = response;
                                 Log.e(TAG, "JsonResponse received from server.response is "+mJsonResponse);
-                                appInitializerActivity.gotoDisplayHotelsActivity();
+                                appInitializerActivity.gotoDisplayHotelsActivity(response);
                             }
                             catch (Exception e) {
                             }

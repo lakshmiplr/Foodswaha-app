@@ -1,46 +1,77 @@
 package com.foodswaha.foodswaha;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by pharshar on 11/3/2015.
  */
 public class Cart {
-    private List foodItems = new ArrayList<HotelMenuItemSub>();
+    private Map<Integer,SubMenu> cartItems = new HashMap<Integer,SubMenu>();
+    private static final String TAG = "Cart";
     private int totalBill;
     private int countOfItems;
+    private static volatile Cart cartInstance;
 
-    public Cart(List foodItems, int totalBill, int countOfItems) {
-        this.foodItems = foodItems;
-        this.totalBill = totalBill;
-        this.countOfItems = countOfItems;
+    private Cart() {
     }
 
-    public Cart() {
+    public static Cart getInstance(){
+        if(cartInstance==null){
+            cartInstance =  new Cart();
+            Log.e(TAG, " cartInstance creation successfull.");
+        }
+        return cartInstance;
     }
 
-    public synchronized List getFoodItems() {
-        return foodItems;
+    public synchronized SubMenu putItemToCart(Integer itemId,SubMenu subMenu) {
+        Log.e(TAG, "putting item into cart,with itemId: "+itemId+" and item name: "+subMenu.getName());
+        return cartItems.put(itemId, subMenu);
     }
 
-    public synchronized void setFoodItems(List foodItems) {
-        this.foodItems = foodItems;
+    public synchronized SubMenu  removeItemFromCart(Integer itemId) {
+        Log.e(TAG, "removing item from cart,with itemId: "+itemId);
+       return cartItems.remove(itemId);
+    }
+
+    public synchronized SubMenu getCartItem(Integer itemId){
+        Log.e(TAG, "getting item from cart,with itemId: "+itemId);
+        return cartItems.get(itemId);
     }
 
     public synchronized int getTotalBill() {
         return totalBill;
     }
 
-    public synchronized void setTotalBill(int totalBill) {
-        this.totalBill = totalBill;
+    public synchronized void addToTotalBill(int bill) {
+         totalBill+=bill;
     }
 
     public synchronized int getCountOfItems() {
         return countOfItems;
     }
 
-    public synchronized void setCountOfItems(int countOfItems) {
-        this.countOfItems = countOfItems;
+    public synchronized void incrementCountOfItems() {
+        countOfItems++;
     }
+
+    public synchronized void decrementCountOfItems() {
+        countOfItems--;
+    }
+
+    public synchronized void removeFromTotalBill(int bill) {
+        totalBill-=bill;
+    }
+
+    public synchronized List<SubMenu> getAllCartItems() {
+        List<SubMenu> subMenuList = new ArrayList<SubMenu>();
+        subMenuList.addAll(cartItems.values());
+        return subMenuList;
+    }
+
+
 }

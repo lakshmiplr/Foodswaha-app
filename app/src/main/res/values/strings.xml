@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">foodswaha</string>
+    <string name="AppInitializerActivity">foodswaha</string>
+    <string name="no_internet_connection">No Internet Connection.</string>
+
 
     <string name="action_settings">Settings</string>
-    <string name="hotel_menu">Menu</string>
-    <string name="title_activity_display_hotels">Restuarents</string>
-    <string name="title_activity_display_no_internet">FoodSwaha</string>
-    <string name="no_Internet_Text">No Internet Connection.</string>
-    <string name="title_activity_internet_check">FoodSwaha</string>
-    <string name="title_activity_display_hotel_menu_item_sub">DisplayHotelMenuItemSub</string>
+    <string name="location_util">LocationFinderUtilActivity</string>
+    <string name="hotels">DisplayHotelsActivity</string>
+    <string name="menu">DisplayMenuActivity</string>
+    <string name="subMenu">DisplaySubMenuActivity</string>
+    <string name="cart">DisplayCartActivity</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_edit_location">EditLocationActivity</string>
-    <string name="title_activity_display_cart">DisplayCartActivity</string>
     <string name="speech_prompt">Listening...</string>
     <string name="speech_not_supported">Speech not supported</string>
 

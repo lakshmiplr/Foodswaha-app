@@ -8,8 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Large Text"
-        android:id="@+id/hotelMenuSubItem"
+        android:id="@+id/name"
         android:paddingTop="7dp"
         android:paddingBottom="7dp"
         android:paddingLeft="4dp"
@@ -22,9 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Large Text"
-        android:id="@+id/hotelMenuSubItemPrice"
+        android:id="@+id/price"
         android:paddingTop="7dp"
-        android:paddingBottom="7dp"
+        android:paddingBottom="2dp"
         android:paddingLeft="4dp"
 
         android:textSize="17dp"
@@ -46,7 +45,7 @@
         android:minWidth="25dp"
         android:clickable="true"
         android:background="@android:color/transparent"
-        android:layout_below="@+id/hotelMenuSubItemPrice"
+        android:layout_below="@+id/price"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:padding="5dp" />
@@ -56,7 +55,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/minus"
         android:src="@drawable/minus"
-        android:layout_below="@+id/hotelMenuSubItemPrice"
+        android:layout_below="@+id/price"
         android:layout_toLeftOf="@+id/quantity"
         android:maxHeight="25dp"
         android:maxWidth="25dp"
@@ -82,7 +81,7 @@
         android:layout_alignTop="@+id/plus"
         android:layout_marginRight="15dp"
         android:layout_alignBottom="@+id/plus"
-        android:layout_marginLeft="15dp" />
+        android:layout_marginLeft="25dp" />
 
 
 </RelativeLayout>

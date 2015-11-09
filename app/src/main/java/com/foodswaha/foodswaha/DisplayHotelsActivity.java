@@ -38,21 +38,27 @@ public class DisplayHotelsActivity extends AppCompatActivity {
     private static final String TAG = "DisplayHotels";
     private static String AREA ="";
 
-    private static HotelItemAdapter adapter;
-    private static boolean isInitialInputSearchVisibile=false;
-    Cart mCart = AppInitializerActivity.getCartInstance();
-    TabLayout.Tab cartTab;
+    private static HotelAdapter adapter;
+    private static boolean inputSearchVisibile = false;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         Log.e(TAG, " onCreate method started.");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_hotels);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
+
         final ImageButton search = (ImageButton) findViewById(R.id.searchButton);
         final EditText inputSearch = (EditText) findViewById(R.id.inputSearch);
         final Button btnClear = (Button)findViewById(R.id.btn_clear);
+        final TextView title = (TextView)findViewById(R.id.title);
+        final ImageButton edit = (ImageButton)findViewById(R.id.editButton);
         final Button voice = (Button) findViewById(R.id.voice);
         voice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,14 +69,17 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView areaText = (TextView) findViewById(R.id.areaText);
-                areaText.setVisibility(View.GONE);
+                title.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
+                search.setVisibility(View.GONE);
                 inputSearch.setVisibility(View.VISIBLE);
                 voice.setVisibility(View.VISIBLE);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
                 final Drawable upArrow = ContextCompat.getDrawable(DisplayHotelsActivity.this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
                 upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
                 getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
                 inputSearch.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(inputSearch, InputMethodManager.SHOW_IMPLICIT);
@@ -86,17 +95,14 @@ public class DisplayHotelsActivity extends AppCompatActivity {
             }
         });
         inputSearch.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
-                Log.e(TAG, " on input search method " + cs);
+                Log.e(TAG, " on onTextChanged method called with query" + cs);
                 if (!inputSearch.getText().toString().equals("")) {
                     btnClear.setVisibility(View.VISIBLE);
                     voice.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     btnClear.setVisibility(View.GONE);
                     voice.setVisibility(View.VISIBLE);
                 }
@@ -107,7 +113,6 @@ public class DisplayHotelsActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
                                           int arg3) {
                 // TODO Auto-generated method stub
-
             }
 
             @Override
@@ -115,15 +120,8 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
             }
         });
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayUseLogoEnabled(false);
 
 
-
-        final TextView areaText = (TextView)findViewById(R.id.areaText);
-        final ImageButton edit = (ImageButton)findViewById(R.id.editButton);
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,17 +149,11 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                     break;
 
                 case 2 :
-                    //tabLayout.getTabAt(i).setText(String.valueOf(mCart.getCountOfItems()));
-                    tabLayout.getTabAt(i).setIcon(R.drawable.kart_unselect);
-                    cartTab = tabLayout.getTabAt(i);
 
-                    break;
-
-                case 3 :
                     tabLayout.getTabAt(i).setIcon(R.drawable.deals_unselect);
                     break;
 
-                case 4 :
+                case 3 :
                     tabLayout.getTabAt(i).setIcon(R.drawable.menu1_unselect);
                     break;
 
@@ -173,46 +165,46 @@ public class DisplayHotelsActivity extends AppCompatActivity {
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
-                int i =tab.getPosition();
-                switch(i) {
-                    case 0 :
+                int i = tab.getPosition();
+                switch (i) {
+                    case 0:
                         tabLayout.getTabAt(i).setIcon(R.drawable.hotels_select_blue);
-                        if(isInitialInputSearchVisibile){
+                        if (inputSearchVisibile) {
                             edit.setVisibility(View.GONE);
                             search.setVisibility(View.GONE);
-                            areaText.setVisibility(View.GONE);
+                            title.setVisibility(View.GONE);
                             inputSearch.setVisibility(View.VISIBLE);
-                            voice.setVisibility(View.VISIBLE);
                             if (!inputSearch.getText().toString().equals("")) {
                                 btnClear.setVisibility(View.VISIBLE);
                                 voice.setVisibility(View.GONE);
                             }
+                            else{
+                                voice.setVisibility(View.VISIBLE);
+                            }
                             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                            //imm.showSoftInput(inputSearch, InputMethodManager.SHOW_IMPLICIT);
-                        }
-                        else{
-                            areaText.setText(AREA);
-                            edit.setImageResource(R.drawable.edit);
-                            search.setImageResource(R.drawable.search_art);
+
+                        } else {
+                            title.setText(AREA);
                             edit.setVisibility(View.VISIBLE);
                             search.setVisibility(View.VISIBLE);
-                            areaText.setVisibility(View.VISIBLE);
                             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                             voice.setVisibility(View.GONE);
+                            btnClear.setVisibility(View.GONE);
                         }
 
                         break;
 
-                    case 1 :
+                    case 1:
                         tabLayout.getTabAt(i).setIcon(R.drawable.orders1_select_blue);
-                        areaText.setVisibility(View.VISIBLE);
-                        areaText.setText("Orders");
+                        title.setText("Orders");
+                        title.setVisibility(View.VISIBLE);
                         edit.setVisibility(View.GONE);
                         search.setVisibility(View.GONE);
-                        if(inputSearch.getVisibility() == View.VISIBLE){
+                        if (inputSearch.getVisibility() == View.VISIBLE) {
                             inputSearch.setVisibility(View.GONE);
                             btnClear.setVisibility(View.GONE);
                             voice.setVisibility(View.GONE);
@@ -221,28 +213,13 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         }
                         break;
 
-                    case 2 :
-                        tabLayout.getTabAt(i).setIcon(R.drawable.kart_select_blue);
-                        areaText.setText("Cart");
-                        areaText.setVisibility(View.VISIBLE);
-                        edit.setVisibility(View.GONE);
-                        search.setVisibility(View.GONE);
-                        if(inputSearch.getVisibility() == View.VISIBLE){
-                            inputSearch.setVisibility(View.GONE);
-                            btnClear.setVisibility(View.GONE);
-                            voice.setVisibility(View.GONE);
-                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                            imm.hideSoftInputFromWindow(tabLayout.getApplicationWindowToken(), 0);
-                        }
-                        break;
-
-                    case 3 :
+                    case 2:
                         tabLayout.getTabAt(i).setIcon(R.drawable.deals_select_blue);
-                        areaText.setText("Deals");
-                        areaText.setVisibility(View.VISIBLE);
+                        title.setText("Deals");
+                        title.setVisibility(View.VISIBLE);
                         edit.setVisibility(View.GONE);
                         search.setVisibility(View.GONE);
-                        if(inputSearch.getVisibility() == View.VISIBLE){
+                        if (inputSearch.getVisibility() == View.VISIBLE) {
                             inputSearch.setVisibility(View.GONE);
                             btnClear.setVisibility(View.GONE);
                             voice.setVisibility(View.GONE);
@@ -251,13 +228,13 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         }
                         break;
 
-                    case 4 :
+                    case 3:
                         tabLayout.getTabAt(i).setIcon(R.drawable.menu1_select_blue);
-                        areaText.setText("More");
-                        areaText.setVisibility(View.VISIBLE);
+                        title.setText("More");
+                        title.setVisibility(View.VISIBLE);
                         edit.setVisibility(View.GONE);
                         search.setVisibility(View.GONE);
-                        if(inputSearch.getVisibility() == View.VISIBLE){
+                        if (inputSearch.getVisibility() == View.VISIBLE) {
                             inputSearch.setVisibility(View.GONE);
                             btnClear.setVisibility(View.GONE);
                             voice.setVisibility(View.GONE);
@@ -266,42 +243,37 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                         }
                         break;
 
-                    default :
+                    default:
                         break;
                 }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                int i =tab.getPosition();
-                switch(i) {
-                    case 0 :
+                int i = tab.getPosition();
+                switch (i) {
+                    case 0:
                         tabLayout.getTabAt(i).setIcon(R.drawable.hotels_unselect);
-                        if(inputSearch.getVisibility() == View.VISIBLE){
-                            isInitialInputSearchVisibile =true;
-                        }
-                        else{
-                            isInitialInputSearchVisibile =false;
+                        if (inputSearch.getVisibility() == View.VISIBLE) {
+                            inputSearchVisibile = true;
+                        } else {
+                            inputSearchVisibile = false;
                         }
                         break;
 
-                    case 1 :
+                    case 1:
                         tabLayout.getTabAt(i).setIcon(R.drawable.orders1_unselect);
                         break;
 
-                    case 2 :
-                        tabLayout.getTabAt(i).setIcon(R.drawable.kart_unselect);
-                        break;
-
-                    case 3 :
+                    case 2:
                         tabLayout.getTabAt(i).setIcon(R.drawable.deals_unselect);
                         break;
 
-                    case 4 :
+                    case 3:
                         tabLayout.getTabAt(i).setIcon(R.drawable.menu1_unselect);
                         break;
 
-                    default :
+                    default:
                         break;
                 }
             }
@@ -312,17 +284,15 @@ public class DisplayHotelsActivity extends AppCompatActivity {
             }
         });
 
-        LocationFinderUtil lfu = LocationFinderUtil.getInstance();
-        Log.e(TAG," trying to retrive LocationFinderUtil object and got response as "+lfu);
-        if(lfu!=null){
-            JSONObject jsonResponseData = lfu.getJsonResponseData();
-            displayHotels(jsonResponseData);
-        }
-        /*try {
-            displayHotels(new JSONObject("{\"area\" : \"btm 2nd stage\"}"));
+        String hotelDataResponseString = getIntent().getStringExtra("hotelData");
+        JSONObject jsonResponseData = null;
+        try {
+            jsonResponseData = new JSONObject(hotelDataResponseString);
         } catch (JSONException e) {
             e.printStackTrace();
-        }*/
+        }
+
+        displayHotels(jsonResponseData);
     }
 
     private void gotoEditLocationActivity() {
@@ -330,57 +300,47 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         startActivity(editLocationActivity);
     }
 
-
-    /*protected void CheckLocationRuntimePermission() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            DisplayHotelsActivity.this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
-        }
-    }*/
-
-    protected void displayHotels(JSONObject response){
+    private void displayHotels(JSONObject response){
         Log.e(TAG," displayHotels method started.");
-        TextView areaText = (TextView)findViewById(R.id.areaText);
         try {
             String area = response.getString("area");
-            areaText.setText(area);
+            TextView title = (TextView)findViewById(R.id.title);
+            title.setText(area);
             AREA = area;
 
             Log.e(TAG, " received area of user from server as "+area);
-
             JSONArray hotelsJSONArray = response.getJSONArray("hotels");
-
             Log.e(TAG, " received hotelsJSONArray from server as "+hotelsJSONArray);
-
-            List hotelList = new ArrayList<HotelItem>();
-            JSONObject hotelItem;
+            List hotelList = new ArrayList<Hotel>();
+            JSONObject hotel;
             for(int i = 0; i < hotelsJSONArray.length(); i++){
-                hotelItem = hotelsJSONArray.getJSONObject(i);
+                hotel = hotelsJSONArray.getJSONObject(i);
                 hotelList.add(
-                        new HotelItem(
-                                hotelItem.getString("id"),
-                                hotelItem.getString("name"),
-                                hotelItem.getString("area"),
-                                hotelItem.getString("delivery time"),
-                                hotelItem.getString("delivery fees"),
-                                hotelItem.getString("min order"),
-                                hotelItem.getString("on time"),
-                                hotelItem.getString("rating"),
-                                hotelItem.getString("timings"),
-                                hotelItem.getString("image url"),
-                                hotelItem.getString("food types")
+                        new Hotel(
+                                hotel.getString("id"),
+                                hotel.getString("name"),
+                                hotel.getString("area"),
+                                hotel.getString("delivery time"),
+                                hotel.getString("delivery fees"),
+                                hotel.getString("min order"),
+                                hotel.getString("on time"),
+                                hotel.getString("rating"),
+                                hotel.getString("timings"),
+                                hotel.getString("image url"),
+                                hotel.getString("food types")
                         )
                 );
             }
 
-            adapter = new HotelItemAdapter(this,
-                    R.layout.hotel_item1, hotelList);
+            adapter = new HotelAdapter(this,
+                    R.layout.hotel_item, hotelList);
 
             Log.e(TAG, " HotelItemAdapter created using hoteldata from server as "+adapter);
 
         } catch (JSONException e) {
         }
     }
-    public static HotelItemAdapter getHotelItemAdapter(){
+    public static HotelAdapter getHotelAdapter(){
         Log.e(TAG, " getHotelItemAdapter method started.");
         return adapter;
     }
@@ -389,13 +349,13 @@ public class DisplayHotelsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                final TextView areaText = (TextView)findViewById(R.id.areaText);
-                final ImageButton edit = (ImageButton)findViewById(R.id.editButton);
-                final ImageButton search = (ImageButton) findViewById(R.id.searchButton);
-                final EditText inputSearch = (EditText) findViewById(R.id.inputSearch);
+                TextView title = (TextView)findViewById(R.id.title);
+                ImageButton edit = (ImageButton)findViewById(R.id.editButton);
+                ImageButton search = (ImageButton) findViewById(R.id.searchButton);
+                EditText inputSearch = (EditText) findViewById(R.id.inputSearch);
                 Button voice = (Button) findViewById(R.id.voice);
-                areaText.setText(AREA);
-                areaText.setVisibility(View.VISIBLE);
+                title.setText(AREA);
+                title.setVisibility(View.VISIBLE);
                 edit.setVisibility(View.VISIBLE);
                 search.setVisibility(View.VISIBLE);
                 inputSearch.setVisibility(View.GONE);

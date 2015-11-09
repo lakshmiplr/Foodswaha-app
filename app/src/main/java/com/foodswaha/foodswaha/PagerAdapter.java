@@ -12,7 +12,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     private static final String TAG = "PagerAdapter";
 
-    private int mNumOfTabs =5;
+    private int mNumOfTabs =4;
     public PagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -28,12 +28,9 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 OrdersFragment ordersFragment = new OrdersFragment();
                 return ordersFragment;
             case 2:
-                KartFragment kartFragment = new KartFragment();
-                return kartFragment;
-            case 3:
                 DealsFragment dealsFragment = new DealsFragment();
                 return dealsFragment;
-            case 4:
+            case 3:
                 MenuFragment menuFragment = new MenuFragment();
                 return menuFragment;
             default:

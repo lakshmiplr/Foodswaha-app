@@ -6,7 +6,6 @@ package com.foodswaha.foodswaha;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +88,7 @@ public class LocationAdapter<String> extends ArrayAdapter<String> implements Fil
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new HotelMenuItemHolder();
 
-            holder.hotelMenuItemName = (TextView)row.findViewById(R.id.hotelMenuItem);
+            holder.hotelMenuItemName = (TextView)row.findViewById(R.id.menuName);
             row.setTag(holder);
         }
         else{

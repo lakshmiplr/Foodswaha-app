@@ -11,13 +11,14 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 public class AppInitializerActivity extends AppCompatActivity {
 
     private static final String TAG = "AppInitializer";
 
     private static final int REQUEST_CHECK_LOCATION_SETTINGS = 3;
 
-    private static Cart mCart = new Cart();
 
 
     final LocationFinderUtil lfu = new LocationFinderUtil(this,this,this);
@@ -31,13 +32,13 @@ public class AppInitializerActivity extends AppCompatActivity {
 
         final ProgressBar loading = (ProgressBar)findViewById(R.id.loading);
 
-        if( InternetCheckUtil.isConnectivityAvailable(this) ){
+        if( InternetCheckUtil.isConnectivityAvailable() ){
             Log.e(TAG," Internet connection available.");
             loading.setVisibility(View.VISIBLE);
             getHotelsDataFromServer(lfu);
         }
         else{
-            Log.e(TAG," Internet connection not available.");
+            Log.e(TAG, " Internet connection not available.");
             final TextView noInternet = (TextView)findViewById(R.id.noInternet);
             noInternet.setText("No Internet Connection");
 
@@ -48,8 +49,8 @@ public class AppInitializerActivity extends AppCompatActivity {
             retry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if( InternetCheckUtil.isConnectivityAvailable(context) ){
-                        Log.e(TAG," Internet connection not available even after retry.");
+                    if (InternetCheckUtil.isConnectivityAvailable()) {
+                        Log.e(TAG, " Internet connection not available even after retry.");
                         noInternet.setText("");
                         retry.setImageDrawable(null);
                         loading.setVisibility(View.VISIBLE);
@@ -74,7 +75,7 @@ public class AppInitializerActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e(TAG," onActivityResult method started.");
+        Log.e(TAG, " onActivityResult method started.");
         switch (requestCode) {
             case REQUEST_CHECK_LOCATION_SETTINGS:
                 switch (resultCode) {
@@ -93,16 +94,12 @@ public class AppInitializerActivity extends AppCompatActivity {
         }
     }
 
-    public void gotoDisplayHotelsActivity() {
+    public void gotoDisplayHotelsActivity(JSONObject response) {
         Log.e(TAG," gotoDisplayHotelsActivity method started.");
         Intent displayHotelsIntent = new Intent(this, DisplayHotelsActivity.class);
+        displayHotelsIntent.putExtra("hotelData",response.toString());
         startActivity(displayHotelsIntent);
         finish();
     }
 
-    public synchronized static Cart  getCartInstance() {
-        Log.e(TAG, " getCartInstance method started.");
-        return mCart;
-
-    }
 }

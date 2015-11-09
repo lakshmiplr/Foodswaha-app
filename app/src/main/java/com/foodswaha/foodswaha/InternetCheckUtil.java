@@ -11,16 +11,19 @@ import android.util.Log;
 public class InternetCheckUtil {
 
     private static final String TAG = "InternetCheckUtil";
+    private static ConnectivityManager connectivityManager = (ConnectivityManager) MyApplication.getAppContext()
+                                                      .getSystemService(Context.CONNECTIVITY_SERVICE);
 
     /*method to verify internet connectivity*/
-    public static boolean isConnectivityAvailable(Context context) {
+    public static boolean isConnectivityAvailable() {
 
         Log.e(TAG, " isConnectivityAvailable method called.");
-        final ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            Log.e(TAG, " isConnectivityAvailable method returned true.");
             return true;
         }
+        Log.e(TAG, " isConnectivityAvailable method returned false.");
         return false;
     }
 }

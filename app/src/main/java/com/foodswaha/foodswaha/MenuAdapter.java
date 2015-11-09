@@ -14,15 +14,14 @@ import java.util.List;
 /**
  * Created by pharshar on 11/1/2015.
  */
-public class HotelMenuItemAdapter extends ArrayAdapter<HotelMenuItem> {
+public class MenuAdapter extends ArrayAdapter<Menu> {
 
-    private static final String TAG = "HotelMenuItemAdapter";
-
+    private static final String TAG = "MenuAdapter";
     Context context;
     int layoutResourceId;
     List data = null;
 
-    public HotelMenuItemAdapter(Context context, int resource, List<HotelMenuItem> objects) {
+    public MenuAdapter(Context context, int resource, List<Menu> objects) {
 
         super(context, resource, objects);
         Log.e(TAG, " HotelMenuItemAdapter constructor  started.");
@@ -37,28 +36,28 @@ public class HotelMenuItemAdapter extends ArrayAdapter<HotelMenuItem> {
 
         Log.e(TAG, " getView method called with position,"+position);
         View row = convertView;
-        HotelMenuItemHolder holder = null;
+        Holder holder = null;
 
         if(row == null) {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
-            holder = new HotelMenuItemHolder();
+            holder = new Holder();
 
-            holder.hotelMenuItemName = (TextView)row.findViewById(R.id.hotelMenuItem);
+            holder.menuName = (TextView)row.findViewById(R.id.menuName);
             row.setTag(holder);
         }
         else{
-            holder = (HotelMenuItemHolder)row.getTag();
+            holder = (Holder)row.getTag();
         }
 
-        HotelMenuItem hotelMenuItem = (HotelMenuItem)data.get(position);
-        holder.hotelMenuItemName.setText(hotelMenuItem.getName());
+        Menu menu = (Menu)data.get(position);
+        holder.menuName.setText(menu.getName());
 
 
         return row;
     }
-    class HotelMenuItemHolder{
-        TextView hotelMenuItemName;
+    class Holder{
+        TextView menuName;
 
     }
 

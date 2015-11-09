@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 /**
  * Created by pharshar on 10/10/2015.
  */
-public class HotelItem {
+public class Hotel {
     String id;
     String name;
     String address;
@@ -19,7 +19,7 @@ public class HotelItem {
     Bitmap hotelImage = null;
     String foodTypes;
 
-    public HotelItem(String id, String name, String address, String deliveryTime, String deliveryFee, String minOrder, String onTime, String rating, String timings,String imageUrl,String foodTypes) {
+    public Hotel(String id, String name, String address, String deliveryTime, String deliveryFee, String minOrder, String onTime, String rating, String timings,String imageUrl,String foodTypes) {
         this.id = id;
         this.name = name;
         this.address = address;

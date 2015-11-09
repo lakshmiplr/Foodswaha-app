@@ -1,7 +1,6 @@
 package com.foodswaha.foodswaha;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -12,15 +11,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filterable;
 import android.widget.ListView;
-import android.widget.Filter;
 import android.widget.Toast;
 
 
@@ -101,7 +96,7 @@ public class EditLocationActivity extends AppCompatActivity {
 
     public ArrayAdapter getAreaAdapter() {
          adapter = new LocationAdapter<String>(this,
-                 R.layout.activity_display_hotel_menu_item,areas
+                 R.layout.activity_display_menu_item,areas
                 );
         return adapter;
     }
