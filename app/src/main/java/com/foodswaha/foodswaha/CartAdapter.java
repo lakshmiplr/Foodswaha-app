@@ -104,26 +104,32 @@ public class CartAdapter extends ArrayAdapter<SubMenu> {
                     int count = Integer.parseInt(quantity.getText().toString());
                     int id = Integer.parseInt(idText.getText().toString());
                     count--;
+                    quantity.setText(String.valueOf(count));
+                    SubMenu subMenu = cartInstance.getCartItem(id);
                     if (count == 0) {
                         quantity.setVisibility(View.GONE);
                         minus.setVisibility(View.GONE);
+                        subMenu.setQuantity(0);
                         cartInstance.removeItemFromCart(id);
+
                     }else{
-                        SubMenu subMenu = cartInstance.getCartItem(id);
+
                         subMenu.setQuantity(count);
                     }
-                    quantity.setText(String.valueOf(count));
+
                     cartInstance.decrementCountOfItems();
                     cartInstance.removeFromTotalBill(Integer.valueOf(itemPrice.getText().toString().replace("Rs", "").trim()));
-
-                    if(cartInstance.getCountOfItems()>0){
-                        ((TextView)cartLinearLayout.findViewById(R.id.cart)).setText(String.valueOf(cartInstance.getCountOfItems()));
+                    if(cartInstance.getCountOfItems()>0) {
+                        ((TextView) cartLinearLayout.findViewById(R.id.cart)).setText(String.valueOf(cartInstance.getCountOfItems()));
                         ((TextView)cartLinearLayout.findViewById(R.id.cart)).setTypeface(null, Typeface.BOLD);
-                        ((TextView)cartLinearLayout.findViewById(R.id.total)).setText(String.valueOf(cartInstance.getTotalBill()));
-                        notifyDataSetChanged();
+                        ((TextView) cartLinearLayout.findViewById(R.id.total)).setText(String.valueOf(cartInstance.getTotalBill()));
+                        if(count==0){
+                            data.remove(subMenu);
+                            notifyDataSetChanged();
+                        }
+
                     }else{
                         cartLinearLayout.setVisibility(View.GONE);
-
                         if(context instanceof DisplayCartActivity){
                             if(( (DisplayCartActivity)context).from.equals("submenu")){
                                 Intent i = new Intent(context,DisplaySubMenuActivity.class);

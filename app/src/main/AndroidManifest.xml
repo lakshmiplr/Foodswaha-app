@@ -73,6 +73,7 @@
             android:label="@string/cart"
             android:parentActivityName=".DisplaySubMenuActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -1,7 +1,6 @@
 package com.foodswaha.foodswaha;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +20,7 @@ public class AppInitializerActivity extends AppCompatActivity {
 
 
 
-    final LocationFinderUtil lfu = new LocationFinderUtil(this,this,this);
+    final LocationFinderUtil lfu = new LocationFinderUtil(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,19 +39,18 @@ public class AppInitializerActivity extends AppCompatActivity {
         else{
             Log.e(TAG, " Internet connection not available.");
             final TextView noInternet = (TextView)findViewById(R.id.noInternet);
-            noInternet.setText("No Internet Connection");
+            noInternet.setVisibility(View.VISIBLE);
 
             final ImageButton retry = (ImageButton) findViewById(R.id.retry);
-            retry.setImageResource(R.drawable.retry);
+            retry.setVisibility(View.VISIBLE);
 
-            final Context context = this;
             retry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (InternetCheckUtil.isConnectivityAvailable()) {
-                        Log.e(TAG, " Internet connection not available even after retry.");
-                        noInternet.setText("");
-                        retry.setImageDrawable(null);
+                        Log.e(TAG, " Internet connection available after retry.");
+                        noInternet.setVisibility(View.GONE);
+                        retry.setVisibility(View.GONE);
                         loading.setVisibility(View.VISIBLE);
                         getHotelsDataFromServer(lfu);
                     }

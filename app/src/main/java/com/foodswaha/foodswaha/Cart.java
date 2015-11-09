@@ -16,6 +16,7 @@ public class Cart {
     private int totalBill;
     private int countOfItems;
     private static volatile Cart cartInstance;
+    private static ArrayList<SubMenu> cartItemsList = new ArrayList<SubMenu>();
 
     private Cart() {
     }
@@ -68,9 +69,9 @@ public class Cart {
     }
 
     public synchronized List<SubMenu> getAllCartItems() {
-        List<SubMenu> subMenuList = new ArrayList<SubMenu>();
-        subMenuList.addAll(cartItems.values());
-        return subMenuList;
+        cartItemsList.clear();
+        cartItemsList.addAll(cartItems.values());
+        return cartItemsList;
     }
 
 

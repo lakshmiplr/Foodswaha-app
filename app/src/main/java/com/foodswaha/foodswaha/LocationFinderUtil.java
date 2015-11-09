@@ -47,10 +47,10 @@ public class LocationFinderUtil implements
     private static LocationFinderUtil instance;
 
 
-    LocationFinderUtil(Context context,Activity activity,AppInitializerActivity appInitializerActivity){
+    LocationFinderUtil(AppInitializerActivity appInitializerActivity){
         Log.e(TAG, " constructor started.");
-        this.context = context;
-        this.activity = activity;
+        this.context = appInitializerActivity;
+        this.activity = appInitializerActivity;
         this.appInitializerActivity = appInitializerActivity;
         this.instance = this;
 

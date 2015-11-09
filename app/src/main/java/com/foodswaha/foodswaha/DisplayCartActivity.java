@@ -9,8 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.List;
-
 public class DisplayCartActivity extends AppCompatActivity {
 
     Cart cartInstance = Cart.getInstance();
@@ -41,12 +39,9 @@ public class DisplayCartActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.cart)).setText(String.valueOf(cartInstance.getCountOfItems()));
         ((TextView)findViewById(R.id.total)).setText(String.valueOf(cartInstance.getTotalBill()));
 
-        List<SubMenu> cartItemList = (List<SubMenu>) cartInstance.getAllCartItems();
-
         ListView cartItemsListView = (ListView)findViewById(R.id.cart_items);
         cartItemsListView.setAdapter(new CartAdapter(DisplayCartActivity.this,
-                R.layout.activity_display_cart_items, cartItemList));
+                R.layout.activity_display_cart_items, cartInstance.getAllCartItems()));
     }
-
 
 }
