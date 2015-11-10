@@ -74,5 +74,12 @@ public class Cart {
         return cartItemsList;
     }
 
+    public synchronized void clearCart() {
+        cartItems.clear();
+        countOfItems =0;
+        totalBill =0;
+
+    }
+
 
 }

@@ -14,71 +14,73 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/FoodSwahaTheme" >
-
         <activity
             android:name=".AppInitializerActivity"
             android:label="@string/AppInitializerActivity"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".DisplayHotelsActivity"
             android:label="@string/hotels"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" >
         </activity>
-
         <activity
             android:name=".DisplayMenuActivity"
             android:label="@string/menu"
+            android:launchMode="singleTop"
             android:parentActivityName=".DisplayHotelsActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DisplayHotelsActivity" />
         </activity>
-
         <activity
             android:name=".DisplaySubMenuActivity"
             android:label="@string/subMenu"
-            android:parentActivityName=".DisplayMenuActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
-            >
+            android:parentActivityName=".DisplayMenuActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DisplayMenuActivity" />
         </activity>
-
         <activity
             android:name=".EditLocationActivity"
             android:label="@string/title_activity_edit_location"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DisplayHotelsActivity" />
         </activity>
-
         <activity
             android:name=".DisplayCartActivity"
             android:label="@string/cart"
-            android:parentActivityName=".DisplaySubMenuActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
-            >
+            android:parentActivityName=".DisplaySubMenuActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DisplaySubMenuActivity" />
         </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
     </application>
 
 </manifest>

@@ -40,6 +40,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
 
     private static HotelAdapter adapter;
     private static boolean inputSearchVisibile = false;
+    private static String hotelDataJSONString;
 
 
     @Override
@@ -284,10 +285,10 @@ public class DisplayHotelsActivity extends AppCompatActivity {
             }
         });
 
-        String hotelDataResponseString = getIntent().getStringExtra("hotelData");
+        hotelDataJSONString = getIntent().getStringExtra("hotelData");
         JSONObject jsonResponseData = null;
         try {
-            jsonResponseData = new JSONObject(hotelDataResponseString);
+            jsonResponseData = new JSONObject(hotelDataJSONString);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -409,4 +410,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         }
     }
 
+    public static String getHotelDataJSONString() {
+        return hotelDataJSONString;
+    }
 }

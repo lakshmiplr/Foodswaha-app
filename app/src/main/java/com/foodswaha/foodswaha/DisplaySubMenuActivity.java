@@ -1,13 +1,16 @@
 package com.foodswaha.foodswaha;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -59,8 +62,36 @@ public class DisplaySubMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent gotoDisplayCart = new Intent(DisplaySubMenuActivity.this, DisplayCartActivity.class);
-                gotoDisplayCart.putExtra("from", "submenu");
                 startActivity(gotoDisplayCart);
+            }
+        });
+
+        ImageButton home = (ImageButton)findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        DisplaySubMenuActivity.this);
+
+                alertDialogBuilder
+                        .setMessage("Clear Cart and go to hotels?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                cartInstance.clearCart();
+                                Intent homeIntent = new Intent(DisplaySubMenuActivity.this, DisplayHotelsActivity.class);
+                                homeIntent.putExtra("hotelData", DisplayHotelsActivity.getHotelDataJSONString());
+                                startActivity(homeIntent);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 

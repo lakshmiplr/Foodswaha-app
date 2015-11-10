@@ -58,7 +58,6 @@ public class DisplayMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent gotoDisplayCart = new Intent(DisplayMenuActivity.this, DisplayCartActivity.class);
-                gotoDisplayCart.putExtra("from", "menu");
                 startActivity(gotoDisplayCart);
             }
         });

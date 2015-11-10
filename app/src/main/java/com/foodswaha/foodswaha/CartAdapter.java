@@ -2,7 +2,6 @@ package com.foodswaha.foodswaha;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,6 +62,7 @@ public class CartAdapter extends ArrayAdapter<SubMenu> {
             final TextView itemPrice = holder.price;
             final ViewGroup reltiveLayout = (ViewGroup)parent.getParent();
             final View cartLinearLayout = reltiveLayout.findViewById(R.id.cartRelativeLayOut);
+            final View emptyCart = reltiveLayout.findViewById(R.id.emptyCart);
             final TextView itemPosition = holder.position;
             final TextView hotelName = holder.hotelName;
             final TextView menuName = holder.menuName;
@@ -89,6 +89,7 @@ public class CartAdapter extends ArrayAdapter<SubMenu> {
                     cartInstance.incrementCountOfItems();
                     cartInstance.addToTotalBill(Integer.valueOf(itemPrice.getText().toString().replace("Rs", "").trim()));
                     if(cartInstance.getCountOfItems()==1){
+                        emptyCart.setVisibility(View.GONE);
                         cartLinearLayout.setVisibility(View.VISIBLE);
                     }
                     ((TextView)cartLinearLayout.findViewById(R.id.cart)).setText(String.valueOf(cartInstance.getCountOfItems()));
@@ -123,23 +124,14 @@ public class CartAdapter extends ArrayAdapter<SubMenu> {
                         ((TextView) cartLinearLayout.findViewById(R.id.cart)).setText(String.valueOf(cartInstance.getCountOfItems()));
                         ((TextView)cartLinearLayout.findViewById(R.id.cart)).setTypeface(null, Typeface.BOLD);
                         ((TextView) cartLinearLayout.findViewById(R.id.total)).setText(String.valueOf(cartInstance.getTotalBill()));
-                        if(count==0){
-                            data.remove(subMenu);
-                            notifyDataSetChanged();
-                        }
 
                     }else{
                         cartLinearLayout.setVisibility(View.GONE);
-                        if(context instanceof DisplayCartActivity){
-                            if(( (DisplayCartActivity)context).from.equals("submenu")){
-                                Intent i = new Intent(context,DisplaySubMenuActivity.class);
-                                ((Activity)getContext()).startActivity(i);
-                            }
-                            else{
-                                Intent i = new Intent(context,DisplayMenuActivity.class);
-                                ((Activity)getContext()).startActivity(i);
-                            }
-                        }
+                        emptyCart.setVisibility(View.VISIBLE);
+                    }
+                    if(count==0){
+                        data.remove(subMenu);
+                        notifyDataSetChanged();
                     }
                 }
             });
