@@ -39,16 +39,17 @@
         android:src="@drawable/plus"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:maxHeight="25dp"
-        android:maxWidth="25dp"
-        android:minHeight="25dp"
-        android:minWidth="25dp"
+        android:maxHeight="27dp"
+        android:maxWidth="27dp"
+        android:minHeight="27dp"
+        android:minWidth="27dp"
         android:clickable="true"
         android:background="@android:color/transparent"
         android:layout_below="@+id/price"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:padding="5dp" />
+        android:padding="5dp"
+        android:nestedScrollingEnabled="false" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -57,10 +58,10 @@
         android:src="@drawable/minus"
         android:layout_below="@+id/price"
         android:layout_toLeftOf="@+id/quantity"
-        android:maxHeight="25dp"
-        android:maxWidth="25dp"
-        android:minHeight="25dp"
-        android:minWidth="25dp"
+        android:maxHeight="27dp"
+        android:maxWidth="27dp"
+        android:minHeight="27dp"
+        android:minWidth="27dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:background="@android:color/transparent"
@@ -75,13 +76,13 @@
         android:id="@+id/quantity"
         android:layout_toLeftOf="@+id/plus"
         android:textStyle="bold"
-        android:textSize="15dp"
+        android:textSize="19dp"
         android:textColor="#3B5998"
         android:visibility="gone"
         android:layout_alignTop="@+id/plus"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="20dp"
         android:layout_alignBottom="@+id/plus"
-        android:layout_marginLeft="25dp" />
+        android:layout_marginLeft="20dp" />
 
 
 </RelativeLayout>

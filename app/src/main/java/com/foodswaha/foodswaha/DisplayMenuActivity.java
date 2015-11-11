@@ -1,13 +1,16 @@
 package com.foodswaha.foodswaha;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -164,5 +167,41 @@ public class DisplayMenuActivity extends AppCompatActivity {
 
     public static void setMenuToSubMenuMap(HashMap<String, List<SubMenu>> menuToSubMenuMap) {
         DisplayMenuActivity.menuToSubMenuMap = menuToSubMenuMap;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (cartInstance.getCountOfItems() > 0) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            DisplayMenuActivity.this);
+                    alertDialogBuilder
+                            .setMessage("Clear Cart and go to hotels?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    cartInstance.clearCart();
+                                    Intent homeIntent = new Intent(DisplayMenuActivity.this, DisplayHotelsActivity.class);
+                                    homeIntent.putExtra("hotelData", DisplayHotelsActivity.getHotelDataJSONString());
+                                    startActivity(homeIntent);
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                } else {
+                    Intent homeIntent = new Intent(DisplayMenuActivity.this, DisplayHotelsActivity.class);
+                    homeIntent.putExtra("hotelData", DisplayHotelsActivity.getHotelDataJSONString());
+                    startActivity(homeIntent);
+                }
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
     }
 }
