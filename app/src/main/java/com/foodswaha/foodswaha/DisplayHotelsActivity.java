@@ -24,6 +24,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class DisplayHotelsActivity extends AppCompatActivity {
+public class DisplayHotelsActivity extends AppCompatActivity implements
+        GoogleApiClient.OnConnectionFailedListener{
 
     private static final int REQ_CODE_SPEECH_INPUT = 1;
     private static final String TAG = "DisplayHotels";
@@ -41,6 +47,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
     private static HotelAdapter adapter;
     private static boolean inputSearchVisibile = false;
     private static String hotelDataJSONString;
+    private static GoogleApiClient mGoogleApiClient;
 
 
     @Override
@@ -294,6 +301,16 @@ public class DisplayHotelsActivity extends AppCompatActivity {
         }
 
         displayHotels(jsonResponseData);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
     }
 
     private void gotoEditLocationActivity() {
@@ -302,7 +319,7 @@ public class DisplayHotelsActivity extends AppCompatActivity {
     }
 
     private void displayHotels(JSONObject response){
-        Log.e(TAG," displayHotels method started.");
+        Log.e(TAG, " displayHotels method started.");
         try {
             String area = response.getString("area");
             TextView title = (TextView)findViewById(R.id.title);
@@ -406,6 +423,11 @@ public class DisplayHotelsActivity extends AppCompatActivity {
                 }
                 break;
             }
+            case OrdersFragment.RC_SIGN_IN: {
+                OrdersFragment fragment = (OrdersFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.orders);
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
 
         }
     }
@@ -413,4 +435,14 @@ public class DisplayHotelsActivity extends AppCompatActivity {
     public static String getHotelDataJSONString() {
         return hotelDataJSONString;
     }
+
+    public static GoogleApiClient getGoogleApiClient() {
+        return mGoogleApiClient;
+    }
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
+
 }
