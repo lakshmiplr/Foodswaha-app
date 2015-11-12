@@ -101,11 +101,11 @@ public class DisplaySubMenuActivity extends AppCompatActivity {
 
             }
         });
-        final View login = findViewById(R.id.checkout);
-        login.setOnClickListener(new View.OnClickListener() {
+        final View chooseDeliveryType = findViewById(R.id.checkout);
+        chooseDeliveryType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent loginIntent = new Intent(DisplaySubMenuActivity.this, LoginActivity.class);
+                Intent loginIntent = new Intent(DisplaySubMenuActivity.this, ChooseDeliveryTypeActivity.class);
                 startActivity(loginIntent);
             }
         });

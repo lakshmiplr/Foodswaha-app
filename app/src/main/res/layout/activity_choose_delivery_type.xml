@@ -1,0 +1,170 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.foodswaha.foodswaha.ChooseDeliveryTypeActivity"
+    android:id="@+id/deliveryType">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="#3B5998"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:layout_weight="0.1"
+            android:textColor="#ffffff"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:text="choose delivery type" />
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#3B5998"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/cartRelativeLayOut"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0"
+            android:id="@+id/total"
+            android:textColor="#ffffff"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:visibility="visible"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="false"
+            android:layout_centerInParent="true" />
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkout"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center_vertical|right"
+            android:visibility="visible"
+            android:src="@drawable/next"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100 Rs"
+        android:id="@+id/dfee"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="60 min"
+        android:id="@+id/dtime"
+        android:textSize="17dp"
+        android:layout_alignTop="@+id/radio"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#c0c0c0"
+        android:layout_below="@+id/dtime"
+        android:id="@+id/line1"
+        android:layout_marginTop="17dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="free"
+        android:id="@+id/free"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:textSize="17dp"
+        android:layout_below="@+id/line1"
+        android:layout_marginTop="19dp"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30 min"
+        android:id="@+id/ptime"
+        android:layout_below="@+id/dtime"
+        android:textSize="17dp"
+        android:layout_alignStart="@+id/dtime"
+        android:layout_toRightOf="@+id/radio"
+        android:layout_marginTop="35dp" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#c0c0c0"
+        android:id="@+id/line2"
+        android:layout_below="@+id/ptime"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="17dp" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/radio"
+        android:checkedButton="@+id/dradio">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dradio"
+            android:layout_below="@+id/toolbar"
+            android:layout_alignLeft="@+id/toolbar"
+            android:layout_alignStart="@+id/toolbar"
+            android:textSize="17dp"
+            android:text="delivery"
+            android:layout_marginTop="15dp"
+            android:textColor="@android:color/tab_indicator_text"
+            android:paddingLeft="15dp"
+            android:layout_marginLeft="10dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pradio"
+            android:layout_below="@+id/line1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="pickup"
+            android:textSize="17dp"
+            android:layout_marginTop="25dp"
+            android:textColor="@android:color/tab_indicator_text"
+            android:checked="false"
+            android:paddingLeft="15dp"
+            android:layout_marginLeft="10dp" />
+
+    </RadioGroup>
+
+</RelativeLayout>

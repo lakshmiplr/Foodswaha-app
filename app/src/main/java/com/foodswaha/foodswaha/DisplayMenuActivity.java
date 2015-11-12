@@ -65,6 +65,15 @@ public class DisplayMenuActivity extends AppCompatActivity {
             }
         });
 
+        final View chooseDeliveryType = findViewById(R.id.checkout);
+        chooseDeliveryType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent loginIntent = new Intent(DisplayMenuActivity.this, ChooseDeliveryTypeActivity.class);
+                startActivity(loginIntent);
+            }
+        });
+
         showCartIfAvailable();
         displayHotelMenu();
     }
@@ -184,6 +193,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
                                     cartInstance.clearCart();
                                     Intent homeIntent = new Intent(DisplayMenuActivity.this, DisplayHotelsActivity.class);
                                     homeIntent.putExtra("hotelData", DisplayHotelsActivity.getHotelDataJSONString());
+                                    homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(homeIntent);
                                 }
                             })
@@ -198,10 +208,43 @@ public class DisplayMenuActivity extends AppCompatActivity {
                 } else {
                     Intent homeIntent = new Intent(DisplayMenuActivity.this, DisplayHotelsActivity.class);
                     homeIntent.putExtra("hotelData", DisplayHotelsActivity.getHotelDataJSONString());
+                    homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(homeIntent);
                 }
                 return true;
             default: return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        if (cartInstance.getCountOfItems() > 0) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    DisplayMenuActivity.this);
+            alertDialogBuilder
+                    .setMessage("Clear Cart and go to hotels?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            cartInstance.clearCart();
+                            Intent homeIntent = new Intent(DisplayMenuActivity.this, DisplayHotelsActivity.class);
+                            homeIntent.putExtra("hotelData", DisplayHotelsActivity.getHotelDataJSONString());
+                            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(homeIntent);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        } else {
+            Intent homeIntent = new Intent(DisplayMenuActivity.this, DisplayHotelsActivity.class);
+            homeIntent.putExtra("hotelData", DisplayHotelsActivity.getHotelDataJSONString());
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(homeIntent);
         }
     }
 }

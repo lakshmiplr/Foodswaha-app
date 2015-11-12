@@ -1,13 +1,11 @@
 package com.foodswaha.foodswaha;
 
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 public class DisplayAddressActivity extends AppCompatActivity {
@@ -28,20 +26,10 @@ public class DisplayAddressActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         String email = getIntent().getStringExtra("email");
+        String cdt = ChooseDeliveryTypeActivity.getCdt();
         TextView emailTextView = (TextView)findViewById(R.id.emptyCart);
-        emailTextView.setText(email);
+        emailTextView.setText(email+"----"+cdt);
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent goToCart = new Intent(this,DisplayCartActivity.class);
-                startActivity(goToCart);
-                return true;
-            default: return super.onOptionsItemSelected(item);
-        }
     }
 
 }

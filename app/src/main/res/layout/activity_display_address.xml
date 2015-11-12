@@ -44,8 +44,8 @@
             android:layout_gravity="center_vertical|right"
             android:visibility="visible"
             android:src="@drawable/next"
-            android:layout_alignParentRight="false"
-            android:layout_centerInParent="true" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
     <TextView
@@ -57,16 +57,5 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:visibility="visible" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/home"
-        android:src="@drawable/home1"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="false"
-        android:background="@android:color/transparent"
-        android:layout_marginTop="12dp" />
 
 </RelativeLayout>

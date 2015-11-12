@@ -50,28 +50,35 @@ public class DisplayCartActivity extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        DisplayCartActivity.this);
+                if (cartInstance.getCountOfItems() > 0) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            DisplayCartActivity.this);
+                    alertDialogBuilder
+                            .setMessage("Clear Cart and go to hotels?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    cartInstance.clearCart();
+                                    Intent homeIntent = new Intent(DisplayCartActivity.this, DisplayHotelsActivity.class);
+                                    homeIntent.putExtra("hotelData", DisplayHotelsActivity.getHotelDataJSONString());
+                                    homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(homeIntent);
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
 
-                alertDialogBuilder
-                        .setMessage("Clear Cart and go to hotels?")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                cartInstance.clearCart();
-                                Intent homeIntent = new Intent(DisplayCartActivity.this, DisplayHotelsActivity.class);
-                                homeIntent.putExtra("hotelData", DisplayHotelsActivity.getHotelDataJSONString());
-                                startActivity(homeIntent);
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                } else {
+                    Intent homeIntent = new Intent(DisplayCartActivity.this, DisplayHotelsActivity.class);
+                    homeIntent.putExtra("hotelData", DisplayHotelsActivity.getHotelDataJSONString());
+                    homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(homeIntent);
+                }
             }
         });
 
@@ -106,11 +113,11 @@ public class DisplayCartActivity extends AppCompatActivity {
             }
         });
 
-        final View login = findViewById(R.id.checkout);
-        login.setOnClickListener(new View.OnClickListener() {
+        final View chooseDeliveryType = findViewById(R.id.checkout);
+        chooseDeliveryType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent loginIntent = new Intent(DisplayCartActivity.this, LoginActivity.class);
+                Intent loginIntent = new Intent(DisplayCartActivity.this, ChooseDeliveryTypeActivity.class);
                 startActivity(loginIntent);
             }
         });
