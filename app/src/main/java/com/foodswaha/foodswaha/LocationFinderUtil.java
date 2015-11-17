@@ -67,7 +67,7 @@ public class LocationFinderUtil implements
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
-    private static final String GET_HOTEL_DETAILS_URL = "http://104.155.202.28:8080/location";
+    private static final String GET_HOTEL_DETAILS_URL = "http://104.199.135.27:8080/location";
 
     private final static int GET_GOOGLE_PLAY_SERVICES_REQUEST_CODE = 1;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST_CODE = 2;

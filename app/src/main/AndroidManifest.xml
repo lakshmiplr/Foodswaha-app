@@ -75,7 +75,7 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName=".ChooseDeliveryTypeActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ChooseDeliveryTypeActivity" />
@@ -83,8 +83,9 @@
         <activity
             android:name=".DisplayAddressActivity"
             android:label="@string/title_activity_display_address"
+            android:launchMode="singleTop"
             android:parentActivityName=".ChooseDeliveryTypeActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ChooseDeliveryTypeActivity" />
@@ -92,12 +93,25 @@
         <activity
             android:name=".ChooseDeliveryTypeActivity"
             android:label="@string/title_activity_choose_delivery_type"
-            android:parentActivityName=".DisplayCartActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:parentActivityName=".DisplayCartActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DisplayCartActivity" />
+        </activity>
+        <activity
+            android:name=".AddaddressActivity"
+            android:label="@string/title_activity_addaddress"
+            android:parentActivityName=".DisplayAddressActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DisplayAddressActivity" />
+        </activity>
+        <activity
+            android:name=".PaymentActivity"
+            android:label="@string/title_activity_payment" >
         </activity>
     </application>
 

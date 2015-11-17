@@ -3,7 +3,9 @@
     android:layout_height="match_parent"
     tools:context="com.foodswaha.foodswaha.DisplayCartActivity"
     android:orientation="vertical"
-    android:id="@+id/cart_show_linear">
+    android:id="@+id/cart_show_linear"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -48,14 +50,47 @@
             android:layout_centerVertical="true" />
     </RelativeLayout>
 
+    <ListView
+        android:id="@+id/addressList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_above="@+id/mobile"
+        android:layout_below="@+id/toolbar"
+        >
+    </ListView>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addAddress"
+        android:src="@drawable/add"
+        android:background="@android:color/transparent"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/empty_cart"
-        android:id="@+id/emptyCart"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="visible" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="mobile : "
+        android:id="@+id/mobileText"
+        android:layout_alignLeft="@+id/addressList"
+        android:layout_alignStart="@+id/addressList"
+        android:layout_above="@+id/cartRelativeLayOut"
+        android:layout_alignBaseline="@+id/mobile" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mobile"
+        android:layout_toEndOf="@id/mobileText"
+        android:phoneNumber="true"
+        android:layout_above="@+id/cartRelativeLayOut"
+        android:hint="call me on this number"
+        android:singleLine="true" />
+
 
 </RelativeLayout>

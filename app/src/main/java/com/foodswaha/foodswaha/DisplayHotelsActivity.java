@@ -43,6 +43,7 @@ public class DisplayHotelsActivity extends AppCompatActivity implements
     private static final int REQ_CODE_SPEECH_INPUT = 1;
     private static final String TAG = "DisplayHotels";
     private static String AREA ="";
+    private static String CITY ="";
 
     private static HotelAdapter adapter;
     private static boolean inputSearchVisibile = false;
@@ -321,10 +322,11 @@ public class DisplayHotelsActivity extends AppCompatActivity implements
     private void displayHotels(JSONObject response){
         Log.e(TAG, " displayHotels method started.");
         try {
-            String area = response.getString("area");
+            String area = response.optString("area");
             TextView title = (TextView)findViewById(R.id.title);
             title.setText(area);
             AREA = area;
+            CITY = response.optString("city");
 
             Log.e(TAG, " received area of user from server as "+area);
             JSONArray hotelsJSONArray = response.getJSONArray("hotels");
@@ -450,5 +452,13 @@ public class DisplayHotelsActivity extends AppCompatActivity implements
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    public static String getAREA() {
+        return AREA;
+    }
+
+    public static String getCITY() {
+        return CITY;
     }
 }

@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
+    private static String email="";
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -92,6 +93,7 @@ public class LoginActivity extends AppCompatActivity implements
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             findViewById(R.id.signIn).setVisibility(View.GONE);
+            email = acct.getEmail();
             Intent gotoAddressActivity = new Intent(this,DisplayAddressActivity.class);
             gotoAddressActivity.putExtra("email",acct.getEmail());
             startActivity(gotoAddressActivity);
@@ -125,5 +127,9 @@ public class LoginActivity extends AppCompatActivity implements
                 break;
 
         }
+    }
+
+    public static String getEmail() {
+        return email;
     }
 }

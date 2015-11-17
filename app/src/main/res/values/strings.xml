@@ -57,6 +57,8 @@
     <string name="desc_auth_code_activity">Demonstrate retrieving an auth code for authorizing your server.</string>
     <string name="name_auth_code_activity">ServerAuthCodeActivity</string>
     <string name="title_activity_choose_delivery_type">ChooseDeliveryTypeActivity</string>
+    <string name="title_activity_addaddress">AddaddressActivity</string>
+    <string name="title_activity_payment">PaymentActivity</string>
 
 
 

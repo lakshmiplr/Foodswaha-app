@@ -65,6 +65,8 @@ public class ChooseDeliveryTypeActivity extends AppCompatActivity {
             }
         });
 
+        cdt="delivery";
+
     }
 
 
