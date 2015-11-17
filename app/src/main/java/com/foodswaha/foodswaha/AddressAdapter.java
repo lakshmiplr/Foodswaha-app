@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -18,6 +19,8 @@ import java.util.List;
 public class AddressAdapter extends ArrayAdapter<Address> {
     private static final String TAG = "AddressAdapter";
     private static RadioButton selectedRadioButton;
+    private static ImageButton selectedEditAddress;
+    private static ImageButton selectedDeleteAddress;
 
     Context context;
     int layoutResourceId;
@@ -44,6 +47,10 @@ public class AddressAdapter extends ArrayAdapter<Address> {
             holder = new Holder();
             holder.address = (TextView) row.findViewById(R.id.address);
             holder.radioButton = (RadioButton) row.findViewById(R.id.radioButton);
+            holder.editAddress = (ImageButton) row.findViewById(R.id.editAddress);
+            holder.deleteAddress = (ImageButton) row.findViewById(R.id.deleteAddress);
+            final ImageButton finalEditAddress = holder.editAddress;
+            final ImageButton finalDeleteAddress = holder.deleteAddress;
             final RadioButton finalRadioButton = holder.radioButton;
             holder.radioButton.setOnClickListener(new View.OnClickListener() {
                 boolean checked = true;
@@ -52,9 +59,15 @@ public class AddressAdapter extends ArrayAdapter<Address> {
                     if(checked&&selectedRadioButton!=finalRadioButton){
                         if(selectedRadioButton!=null){
                             selectedRadioButton.setChecked(false);
+                            selectedEditAddress.setVisibility(View.GONE);
+                            selectedDeleteAddress.setVisibility(View.GONE);
                         }
                         selectedRadioButton = finalRadioButton;
+                        selectedEditAddress = finalEditAddress;
+                        selectedDeleteAddress = finalDeleteAddress;
                         finalRadioButton.setChecked(true);
+                        selectedEditAddress.setVisibility(View.VISIBLE);
+                        selectedDeleteAddress.setVisibility(View.VISIBLE);
                     }
 
                 }
@@ -76,6 +89,8 @@ public class AddressAdapter extends ArrayAdapter<Address> {
     class Holder{
         TextView address;
         RadioButton radioButton;
+        ImageButton editAddress;
+        ImageButton deleteAddress;
         TextView position = new TextView(getContext());
     }
 }
