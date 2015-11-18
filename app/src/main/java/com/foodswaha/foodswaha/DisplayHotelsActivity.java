@@ -329,27 +329,29 @@ public class DisplayHotelsActivity extends AppCompatActivity implements
             CITY = response.optString("city");
 
             Log.e(TAG, " received area of user from server as "+area);
-            JSONArray hotelsJSONArray = response.getJSONArray("hotels");
+            JSONArray hotelsJSONArray = response.optJSONArray("hotels");
             Log.e(TAG, " received hotelsJSONArray from server as "+hotelsJSONArray);
             List hotelList = new ArrayList<Hotel>();
             JSONObject hotel;
-            for(int i = 0; i < hotelsJSONArray.length(); i++){
-                hotel = hotelsJSONArray.getJSONObject(i);
-                hotelList.add(
-                        new Hotel(
-                                hotel.getString("id"),
-                                hotel.getString("name"),
-                                hotel.getString("area"),
-                                hotel.getString("delivery time"),
-                                hotel.getString("delivery fees"),
-                                hotel.getString("min order"),
-                                hotel.getString("on time"),
-                                hotel.getString("rating"),
-                                hotel.getString("timings"),
-                                hotel.getString("image url"),
-                                hotel.getString("food types")
-                        )
-                );
+            if (hotelsJSONArray!=null) {
+                for (int i = 0; i < hotelsJSONArray.length(); i++) {
+                    hotel = hotelsJSONArray.getJSONObject(i);
+                    hotelList.add(
+                            new Hotel(
+                                    hotel.getString("id"),
+                                    hotel.getString("name"),
+                                    hotel.getString("area"),
+                                    hotel.getString("delivery time"),
+                                    hotel.getString("delivery fees"),
+                                    hotel.getString("min order"),
+                                    hotel.getString("on time"),
+                                    hotel.getString("rating"),
+                                    hotel.getString("timings"),
+                                    hotel.getString("image url"),
+                                    hotel.getString("food types")
+                            )
+                    );
+                }
             }
 
             adapter = new HotelAdapter(this,

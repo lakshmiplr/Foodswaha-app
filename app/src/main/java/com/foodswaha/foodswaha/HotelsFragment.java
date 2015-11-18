@@ -29,7 +29,7 @@ import java.util.Map;
 public class HotelsFragment extends Fragment {
 
     private static final String TAG = "HotelsFragment";
-    private static final String GET_HOTEL_MENU_URL = "http://104.155.202.28:8080/hotel/";
+    private static final String GET_HOTEL_MENU_URL = "http://104.199.135.27:8080/hotel/";
     private static JSONObject menuJSONObject =null;
     private JsonObjectRequest jsonObjectRequest;
     private static HotelAdapter.Holder  holder;

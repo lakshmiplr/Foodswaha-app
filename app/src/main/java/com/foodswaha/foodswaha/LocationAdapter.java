@@ -81,29 +81,29 @@ public class LocationAdapter<String> extends ArrayAdapter<String> implements Fil
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View row = convertView;
-        HotelMenuItemHolder holder = null;
+        AreaHolder holder = null;
 
         if(row == null) {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
-            holder = new HotelMenuItemHolder();
+            holder = new AreaHolder();
 
-            holder.hotelMenuItemName = (TextView)row.findViewById(R.id.menuName);
+            holder.areaName = (TextView)row.findViewById(R.id.menuName);
             row.setTag(holder);
         }
         else{
-            holder = (HotelMenuItemHolder)row.getTag();
+            holder = (AreaHolder)row.getTag();
         }
 
         String area = (String)areas.get(position);
         if (holder!=null)
-        holder.hotelMenuItemName.setText(area.toString());
+        holder.areaName.setText(area.toString());
 
 
         return row;
     }
-    class HotelMenuItemHolder{
-        TextView hotelMenuItemName;
+    class AreaHolder {
+        TextView areaName;
 
     }
 }

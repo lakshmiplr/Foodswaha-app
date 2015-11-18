@@ -20,7 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AddaddressActivity extends AppCompatActivity {
-    private static final String POST_ADDRESS_DETAILS_URL = "http://104.155.202.28:8080/address";
+    private static final String POST_ADDRESS_DETAILS_URL = "http://104.199.135.27:8080/address";
     private JSONObject mJsonResponse;
     private static final String TAG = "AddaddressActivity";
     @Override

@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class HotelAdapter extends ArrayAdapter<Hotel> implements Filterable{
     private static final String TAG = "HotelAdapter";
-    private static final String HOTEL_IMAGE_REQUEST_URL = "http://104.155.202.28:8080/";
+    private static final String HOTEL_IMAGE_REQUEST_URL = "http://104.199.135.27:8080/";
 
 
     Context context;

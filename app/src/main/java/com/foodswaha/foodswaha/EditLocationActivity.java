@@ -11,13 +11,23 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +37,7 @@ import java.util.Locale;
 public class EditLocationActivity extends AppCompatActivity {
 
     private static final int REQ_CODE_SPEECH_INPUT = 1;
+    private static final String GET_HOTEL_DETAILS_URL = "http://104.199.135.27:8080/location";
     public LocationAdapter<String> adapter ;
     public List<String> areas = new ArrayList<String>();
     @Override
@@ -92,6 +103,38 @@ public class EditLocationActivity extends AppCompatActivity {
     private void displayAreas() {
         ListView areaList = (ListView) findViewById(R.id.areaList);
         areaList.setAdapter(getAreaAdapter());
+        areaList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LocationAdapter.AreaHolder holder = (LocationAdapter.AreaHolder) view.getTag();
+                JsonObjectRequest jsonObjectRequest = null;
+                String latitude = "12.92";
+                String longitude="77.61";
+                try {
+                    jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, GET_HOTEL_DETAILS_URL,new JSONObject("{\"latitude\":\""+latitude+"\",\"longitude\":\""+longitude+"\"}"),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    gotoDisplayHotelsActivity(response);
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
+            }
+        });
+    }
+
+    public void gotoDisplayHotelsActivity(JSONObject response) {
+        Intent displayHotelsIntent = new Intent(this, DisplayHotelsActivity.class);
+        displayHotelsIntent.putExtra("hotelData",response.toString());
+        startActivity(displayHotelsIntent);
+        finish();
     }
 
     public ArrayAdapter getAreaAdapter() {
