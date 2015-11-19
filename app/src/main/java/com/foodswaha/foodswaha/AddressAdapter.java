@@ -2,6 +2,7 @@ package com.foodswaha.foodswaha;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -28,7 +33,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
 
     public AddressAdapter(Context context, int resource, List<Address> objects) {
         super(context, resource, objects);
-        Log.e(TAG, " HotelMenuItemSubAdapter constructor  started.");
+        Log.e(TAG, " AddressAdapter constructor  started.");
         this.context = context;
         this.layoutResourceId = resource;
         this.data = objects;
@@ -52,6 +57,12 @@ public class AddressAdapter extends ArrayAdapter<Address> {
             final ImageButton finalEditAddress = holder.editAddress;
             final ImageButton finalDeleteAddress = holder.deleteAddress;
             final RadioButton finalRadioButton = holder.radioButton;
+            final TextView finalFlatNumber = holder.flatNumber;
+            final TextView finalStreetName = holder.streetName;
+            final TextView finalArea = holder.area;
+            final TextView finalCity = holder.city;
+            final TextView finalLandMark = holder.landMark;
+            final TextView finalId = holder.id;
             holder.radioButton.setOnClickListener(new View.OnClickListener() {
                 boolean checked = true;
                 @Override
@@ -72,25 +83,80 @@ public class AddressAdapter extends ArrayAdapter<Address> {
 
                 }
             });
+            holder.editAddress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent editAddressIntent = new Intent(getContext(), AddAddressActivity.class);
+                    editAddressIntent.putExtra("edit","true");
+                    editAddressIntent.putExtra("flatNumber", finalFlatNumber.getText());
+                    editAddressIntent.putExtra("streetName",finalStreetName.getText());
+                    editAddressIntent.putExtra("area",finalArea.getText());
+                    editAddressIntent.putExtra("city",finalCity.getText());
+                    editAddressIntent.putExtra("landMark",finalLandMark.getText());
+                    editAddressIntent.putExtra("id",finalId.getText());
+                    getContext().startActivity(editAddressIntent);
+                }
+            });
+            holder.deleteAddress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JSONObject addressObject  = LoginActivity.getAddressJSONObject();
+                    JSONArray addressesJSONArray = addressObject.optJSONArray("addresses");
+                    JSONArray newAddressJSONArray = removeAddress(addressesJSONArray, Integer.parseInt(finalId.getText().toString()));
+                    try {
+                        addressObject.put("addresses",newAddressJSONArray);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    LoginActivity.setAddressJSONObject(addressObject);
+                    DisplayAddressActivity.getAddressList().remove(new Address(Integer.parseInt(finalId.getText().toString())));
+                    notifyDataSetChanged();
+                }
+            });
             row.setTag(holder);
         }
         else{
             holder = (Holder)row.getTag();
         }
 
-        holder.position.setText(String.valueOf(position));
         Address address = (Address)data.get(position);
+
+        holder.flatNumber.setText(address.getFlatNumber());
+        holder.streetName.setText(address.getStreetName());
+        holder.area.setText(address.getArea());
+        holder.city.setText(address.getCity());
+        holder.landMark.setText(address.getLandmark());
+        holder.id.setText(Integer.toString(address.getId()));
+
         holder.address.setText(address.getFlatNumber()+","+address.getStreetName()+","+address.getArea()
         +","+address.getCity()+","+address.getLandmark());
 
         return row;
     }
+    public static JSONArray removeAddress( JSONArray addressArray,int id) {
+
+        JSONArray tempJSOnArray=new JSONArray();
+        try{
+            for(int i=0;i<addressArray.length();i++){
+                addressArray.get(i);
+                if(i!=id)
+
+                    tempJSOnArray.put(addressArray.get(i));
+            }
+        }catch (Exception e){e.printStackTrace();}
+        return tempJSOnArray;
+    }
 
     class Holder{
+        TextView id = new TextView(getContext());
         TextView address;
+        TextView flatNumber = new TextView(getContext());
+        TextView streetName = new TextView(getContext());
+        TextView area =new TextView(getContext());
+        TextView city = new TextView(getContext());
+        TextView landMark= new TextView(getContext());
         RadioButton radioButton;
         ImageButton editAddress;
         ImageButton deleteAddress;
-        TextView position = new TextView(getContext());
     }
 }

@@ -60,6 +60,7 @@
     <string name="title_activity_addaddress">AddaddressActivity</string>
     <string name="title_activity_payment">PaymentActivity</string>
     <string name="title_activity_dispaly_hotel_address">DispalyHotelAddressActivity</string>
+    <string name="title_activity_add_address">AddAddress</string>
 
 
 

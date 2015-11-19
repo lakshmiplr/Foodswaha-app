@@ -10,6 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -19,6 +23,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
@@ -31,15 +39,20 @@ public class LoginActivity extends AppCompatActivity implements
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
     private static String email="";
+    private static String mobileNumber="";
+    private static JSONObject addressJSONObject;
+    private static int ADDRESS_COUNT=0;
+    private static final String GET_USER_ADDRESS_LIST_URL = "http://104.199.135.27:8080/address";
 
     private GoogleApiClient mGoogleApiClient;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
@@ -68,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
             findViewById(R.id.signIn).setVisibility(View.GONE);
+            toolbar.setVisibility(View.GONE);
         } else {
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
@@ -95,9 +109,7 @@ public class LoginActivity extends AppCompatActivity implements
             findViewById(R.id.signIn).setVisibility(View.GONE);
             email = acct.getEmail();
             if("delivery".equals(ChooseDeliveryTypeActivity.getCdt())){
-                Intent gotoAddressActivity = new Intent(this,DisplayAddressActivity.class);
-                gotoAddressActivity.putExtra("email",acct.getEmail());
-                startActivity(gotoAddressActivity);
+                getUserAddressList();
             }else if("pickup".equals(ChooseDeliveryTypeActivity.getCdt())){
                 Intent gotoHotelAddressActivity = new Intent(this,DispalyHotelAddressActivity.class);
                 gotoHotelAddressActivity.putExtra("email",acct.getEmail());
@@ -138,5 +150,52 @@ public class LoginActivity extends AppCompatActivity implements
 
     public static String getEmail() {
         return email;
+    }
+
+    private void getUserAddressList() {
+        JsonObjectRequest jsonObjectRequest = null;
+        try {
+            jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, GET_USER_ADDRESS_LIST_URL, new JSONObject("{\"email\":\"" + email + "\"}"),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                if(addressJSONObject==null){
+                                    addressJSONObject = response;
+                                }
+                                JSONArray addressesJSONArray = response.getJSONArray("addresses");
+                                mobileNumber = response.optString("mobile");
+                                ADDRESS_COUNT = addressesJSONArray.length();
+                                if(ADDRESS_COUNT==0){
+                                    Intent loginIntent = new Intent(LoginActivity.this, AddAddressActivity.class);
+                                    startActivity(loginIntent);
+                                }else{
+                                    Intent gotoAddressActivity = new Intent(LoginActivity.this,DisplayAddressActivity.class);
+                                    startActivity(gotoAddressActivity);
+                                }
+                            } catch (Exception e) {
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
+    }
+
+    public static JSONObject getAddressJSONObject() {
+        return addressJSONObject;
+    }
+
+    public static void setAddressJSONObject(JSONObject addressJSONObject) {
+        LoginActivity.addressJSONObject = addressJSONObject;
+    }
+
+    public static String getMobileNumber() {
+        return mobileNumber;
     }
 }

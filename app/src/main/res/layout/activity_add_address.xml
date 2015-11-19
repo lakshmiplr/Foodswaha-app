@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.foodswaha.foodswaha.AddaddressActivity">
+    tools:context="com.foodswaha.foodswaha.AddAddressActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -25,36 +25,39 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/doorNumber"
+        android:id="@+id/flatNumber"
         android:layout_below="@+id/toolbar"
         android:layout_alignLeft="@+id/toolbar"
         android:layout_alignStart="@+id/toolbar"
         android:layout_marginTop="44dp"
         android:hint="door number/office name"
         android:singleLine="true"
-        android:textColor="#3B5998" />
+        android:inputType="textNoSuggestions"
+         />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/streetNumber"
+        android:id="@+id/streetName"
         android:hint="cross,main,street name"
-        android:layout_below="@+id/doorNumber"
-        android:layout_alignLeft="@+id/doorNumber"
-        android:layout_alignStart="@+id/doorNumber"
+        android:layout_below="@+id/flatNumber"
+        android:layout_alignLeft="@+id/flatNumber"
+        android:layout_alignStart="@+id/flatNumber"
         android:singleLine="true"
-        android:textColor="#3B5998" />
+        android:inputType="textNoSuggestions"
+         />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/area"
-        android:layout_below="@+id/streetNumber"
+        android:layout_below="@+id/streetName"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:hint="area"
         android:singleLine="true"
-        android:textColor="#3B5998" />
+        android:inputType="textNoSuggestions"
+        android:enabled="false" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -65,7 +68,8 @@
         android:layout_alignParentStart="true"
         android:hint="city"
         android:singleLine="true"
-        android:textColor="#3B5998" />
+        android:inputType="textNoSuggestions"
+        android:enabled="false" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -76,7 +80,7 @@
         android:layout_alignStart="@+id/city"
         android:hint="land mark(optional)"
         android:singleLine="true"
-        android:textColor="#3B5998" />
+         />
 
     <EditText
         android:layout_width="fill_parent"
@@ -87,9 +91,9 @@
         android:layout_below="@+id/landmark"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:hint="mobile number"
+        android:hint="call me on this number"
         android:singleLine="true"
-        android:textColor="#3B5998" />
+        />
 
     <RelativeLayout
         android:orientation="horizontal"
@@ -103,16 +107,28 @@
         android:id="@+id/cartRelativeLayOut"
         android:visibility="visible">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0"
+            android:id="@+id/total"
+            android:textColor="#ffffff"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_centerInParent="true" />
+
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/checkout"
             android:background="@android:color/transparent"
             android:layout_gravity="center_vertical|right"
-            android:visibility="visible"
             android:src="@drawable/next"
-            android:layout_alignParentRight="false"
-            android:layout_centerInParent="true" />
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
 </RelativeLayout>

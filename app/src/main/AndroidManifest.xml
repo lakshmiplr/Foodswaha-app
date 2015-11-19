@@ -101,7 +101,7 @@
                 android:value=".DisplayCartActivity" />
         </activity>
         <activity
-            android:name=".AddaddressActivity"
+            android:name=".AddAddressActivity"
             android:label="@string/title_activity_addaddress"
             android:parentActivityName=".DisplayAddressActivity"
             android:screenOrientation="portrait" >
@@ -113,7 +113,7 @@
             android:name=".PaymentActivity"
             android:label="@string/title_activity_payment"
             android:parentActivityName=".ChooseDeliveryTypeActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ChooseDeliveryTypeActivity" />
@@ -122,7 +122,7 @@
             android:name=".DispalyHotelAddressActivity"
             android:label="@string/title_activity_dispaly_hotel_address"
             android:parentActivityName=".ChooseDeliveryTypeActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

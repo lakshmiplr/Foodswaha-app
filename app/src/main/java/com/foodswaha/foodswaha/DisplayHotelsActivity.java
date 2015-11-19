@@ -44,7 +44,6 @@ public class DisplayHotelsActivity extends AppCompatActivity implements
     private static final String TAG = "DisplayHotels";
     private static String AREA ="";
     private static String CITY ="";
-    private static String HOTEL_ADDRESS ="";
 
     private static HotelAdapter adapter;
     private static boolean inputSearchVisibile = false;
@@ -464,4 +463,5 @@ public class DisplayHotelsActivity extends AppCompatActivity implements
     public static String getCITY() {
         return CITY;
     }
+
 }
