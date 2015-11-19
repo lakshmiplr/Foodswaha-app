@@ -44,6 +44,7 @@ public class DisplayHotelsActivity extends AppCompatActivity implements
     private static final String TAG = "DisplayHotels";
     private static String AREA ="";
     private static String CITY ="";
+    private static String HOTEL_ADDRESS ="";
 
     private static HotelAdapter adapter;
     private static boolean inputSearchVisibile = false;
@@ -327,7 +328,6 @@ public class DisplayHotelsActivity extends AppCompatActivity implements
             title.setText(area);
             AREA = area;
             CITY = response.optString("city");
-
             Log.e(TAG, " received area of user from server as "+area);
             JSONArray hotelsJSONArray = response.optJSONArray("hotels");
             Log.e(TAG, " received hotelsJSONArray from server as "+hotelsJSONArray);
@@ -340,6 +340,7 @@ public class DisplayHotelsActivity extends AppCompatActivity implements
                             new Hotel(
                                     hotel.getString("id"),
                                     hotel.getString("name"),
+                                    hotel.getString("address"),
                                     hotel.getString("area"),
                                     hotel.getString("delivery time"),
                                     hotel.getString("delivery fees"),

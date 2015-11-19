@@ -9,6 +9,7 @@ public class Hotel {
     String id;
     String name;
     String address;
+    String area;
     String deliveryTime;
     String deliveryFee;
     String minOrder;
@@ -19,10 +20,11 @@ public class Hotel {
     Bitmap hotelImage = null;
     String foodTypes;
 
-    public Hotel(String id, String name, String address, String deliveryTime, String deliveryFee, String minOrder, String onTime, String rating, String timings,String imageUrl,String foodTypes) {
+    public Hotel(String id, String name, String address, String area, String deliveryTime, String deliveryFee, String minOrder, String onTime, String rating, String timings,String imageUrl,String foodTypes) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.area = area;
         this.deliveryTime = deliveryTime;
         this.deliveryFee = deliveryFee;
         this.minOrder = minOrder;
@@ -83,5 +85,9 @@ public class Hotel {
 
     public String getFoodTypes() {
         return foodTypes;
+    }
+
+    public String getArea() {
+        return area;
     }
 }

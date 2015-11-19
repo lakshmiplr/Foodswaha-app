@@ -55,7 +55,7 @@ public class HotelAdapter extends ArrayAdapter<Hotel> implements Filterable{
             holder = new Holder();
 
             holder.hotelName = (TextView)row.findViewById(R.id.hotelName);
-            holder.hotelAddress = (TextView)row.findViewById(R.id.hotelAddress);
+            holder.hotelArea = (TextView)row.findViewById(R.id.hotelArea);
             holder.hotelDTime = (TextView)row.findViewById(R.id.hotelDTime);
             holder.hotelDFee = (TextView)row.findViewById(R.id.hotelDFee);
             holder.hotelMinOrder = (TextView)row.findViewById(R.id.hotelMinOrder);
@@ -73,8 +73,9 @@ public class HotelAdapter extends ArrayAdapter<Hotel> implements Filterable{
 
         Hotel hotel = (Hotel)data.get(position);
         holder.hotelId = hotel.getId();
+        holder.hotelAddress = hotel.getAddress();
         holder.hotelName.setText(hotel.getName());
-        holder.hotelAddress.setText(hotel.getAddress());
+        holder.hotelArea.setText(hotel.getArea());
         holder.hotelDTime.setText(": "+hotel.getDeliveryTime()+" min ");
         if(hotel.getDeliveryFee().equals("0")){
             holder.hoteldeliveryChargeImage.setImageResource(R.drawable.free_delivery);
@@ -96,7 +97,8 @@ public class HotelAdapter extends ArrayAdapter<Hotel> implements Filterable{
     class Holder{
         String hotelId;
         TextView hotelName;
-        TextView hotelAddress;
+        String hotelAddress;
+        TextView hotelArea;
         TextView hotelDTime;
         TextView hotelDFee;
         TextView hotelMinOrder;

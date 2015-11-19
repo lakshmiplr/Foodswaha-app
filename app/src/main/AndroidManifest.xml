@@ -111,7 +111,18 @@
         </activity>
         <activity
             android:name=".PaymentActivity"
-            android:label="@string/title_activity_payment" >
+            android:label="@string/title_activity_payment"
+            android:parentActivityName=".ChooseDeliveryTypeActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ChooseDeliveryTypeActivity" />
+        </activity>
+        <activity
+            android:name=".DispalyHotelAddressActivity"
+            android:label="@string/title_activity_dispaly_hotel_address"
+            android:parentActivityName=".ChooseDeliveryTypeActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

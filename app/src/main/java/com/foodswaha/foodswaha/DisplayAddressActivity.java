@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -27,6 +28,7 @@ public class DisplayAddressActivity extends AppCompatActivity {
 
     private static final String GET_USER_ADDRESS_LIST_URL = "http://104.199.135.27:8080/address";
     private String email;
+    Cart cartInstance = Cart.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,19 @@ public class DisplayAddressActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent loginIntent = new Intent(DisplayAddressActivity.this, AddaddressActivity.class);
                 startActivity(loginIntent);
+            }
+        });
+        String dfeeString = HotelsFragment.getHolder().hotelDFee.getText().toString().replace(":", "");
+        final int dfeeInt = Integer.parseInt(dfeeString.replace("Rs", "").trim());
+        final TextView total = ((TextView) findViewById(R.id.total));
+        total.setText(String.valueOf(cartInstance.getTotalBill() + dfeeInt));
+
+        final View gotoPayment = findViewById(R.id.checkout);
+        gotoPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotoPaymentIntent = new Intent(DisplayAddressActivity.this, PaymentActivity.class);
+                startActivity(gotoPaymentIntent);
             }
         });
 

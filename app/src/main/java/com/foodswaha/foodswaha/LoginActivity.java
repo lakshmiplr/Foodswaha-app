@@ -94,9 +94,16 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
             findViewById(R.id.signIn).setVisibility(View.GONE);
             email = acct.getEmail();
-            Intent gotoAddressActivity = new Intent(this,DisplayAddressActivity.class);
-            gotoAddressActivity.putExtra("email",acct.getEmail());
-            startActivity(gotoAddressActivity);
+            if("delivery".equals(ChooseDeliveryTypeActivity.getCdt())){
+                Intent gotoAddressActivity = new Intent(this,DisplayAddressActivity.class);
+                gotoAddressActivity.putExtra("email",acct.getEmail());
+                startActivity(gotoAddressActivity);
+            }else if("pickup".equals(ChooseDeliveryTypeActivity.getCdt())){
+                Intent gotoHotelAddressActivity = new Intent(this,DispalyHotelAddressActivity.class);
+                gotoHotelAddressActivity.putExtra("email",acct.getEmail());
+                startActivity(gotoHotelAddressActivity);
+            }
+
         }
     }
 
