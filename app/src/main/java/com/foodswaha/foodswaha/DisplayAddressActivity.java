@@ -69,23 +69,22 @@ public class DisplayAddressActivity extends AppCompatActivity {
 
     private void buildAddressAdapter(JSONObject response) {
         try{
+
+            addressList.clear();
             JSONArray addressesJSONArray = response.getJSONArray("addresses");
-            JSONObject address;
-            for(int i = 0; i < addressesJSONArray.length(); i++){
-                address = addressesJSONArray.getJSONObject(i);
-                addressList.add(
-                        new Address(
-                                i,
-                                address.getString("flat No"),
-                                address.getString("address"),
-                                address.getString("area"),
-                                address.getString("city"),
-                                address.getString("landmark")
-                        )
-                );
-
-        }
-
+                JSONObject address;
+                for(int i = 0; i < addressesJSONArray.length(); i++){
+                    address = addressesJSONArray.getJSONObject(i);
+                    addressList.add(
+                            new Address(
+                                    address.getString("flat No"),
+                                    address.getString("address"),
+                                    address.getString("area"),
+                                    address.getString("city"),
+                                    address.getString("landmark")
+                            )
+                    );
+            }
             ListView addressListView = (ListView) findViewById(R.id.addressList);
             EditText mobile =(EditText)findViewById(R.id.mobile);
             mobile.setText(response.optString("mobile"));

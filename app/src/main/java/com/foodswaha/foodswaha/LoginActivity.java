@@ -153,38 +153,51 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void getUserAddressList() {
-        JsonObjectRequest jsonObjectRequest = null;
-        try {
-            jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, GET_USER_ADDRESS_LIST_URL, new JSONObject("{\"email\":\"" + email + "\"}"),
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                if(addressJSONObject==null){
-                                    addressJSONObject = response;
+        if(addressJSONObject!=null){
+            JSONArray addressesJSONArray = addressJSONObject.optJSONArray("addresses");
+            mobileNumber = addressJSONObject.optString("mobile");
+            ADDRESS_COUNT = addressesJSONArray.length();
+            if(ADDRESS_COUNT==0){
+                Intent loginIntent = new Intent(LoginActivity.this, AddAddressActivity.class);
+                startActivity(loginIntent);
+            }else{
+                Intent gotoAddressActivity = new Intent(LoginActivity.this,DisplayAddressActivity.class);
+                startActivity(gotoAddressActivity);
+            }
+        }else{
+            JsonObjectRequest jsonObjectRequest = null;
+            try {
+                jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, GET_USER_ADDRESS_LIST_URL, new JSONObject("{\"email\":\"" + email + "\"}"),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    if(addressJSONObject==null){
+                                        addressJSONObject = response;
+                                    }
+                                    JSONArray addressesJSONArray = addressJSONObject.getJSONArray("addresses");
+                                    mobileNumber = response.optString("mobile");
+                                    ADDRESS_COUNT = addressesJSONArray.length();
+                                    if(ADDRESS_COUNT==0){
+                                        Intent loginIntent = new Intent(LoginActivity.this, AddAddressActivity.class);
+                                        startActivity(loginIntent);
+                                    }else{
+                                        Intent gotoAddressActivity = new Intent(LoginActivity.this,DisplayAddressActivity.class);
+                                        startActivity(gotoAddressActivity);
+                                    }
+                                } catch (Exception e) {
                                 }
-                                JSONArray addressesJSONArray = response.getJSONArray("addresses");
-                                mobileNumber = response.optString("mobile");
-                                ADDRESS_COUNT = addressesJSONArray.length();
-                                if(ADDRESS_COUNT==0){
-                                    Intent loginIntent = new Intent(LoginActivity.this, AddAddressActivity.class);
-                                    startActivity(loginIntent);
-                                }else{
-                                    Intent gotoAddressActivity = new Intent(LoginActivity.this,DisplayAddressActivity.class);
-                                    startActivity(gotoAddressActivity);
-                                }
-                            } catch (Exception e) {
                             }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
         }
-        VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
     }
 
     public static JSONObject getAddressJSONObject() {
@@ -197,5 +210,9 @@ public class LoginActivity extends AppCompatActivity implements
 
     public static String getMobileNumber() {
         return mobileNumber;
+    }
+
+    public static int getAddressCount() {
+        return ADDRESS_COUNT;
     }
 }

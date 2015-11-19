@@ -109,7 +109,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
                         e.printStackTrace();
                     }
                     LoginActivity.setAddressJSONObject(addressObject);
-                    DisplayAddressActivity.getAddressList().remove(new Address(Integer.parseInt(finalId.getText().toString())));
+                    DisplayAddressActivity.getAddressList().remove(Integer.parseInt(finalId.getText().toString()));
                     notifyDataSetChanged();
                 }
             });
@@ -126,7 +126,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         holder.area.setText(address.getArea());
         holder.city.setText(address.getCity());
         holder.landMark.setText(address.getLandmark());
-        holder.id.setText(Integer.toString(address.getId()));
+        holder.id.setText(Integer.toString(position));
 
         holder.address.setText(address.getFlatNumber()+","+address.getStreetName()+","+address.getArea()
         +","+address.getCity()+","+address.getLandmark());
