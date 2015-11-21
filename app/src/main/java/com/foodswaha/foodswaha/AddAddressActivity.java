@@ -59,7 +59,7 @@ public class AddAddressActivity extends AppCompatActivity {
         }
 
 
-        EditText mobileNumber = (EditText) findViewById(R.id.mobileNumber);
+        final EditText mobileNumber = (EditText) findViewById(R.id.mobileNumber);
         mobileNumber.setText(LoginActivity.getMobileNumber());
 
         String dfeeString = HotelsFragment.getHolder().hotelDFee.getText().toString().replace(":", "");
@@ -83,12 +83,52 @@ public class AddAddressActivity extends AppCompatActivity {
                                 "\"landmark\":\""+landMark.getText().toString()+"\""+
                                 "}");
                         addressesJSONArray.put(Integer.parseInt(getIntent().getStringExtra("id")),address);
+                        addressObject.put("mobile",mobileNumber.getText());
                         LoginActivity.setAddressJSONObject(addressObject);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else{
+                }else if(getIntent().getStringExtra("type").equals("new")){
+                    JSONObject addressObject  = LoginActivity.getAddressJSONObject();
+                    JSONArray addressesJSONArray = addressObject.optJSONArray("addresses");
+
+                    try {
+                        JSONObject address = new JSONObject("{\"flat No\":\""+flatNumber.getText().toString()+"\"," +
+                                "\"address\":\""+streetName.getText().toString()+"\"," +
+                                "\"area\":\""+area.getText().toString()+"\"," +
+                                "\"city\":\""+city.getText().toString()+"\"," +
+                                "\"landmark\":\""+landMark.getText().toString()+"\""+
+                                "}");
+
+                        addressesJSONArray.put(address);
+                        addressObject.put("mobile",mobileNumber.getText());
+                        LoginActivity.setAddressJSONObject(addressObject);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else if(getIntent().getStringExtra("type").equals("first")){
+                    JSONObject addressObject  = LoginActivity.getAddressJSONObject();
+
+                    try {
+                        JSONObject address = new JSONObject("{\"flat No\":\""+flatNumber.getText().toString()+"\"," +
+                                "\"address\":\""+streetName.getText().toString()+"\"," +
+                                "\"area\":\""+area.getText().toString()+"\"," +
+                                "\"city\":\""+city.getText().toString()+"\"," +
+                                "\"landmark\":\""+landMark.getText().toString()+"\""+
+                                "}");
+                        JSONArray addressJSONArray = new JSONArray();
+                        addressJSONArray.put(address);
+                        addressObject.put("addresses",addressJSONArray);
+                        addressObject.put("email",LoginActivity.getEmail());
+                        addressObject.put("mobile",mobileNumber.getText());
+
+                        LoginActivity.setAddressJSONObject(addressObject);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 
 

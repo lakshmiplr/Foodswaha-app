@@ -48,6 +48,7 @@ public class DisplayAddressActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent addAddressIntent = new Intent(DisplayAddressActivity.this, AddAddressActivity.class);
+                addAddressIntent.putExtra("type","new");
                 startActivity(addAddressIntent);
             }
         });

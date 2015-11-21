@@ -158,8 +158,9 @@ public class LoginActivity extends AppCompatActivity implements
             mobileNumber = addressJSONObject.optString("mobile");
             ADDRESS_COUNT = addressesJSONArray.length();
             if(ADDRESS_COUNT==0){
-                Intent loginIntent = new Intent(LoginActivity.this, AddAddressActivity.class);
-                startActivity(loginIntent);
+                Intent gotoAddFirstAddressIntent = new Intent(LoginActivity.this, AddAddressActivity.class);
+                gotoAddFirstAddressIntent.putExtra("type","first");
+                startActivity(gotoAddFirstAddressIntent);
             }else{
                 Intent gotoAddressActivity = new Intent(LoginActivity.this,DisplayAddressActivity.class);
                 startActivity(gotoAddressActivity);
@@ -175,12 +176,15 @@ public class LoginActivity extends AppCompatActivity implements
                                     if(addressJSONObject==null){
                                         addressJSONObject = response;
                                     }
-                                    JSONArray addressesJSONArray = addressJSONObject.getJSONArray("addresses");
-                                    mobileNumber = response.optString("mobile");
-                                    ADDRESS_COUNT = addressesJSONArray.length();
+                                    JSONArray addressesJSONArray = addressJSONObject.optJSONArray("addresses");
+                                    if(addressesJSONArray!=null) {
+                                        mobileNumber = response.optString("mobile");
+                                        ADDRESS_COUNT = addressesJSONArray.length();
+                                    }
                                     if(ADDRESS_COUNT==0){
-                                        Intent loginIntent = new Intent(LoginActivity.this, AddAddressActivity.class);
-                                        startActivity(loginIntent);
+                                        Intent gotoAddFirstAddressIntent = new Intent(LoginActivity.this, AddAddressActivity.class);
+                                        gotoAddFirstAddressIntent.putExtra("type","first");
+                                        startActivity(gotoAddFirstAddressIntent);
                                     }else{
                                         Intent gotoAddressActivity = new Intent(LoginActivity.this,DisplayAddressActivity.class);
                                         startActivity(gotoAddressActivity);

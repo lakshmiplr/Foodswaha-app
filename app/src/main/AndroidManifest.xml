@@ -75,7 +75,8 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName=".ChooseDeliveryTypeActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:noHistory="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ChooseDeliveryTypeActivity" />
@@ -104,7 +105,8 @@
             android:name=".AddAddressActivity"
             android:label="@string/title_activity_addaddress"
             android:parentActivityName=".DisplayAddressActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:noHistory="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DisplayAddressActivity" />
