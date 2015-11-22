@@ -31,7 +31,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 DealsFragment dealsFragment = new DealsFragment();
                 return dealsFragment;
             case 3:
-                MenuFragment menuFragment = new MenuFragment();
+                MoreFragment menuFragment = new MoreFragment();
                 return menuFragment;
             default:
                 return null;

@@ -78,8 +78,8 @@ public class DisplayAddressActivity extends AppCompatActivity {
                     address = addressesJSONArray.getJSONObject(i);
                     addressList.add(
                             new Address(
-                                    address.getString("flat No"),
-                                    address.getString("address"),
+                                    address.getString("flatNumber"),
+                                    address.getString("streetDetails"),
                                     address.getString("area"),
                                     address.getString("city"),
                                     address.getString("landmark")

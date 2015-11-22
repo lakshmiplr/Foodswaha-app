@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,7 +21,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AddAddressActivity extends AppCompatActivity {
-    private static final String POST_ADDRESS_DETAILS_URL = "http://104.199.135.27:8080/address";
+    private static final String POST_ADDRESS_DETAILS_CREATE_URL = "http://104.199.135.27:8080/address/create";
+    private static final String POST_ADDRESS_DETAILS_UPDATE_URL = "http://104.199.135.27:8080/address/update";
     private JSONObject mJsonResponse;
     private static final String TAG = "AddaddressActivity";
     Cart cartInstance = Cart.getInstance();
@@ -75,8 +75,8 @@ public class AddAddressActivity extends AppCompatActivity {
                     JSONArray addressesJSONArray = addressObject.optJSONArray("addresses");
 
                     try {
-                        JSONObject address = new JSONObject("{\"flat No\":\""+flatNumber.getText().toString()+"\"," +
-                                "\"address\":\""+streetName.getText().toString()+"\"," +
+                        JSONObject address = new JSONObject("{\"flatNumber\":\""+flatNumber.getText().toString()+"\"," +
+                                "\"streetDetails\":\""+streetName.getText().toString()+"\"," +
                                 "\"area\":\""+area.getText().toString()+"\"," +
                                 "\"city\":\""+city.getText().toString()+"\"," +
                                 "\"landmark\":\""+landMark.getText().toString()+"\""+
@@ -84,7 +84,7 @@ public class AddAddressActivity extends AppCompatActivity {
                         addressesJSONArray.put(Integer.parseInt(getIntent().getStringExtra("id")),address);
                         addressObject.put("mobile",mobileNumber.getText());
                         LoginActivity.setAddressJSONObject(addressObject);
-
+                        sendUpdateAddressRequestToServer(addressObject);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -93,8 +93,8 @@ public class AddAddressActivity extends AppCompatActivity {
                     JSONArray addressesJSONArray = addressObject.optJSONArray("addresses");
 
                     try {
-                        JSONObject address = new JSONObject("{\"flat No\":\""+flatNumber.getText().toString()+"\"," +
-                                "\"address\":\""+streetName.getText().toString()+"\"," +
+                        JSONObject address = new JSONObject("{\"flatNumber\":\""+flatNumber.getText().toString()+"\"," +
+                                "\"streetDetails\":\""+streetName.getText().toString()+"\"," +
                                 "\"area\":\""+area.getText().toString()+"\"," +
                                 "\"city\":\""+city.getText().toString()+"\"," +
                                 "\"landmark\":\""+landMark.getText().toString()+"\""+
@@ -103,7 +103,7 @@ public class AddAddressActivity extends AppCompatActivity {
                         addressesJSONArray.put(address);
                         addressObject.put("mobile",mobileNumber.getText());
                         LoginActivity.setAddressJSONObject(addressObject);
-
+                        sendUpdateAddressRequestToServer(addressObject);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -111,8 +111,8 @@ public class AddAddressActivity extends AppCompatActivity {
                     JSONObject addressObject  = LoginActivity.getAddressJSONObject();
 
                     try {
-                        JSONObject address = new JSONObject("{\"flat No\":\""+flatNumber.getText().toString()+"\"," +
-                                "\"address\":\""+streetName.getText().toString()+"\"," +
+                        JSONObject address = new JSONObject("{\"flatNumber\":\""+flatNumber.getText().toString()+"\"," +
+                                "\"streetDetails\":\""+streetName.getText().toString()+"\"," +
                                 "\"area\":\""+area.getText().toString()+"\"," +
                                 "\"city\":\""+city.getText().toString()+"\"," +
                                 "\"landmark\":\""+landMark.getText().toString()+"\""+
@@ -122,8 +122,8 @@ public class AddAddressActivity extends AppCompatActivity {
                         addressObject.put("addresses",addressJSONArray);
                         addressObject.put("email",LoginActivity.getEmail());
                         addressObject.put("mobile",mobileNumber.getText());
-
                         LoginActivity.setAddressJSONObject(addressObject);
+                        sendCreateAddressRequestToServer(addressObject);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -138,35 +138,13 @@ public class AddAddressActivity extends AppCompatActivity {
         });
     }
 
-    private void sendAddressToServer(){
-        EditText doorNumber = (EditText) findViewById(R.id.flatNumber);
-        EditText streetNumber = (EditText) findViewById(R.id.streetName);
-        TextView area = (TextView) findViewById(R.id.area);
-        TextView city = (TextView) findViewById(R.id.city);
-        EditText landmark = (EditText) findViewById(R.id.landmark);
-        EditText mobileNumber = (EditText) findViewById(R.id.mobileNumber);
-        if( mobileNumber.getText().toString().length() == 10 ) {
-            mobileNumber.setError("mobilenumber should be 10 digits");
-        }
-        String email = LoginActivity.getEmail();
-        JsonObjectRequest jsonObjectRequest = null;
-        try {
-            jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, POST_ADDRESS_DETAILS_URL,new JSONObject("{\"doorNumber\":\""+doorNumber.getText().toString()+"\"," +
-                    "\"streetNumber\":\""+streetNumber.getText().toString()+"\"," +
-                    "\"area\":\""+area.getText().toString()+"\"," +
-                    "\"city\":\""+city.getText().toString()+"\"," +
-                    "\"landmark\":\""+landmark.getText().toString()+"\"," +
-                    "\"mobileNumber\":\""+mobileNumber.getText().toString()+"\"," +
-                    "\"email\":\""+email+"\"," +
-                    "}"),
+    private void sendCreateAddressRequestToServer(JSONObject addressObject){
+        JsonObjectRequest  jsonObjectPost = new JsonObjectRequest(Request.Method.PUT, POST_ADDRESS_DETAILS_CREATE_URL,addressObject,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                mJsonResponse = response;
-                                Log.e(TAG, "JsonResponse received from server.response is " + mJsonResponse);
-                                Intent paymentIntent = new Intent(AddAddressActivity.this, PaymentActivity.class);
-                                startActivity(paymentIntent);
+
                             }
                             catch (Exception e) {
                             }
@@ -176,11 +154,28 @@ public class AddAddressActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                 }
             });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
+        VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectPost);
     }
+
+    private void sendUpdateAddressRequestToServer(JSONObject addressObject){
+        JsonObjectRequest  jsonObjectPost = new JsonObjectRequest(Request.Method.PUT, POST_ADDRESS_DETAILS_UPDATE_URL,addressObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+
+                        }
+                        catch (Exception e) {
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectPost);
+    }
+
 
     @Override
     public void onBackPressed() {

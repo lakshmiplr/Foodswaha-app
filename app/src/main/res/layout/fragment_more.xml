@@ -9,8 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/signOut"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:visibility="visible"
         android:maxHeight="40dp"
         android:maxWidth="200dp"
@@ -18,15 +16,9 @@
         android:minWidth="200dp"
         android:background="#3b5998"
         android:textColor="#ffffff"
-        android:text="SignOut" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/status"
+        android:text="SignOut"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/signIn"
-        android:layout_alignEnd="@+id/signIn"
-        android:layout_marginTop="82dp" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

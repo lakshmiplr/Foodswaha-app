@@ -8,12 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-public class MenuFragment extends Fragment implements
+public class MoreFragment extends Fragment implements
         View.OnClickListener {
 
     private static final String TAG = "SignInActivity";
@@ -22,11 +21,9 @@ public class MenuFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_menu, container, false);
-        view.findViewById(R.id.signOut).setOnClickListener(this);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
+        view = inflater.inflate(R.layout.fragment_more, container, false);
+        String[] values = {"signIn"};
+        //view.findViewById(R.id.signOut).setOnClickListener(this);
         mGoogleApiClient = DisplayHotelsActivity.getGoogleApiClient();
         return view;
     }
