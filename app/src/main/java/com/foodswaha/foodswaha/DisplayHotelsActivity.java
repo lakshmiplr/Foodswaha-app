@@ -428,9 +428,12 @@ public class DisplayHotelsActivity extends AppCompatActivity implements
                 break;
             }
             case OrdersFragment.RC_SIGN_IN: {
-                OrdersFragment fragment = (OrdersFragment) getSupportFragmentManager()
+                OrdersFragment ordersFragment = (OrdersFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.orders);
-                fragment.onActivityResult(requestCode, resultCode, data);
+                MoreFragment moreFragment = (MoreFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.more);
+                ordersFragment.onActivityResult(requestCode, resultCode, data);
+                moreFragment.onActivityResult(requestCode, resultCode, data);
             }
 
         }

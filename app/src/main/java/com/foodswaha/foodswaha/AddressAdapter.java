@@ -12,6 +12,11 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +28,7 @@ import java.util.List;
  */
 public class AddressAdapter extends ArrayAdapter<Address> {
     private static final String TAG = "AddressAdapter";
+    private static final String POST_ADDRESS_DETAILS_UPDATE_URL = "http://104.199.135.27:8080/address/update";
     private static RadioButton selectedRadioButton;
     private static ImageButton selectedEditAddress;
     private static ImageButton selectedDeleteAddress;
@@ -109,6 +115,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
                         e.printStackTrace();
                     }
                     LoginActivity.setAddressJSONObject(addressObject);
+                    sendUpdateAddressRequestToServer(addressObject);
                     DisplayAddressActivity.getAddressList().remove(Integer.parseInt(finalId.getText().toString()));
                     notifyDataSetChanged();
                 }
@@ -158,5 +165,23 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         RadioButton radioButton;
         ImageButton editAddress;
         ImageButton deleteAddress;
+    }
+    private void sendUpdateAddressRequestToServer(JSONObject addressObject){
+        JsonObjectRequest jsonObjectPost = new JsonObjectRequest(Request.Method.PUT, POST_ADDRESS_DETAILS_UPDATE_URL,addressObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+
+                        }
+                        catch (Exception e) {
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectPost);
     }
 }
