@@ -48,16 +48,16 @@ public class ChooseDeliveryTypeActivity extends AppCompatActivity {
                 RadioButton radioButton = (RadioButton) findViewById(checkedId);
                 if (radioButton.getText().equals("delivery")) {
                     total.setText(String.valueOf(cartInstance.getTotalBill() + dfeeInt));
-                    cdt ="delivery";
+                    cdt = "delivery";
                 } else if (radioButton.getText().equals("pickup")) {
                     total.setText(String.valueOf(cartInstance.getTotalBill()));
-                    cdt ="pickup";
+                    cdt = "pickup";
                 }
             }
         });
 
-        final View gotoAddress = findViewById(R.id.checkout);
-        gotoAddress.setOnClickListener(new View.OnClickListener() {
+        final View gotoLoginActiity = findViewById(R.id.checkout);
+        gotoLoginActiity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent loginIntent = new Intent(ChooseDeliveryTypeActivity.this, LoginActivity.class);

@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -182,21 +181,14 @@ public class AddAddressActivity extends AppCompatActivity {
         }
         VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
     }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-               if(LoginActivity.getAddressCount()==0){
-                   Intent gotoChooseDeliveryOptionsIntent = new Intent(AddAddressActivity.this, ChooseDeliveryTypeActivity.class);
-                   startActivity(gotoChooseDeliveryOptionsIntent);
-                   return true;
-               }else{
-                   return super.onOptionsItemSelected(item);
-               }
-             default: return super.onOptionsItemSelected(item);
+    public void onBackPressed() {
+        if(LoginActivity.getAddressCount()==0){
+            Intent chooseDeliveryTypeActivity = new Intent(AddAddressActivity.this, ChooseDeliveryTypeActivity.class);
+            startActivity(chooseDeliveryTypeActivity);
         }
     }
-
 
 }
 

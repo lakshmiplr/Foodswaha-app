@@ -156,10 +156,15 @@ public class LoginActivity extends AppCompatActivity implements
         if(addressJSONObject!=null){
             JSONArray addressesJSONArray = addressJSONObject.optJSONArray("addresses");
             mobileNumber = addressJSONObject.optString("mobile");
-            ADDRESS_COUNT = addressesJSONArray.length();
+            if(addressesJSONArray==null){
+                ADDRESS_COUNT =0;
+            }else{
+                ADDRESS_COUNT = addressesJSONArray.length();
+            }
             if(ADDRESS_COUNT==0){
+                finish();
                 Intent gotoAddFirstAddressIntent = new Intent(LoginActivity.this, AddAddressActivity.class);
-                gotoAddFirstAddressIntent.putExtra("type","first");
+                gotoAddFirstAddressIntent.putExtra("type", "first");
                 startActivity(gotoAddFirstAddressIntent);
             }else{
                 Intent gotoAddressActivity = new Intent(LoginActivity.this,DisplayAddressActivity.class);
@@ -182,6 +187,7 @@ public class LoginActivity extends AppCompatActivity implements
                                         ADDRESS_COUNT = addressesJSONArray.length();
                                     }
                                     if(ADDRESS_COUNT==0){
+                                        finish();
                                         Intent gotoAddFirstAddressIntent = new Intent(LoginActivity.this, AddAddressActivity.class);
                                         gotoAddFirstAddressIntent.putExtra("type","first");
                                         startActivity(gotoAddFirstAddressIntent);

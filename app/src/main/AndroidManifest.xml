@@ -76,7 +76,7 @@
             android:label="@string/title_activity_login"
             android:parentActivityName=".ChooseDeliveryTypeActivity"
             android:screenOrientation="portrait"
-            android:noHistory="true">
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ChooseDeliveryTypeActivity" />
@@ -114,11 +114,11 @@
         <activity
             android:name=".PaymentActivity"
             android:label="@string/title_activity_payment"
-            android:parentActivityName=".ChooseDeliveryTypeActivity"
+            android:parentActivityName=".LoginActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ChooseDeliveryTypeActivity" />
+                android:value=".LoginActivity" />
         </activity>
         <activity
             android:name=".DispalyHotelAddressActivity"
