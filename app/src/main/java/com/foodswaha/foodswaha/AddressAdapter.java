@@ -167,7 +167,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         ImageButton deleteAddress;
     }
     private void sendUpdateAddressRequestToServer(JSONObject addressObject){
-        JsonObjectRequest jsonObjectPost = new JsonObjectRequest(Request.Method.PUT, POST_ADDRESS_DETAILS_UPDATE_URL,addressObject,
+        JsonObjectRequest jsonObjectPost = new JsonObjectRequest(Request.Method.POST, POST_ADDRESS_DETAILS_UPDATE_URL,addressObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
