@@ -89,7 +89,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
                     Intent editAddressIntent = new Intent(getContext(), AddAddressActivity.class);
                     editAddressIntent.putExtra("edit","true");
                     editAddressIntent.putExtra("flatNumber", finalFlatNumber.getText());
-                    editAddressIntent.putExtra("streetName",finalStreetName.getText());
+                    editAddressIntent.putExtra("streetDetails",finalStreetName.getText());
                     editAddressIntent.putExtra("area",finalArea.getText());
                     editAddressIntent.putExtra("city",finalCity.getText());
                     editAddressIntent.putExtra("landMark",finalLandMark.getText());

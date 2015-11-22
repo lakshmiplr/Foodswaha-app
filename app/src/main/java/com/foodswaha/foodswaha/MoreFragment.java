@@ -23,7 +23,7 @@ public class MoreFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_more, container, false);
         String[] values = {"signIn"};
-        //view.findViewById(R.id.signOut).setOnClickListener(this);
+        view.findViewById(R.id.signOut).setOnClickListener(this);
         mGoogleApiClient = DisplayHotelsActivity.getGoogleApiClient();
         return view;
     }
@@ -34,7 +34,6 @@ public class MoreFragment extends Fragment implements
                     @Override
                     public void onResult(Status status) {
                         view.findViewById(R.id.signOut).setVisibility(View.GONE);
-                        ((TextView) view.findViewById(R.id.status)).setText("signout successfull");
                     }
                 });
     }
