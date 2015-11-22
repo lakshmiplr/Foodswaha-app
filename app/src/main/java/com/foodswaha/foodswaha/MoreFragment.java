@@ -58,6 +58,7 @@ public class MoreFragment extends Fragment implements
                     @Override
                     public void onResult(Status status) {
                         signInOutTextView.setText("signIn");
+                        LoginActivity.setAddressJSONObject(null);
                     }
                 });
     }
