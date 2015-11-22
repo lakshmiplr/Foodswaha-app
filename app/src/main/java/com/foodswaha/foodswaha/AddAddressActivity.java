@@ -47,7 +47,7 @@ public class AddAddressActivity extends AppCompatActivity {
         final EditText landMark = (EditText) findViewById(R.id.landmark);
         if(getIntent().getStringExtra("edit")!=null){
             flatNumber.setText(getIntent().getStringExtra("flatNumber"));
-            streetName.setText(getIntent().getStringExtra("streetName"));
+            streetName.setText(getIntent().getStringExtra("streetDetails"));
             area.setText(getIntent().getStringExtra("area"));
             city.setText(getIntent().getStringExtra("city"));
             landMark.setText(getIntent().getStringExtra("landMark"));
@@ -158,7 +158,7 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
     private void sendUpdateAddressRequestToServer(JSONObject addressObject){
-        JsonObjectRequest  jsonObjectPost = new JsonObjectRequest(Request.Method.PUT, POST_ADDRESS_DETAILS_UPDATE_URL,addressObject,
+        JsonObjectRequest  jsonObjectPost = new JsonObjectRequest(Request.Method.POST, POST_ADDRESS_DETAILS_UPDATE_URL,addressObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
