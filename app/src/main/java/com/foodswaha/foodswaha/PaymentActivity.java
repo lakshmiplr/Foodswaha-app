@@ -72,7 +72,7 @@ public class PaymentActivity extends AppCompatActivity {
         mPaymentParams.setProductInfo("Tshirt");
         mPaymentParams.setFirstName("foodswaha");
         mPaymentParams.setEmail("foodswaha@gmail.com");
-        mPaymentParams.setTxnId("0123479543689");
+        mPaymentParams.setTxnId("0123479543680");
         mPaymentParams.setSurl("https://payu.herokuapp.com/success");
         mPaymentParams.setFurl("https://payu.herokuapp.com/failure");
         mPaymentParams.setUdf1("udf1l");
