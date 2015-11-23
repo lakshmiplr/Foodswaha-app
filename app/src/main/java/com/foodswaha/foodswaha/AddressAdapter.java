@@ -134,6 +134,9 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         holder.city.setText(address.getCity());
         holder.landMark.setText(address.getLandmark());
         holder.id.setText(Integer.toString(position));
+        if(position==0){
+            holder.radioButton.setChecked(true);
+        }
 
         holder.address.setText(address.getFlatNumber()+","+address.getStreetName()+","+address.getArea()
         +","+address.getCity()+","+address.getLandmark());

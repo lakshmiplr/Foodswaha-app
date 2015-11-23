@@ -74,17 +74,20 @@ public class DisplayAddressActivity extends AppCompatActivity {
             addressList.clear();
             JSONArray addressesJSONArray = response.getJSONArray("addresses");
                 JSONObject address;
-                for(int i = 0; i < addressesJSONArray.length(); i++){
+                for(int i = 0; i < addressesJSONArray.length(); i++){;
                     address = addressesJSONArray.getJSONObject(i);
-                    addressList.add(
-                            new Address(
-                                    address.getString("flatNumber"),
-                                    address.getString("streetDetails"),
-                                    address.getString("area"),
-                                    address.getString("city"),
-                                    address.getString("landmark")
-                            )
-                    );
+                    if(DisplayHotelsActivity.getAREA().equals(address.optString("area"))){
+                        addressList.add(
+                                new Address(
+                                        address.getString("flatNumber"),
+                                        address.getString("streetDetails"),
+                                        address.getString("area"),
+                                        address.getString("city"),
+                                        address.getString("landmark")
+                                )
+                        );
+                    }
+
             }
             ListView addressListView = (ListView) findViewById(R.id.addressList);
             EditText mobile =(EditText)findViewById(R.id.mobile);
