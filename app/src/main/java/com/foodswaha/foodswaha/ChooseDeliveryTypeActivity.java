@@ -85,7 +85,13 @@ public class ChooseDeliveryTypeActivity extends AppCompatActivity {
                     GoogleSignInResult result = opr.get();
                     GoogleSignInAccount acct = result.getSignInAccount();
                     email = acct.getEmail();
-                    getUserAddressList();
+                    if("delivery".equals(ChooseDeliveryTypeActivity.getCdt())){
+                        getUserAddressList();
+                    }else if("pickup".equals(ChooseDeliveryTypeActivity.getCdt())){
+                        Intent gotoHotelAddressActivity = new Intent(ChooseDeliveryTypeActivity.this,DispalyHotelAddressActivity.class);
+                        gotoHotelAddressActivity.putExtra("email",acct.getEmail());
+                        startActivity(gotoHotelAddressActivity);
+                    }
 
                 }else{
                     Intent loginIntent = new Intent(ChooseDeliveryTypeActivity.this, LoginActivity.class);

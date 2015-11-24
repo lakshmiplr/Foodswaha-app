@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ public class DisplayAddressActivity extends AppCompatActivity {
 
     Cart cartInstance = Cart.getInstance();
     private static List addressList = new ArrayList<Address>();
+    private ArrayAdapter<Address> addressAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +94,9 @@ public class DisplayAddressActivity extends AppCompatActivity {
             ListView addressListView = (ListView) findViewById(R.id.addressList);
             EditText mobile =(EditText)findViewById(R.id.mobile);
             mobile.setText(response.optString("mobile"));
-            addressListView.setAdapter(new AddressAdapter(this,
-                    R.layout.activity_display_address_item, addressList));
+            addressAdapter = new AddressAdapter(this,
+                    R.layout.activity_display_address_item, addressList);
+            addressListView.setAdapter(addressAdapter);
 
     } catch (JSONException e) {
             e.printStackTrace();
@@ -102,5 +105,11 @@ public class DisplayAddressActivity extends AppCompatActivity {
 
     public static List getAddressList() {
         return addressList;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        buildAddressAdapter(LoginActivity.getAddressJSONObject());
     }
 }
