@@ -2,7 +2,9 @@ package com.foodswaha.foodswaha;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,18 +108,35 @@ public class AddressAdapter extends ArrayAdapter<Address> {
             holder.deleteAddress.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    JSONObject addressObject  = LoginActivity.getAddressJSONObject();
-                    JSONArray addressesJSONArray = addressObject.optJSONArray("addresses");
-                    JSONArray newAddressJSONArray = removeAddress(addressesJSONArray, Integer.parseInt(finalId.getText().toString()));
-                    try {
-                        addressObject.put("addresses",newAddressJSONArray);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    LoginActivity.setAddressJSONObject(addressObject);
-                    sendUpdateAddressRequestToServer(addressObject);
-                    DisplayAddressActivity.getAddressList().remove(Integer.parseInt(finalId.getText().toString()));
-                    notifyDataSetChanged();
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            getContext());
+                    alertDialogBuilder
+                            .setMessage("Delete address?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    JSONObject addressObject = LoginActivity.getAddressJSONObject();
+                                    JSONArray addressesJSONArray = addressObject.optJSONArray("addresses");
+                                    JSONArray newAddressJSONArray = removeAddress(addressesJSONArray, Integer.parseInt(finalId.getText().toString()));
+                                    try {
+                                        addressObject.put("addresses", newAddressJSONArray);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    LoginActivity.setAddressJSONObject(addressObject);
+                                    sendUpdateAddressRequestToServer(addressObject);
+                                    DisplayAddressActivity.getAddressList().remove(Integer.parseInt(finalId.getText().toString()));
+                                    notifyDataSetChanged();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
             });
             row.setTag(holder);
@@ -127,7 +146,6 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         }
 
         Address address = (Address)data.get(position);
-
         holder.flatNumber.setText(address.getFlatNumber());
         holder.streetName.setText(address.getStreetName());
         holder.area.setText(address.getArea());
@@ -136,6 +154,11 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         holder.id.setText(Integer.toString(position));
         if(position==0){
             holder.radioButton.setChecked(true);
+            holder.editAddress.setVisibility(View.VISIBLE);
+            holder.deleteAddress.setVisibility(View.VISIBLE);
+            selectedRadioButton = holder.radioButton;
+            selectedEditAddress = holder.editAddress;
+            selectedDeleteAddress = holder.deleteAddress;
         }
 
         holder.address.setText(address.getFlatNumber()+","+address.getStreetName()+","+address.getArea()
