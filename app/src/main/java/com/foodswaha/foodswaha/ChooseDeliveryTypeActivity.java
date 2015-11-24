@@ -12,10 +12,30 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ChooseDeliveryTypeActivity extends AppCompatActivity {
 
     Cart cartInstance = Cart.getInstance();
     private static String cdt ="delivery";
+    GoogleApiClient googleApiClient = DisplayHotelsActivity.getGoogleApiClient();
+    private static JSONObject addressJSONObject = LoginActivity.getAddressJSONObject();
+    private static String mobileNumber= LoginActivity.getMobileNumber();
+    private static int ADDRESS_COUNT= LoginActivity.getAddressCount();
+    private static final String GET_USER_ADDRESS_LIST_URL = LoginActivity.getGetUserAddressListUrl();
+    private static String email=LoginActivity.getEmail();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +80,17 @@ public class ChooseDeliveryTypeActivity extends AppCompatActivity {
         gotoLoginActiity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent loginIntent = new Intent(ChooseDeliveryTypeActivity.this, LoginActivity.class);
-                startActivity(loginIntent);
+                OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+                if (opr.isDone()) {
+                    GoogleSignInResult result = opr.get();
+                    GoogleSignInAccount acct = result.getSignInAccount();
+                    email = acct.getEmail();
+                    getUserAddressList();
+
+                }else{
+                    Intent loginIntent = new Intent(ChooseDeliveryTypeActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                }
             }
         });
 
@@ -69,6 +98,67 @@ public class ChooseDeliveryTypeActivity extends AppCompatActivity {
 
     }
 
+
+    private void getUserAddressList() {
+        if(addressJSONObject!=null){
+            JSONArray addressesJSONArray = addressJSONObject.optJSONArray("addresses");
+            mobileNumber = addressJSONObject.optString("mobile");
+            if(addressesJSONArray==null){
+                ADDRESS_COUNT =0;
+            }else{
+                ADDRESS_COUNT = addressesJSONArray.length();
+            }
+            if(ADDRESS_COUNT==0){
+                Intent gotoAddFirstAddressIntent = new Intent(ChooseDeliveryTypeActivity.this, AddAddressActivity.class);
+                gotoAddFirstAddressIntent.putExtra("type", "first");
+                startActivity(gotoAddFirstAddressIntent);
+            }else{
+                Intent gotoAddressActivity = new Intent(ChooseDeliveryTypeActivity.this,DisplayAddressActivity.class);
+                startActivity(gotoAddressActivity);
+            }
+        }else{
+            JsonObjectRequest jsonObjectRequest = null;
+            try {
+                jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, GET_USER_ADDRESS_LIST_URL, new JSONObject("{\"email\":\"" + email + "\"}"),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    if(addressJSONObject==null){
+                                        LoginActivity.setAddressJSONObject(response);
+                                        LoginActivity.setEmail(email);
+                                        addressJSONObject = response;
+                                    }
+                                    JSONArray addressesJSONArray = addressJSONObject.optJSONArray("addresses");
+                                    if(addressesJSONArray!=null) {
+                                        mobileNumber = response.optString("mobile");
+                                        ADDRESS_COUNT = addressesJSONArray.length();
+                                        LoginActivity.setMobileNumber(mobileNumber);
+                                        LoginActivity.setAddressCount(ADDRESS_COUNT);
+                                    }
+                                    if(ADDRESS_COUNT==0){
+                                        Intent gotoAddFirstAddressIntent = new Intent(ChooseDeliveryTypeActivity.this, AddAddressActivity.class);
+                                        gotoAddFirstAddressIntent.putExtra("type","first");
+                                        startActivity(gotoAddFirstAddressIntent);
+                                    }else{
+                                        Intent gotoAddressActivity = new Intent(ChooseDeliveryTypeActivity.this,DisplayAddressActivity.class);
+                                        startActivity(gotoAddressActivity);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
+        }
+    }
 
     public static String getCdt() {
         return cdt;

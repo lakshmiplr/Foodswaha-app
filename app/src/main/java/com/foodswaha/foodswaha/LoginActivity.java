@@ -16,13 +16,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,33 +59,7 @@ public class LoginActivity extends AppCompatActivity implements
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         findViewById(R.id.signIn).setOnClickListener(this);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-            Log.d(TAG, "Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
-            findViewById(R.id.signIn).setVisibility(View.GONE);
-            toolbar.setVisibility(View.GONE);
-        } else {
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
-                    handleSignInResult(googleSignInResult);
-                }
-            });
-        }
+        mGoogleApiClient = DisplayHotelsActivity.getGoogleApiClient();
     }
 
     @Override
@@ -124,15 +94,6 @@ public class LoginActivity extends AppCompatActivity implements
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                    }
-                });
-    }
-
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
@@ -146,10 +107,6 @@ public class LoginActivity extends AppCompatActivity implements
                 break;
 
         }
-    }
-
-    public static String getEmail() {
-        return email;
     }
 
     private void getUserAddressList() {
@@ -222,7 +179,27 @@ public class LoginActivity extends AppCompatActivity implements
         return mobileNumber;
     }
 
+    public static String getEmail() {
+        return email;
+    }
+
     public static int getAddressCount() {
         return ADDRESS_COUNT;
+    }
+
+    public static String getGetUserAddressListUrl() {
+        return GET_USER_ADDRESS_LIST_URL;
+    }
+
+    public static void setEmail(String email) {
+        LoginActivity.email = email;
+    }
+
+    public static void setMobileNumber(String mobileNumber) {
+        LoginActivity.mobileNumber = mobileNumber;
+    }
+
+    public static void setAddressCount(int addressCount) {
+        ADDRESS_COUNT = addressCount;
     }
 }
