@@ -134,4 +134,100 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp" />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/flatSpeech"
+        android:layout_alignBottom="@+id/flatNumber"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/speech_black"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/streetSpeech"
+        android:layout_alignBottom="@+id/streetName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/speech_black"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/landmarkSpeech"
+        android:layout_alignBottom="@+id/landmark"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/speech_black"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mobileSpeech"
+        android:layout_alignBottom="@+id/mobileNumber"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/speech_black"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/flatClear"
+        android:layout_alignBottom="@+id/flatNumber"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/cleartext_blue"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/streetClear"
+        android:layout_alignBottom="@+id/streetName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/cleartext_blue"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/landmarkClear"
+        android:layout_alignBottom="@+id/landmark"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/cleartext_blue"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mobileClear"
+        android:layout_alignBottom="@+id/mobileNumber"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/cleartext_blue"
+        android:visibility="gone" />
+
 </RelativeLayout>

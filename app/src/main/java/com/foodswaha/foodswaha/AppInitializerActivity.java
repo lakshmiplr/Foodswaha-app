@@ -45,6 +45,7 @@ public class AppInitializerActivity extends AppCompatActivity {
             Log.e(TAG, " Internet connection not available.");
 
             status.setVisibility(View.VISIBLE);
+            loading.setVisibility(View.GONE);
             final ImageButton retry = (ImageButton) findViewById(R.id.retry);
             retry.setVisibility(View.VISIBLE);
 
@@ -102,6 +103,7 @@ public class AppInitializerActivity extends AppCompatActivity {
     public void gotoDisplayHotelsActivity(JSONObject response) {
         Log.e(TAG," gotoDisplayHotelsActivity method started.");
         loading.setProgress(100);
+        status.setText("done");
         Intent displayHotelsIntent = new Intent(this, DisplayHotelsActivity.class);
         displayHotelsIntent.putExtra("hotelData",response.toString());
         startActivity(displayHotelsIntent);
