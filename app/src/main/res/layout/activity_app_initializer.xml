@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/noInternet"
+        android:id="@+id/status"
         android:textColor="#ffffff"
         android:layout_centerHorizontal="true"
         android:layout_alignParentEnd="false"
@@ -23,17 +23,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/retry"
-        android:layout_above="@+id/noInternet"
+        android:layout_above="@+id/status"
         android:background="@android:color/transparent"
         android:layout_centerHorizontal="true"
         android:src="@drawable/retry"
         android:visibility="gone" />
     <ProgressBar
         android:id="@+id/loading"
-        style="?android:attr/progressBarStyleLargeInverse"
-        android:layout_width="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:indeterminate="false"
+        android:max="100"
+        android:minHeight="70dp"
+        android:progress="1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 </RelativeLayout>

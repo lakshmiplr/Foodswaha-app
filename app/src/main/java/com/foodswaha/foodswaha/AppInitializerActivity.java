@@ -18,9 +18,9 @@ public class AppInitializerActivity extends AppCompatActivity {
 
     private static final int REQUEST_CHECK_LOCATION_SETTINGS = 3;
 
-
-
-    final LocationFinderUtil lfu = new LocationFinderUtil(this);
+    LocationFinderUtil lfu;
+    private ProgressBar loading;
+    private TextView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,11 @@ public class AppInitializerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_initializer);
 
         final ProgressBar loading = (ProgressBar)findViewById(R.id.loading);
+        final TextView status = (TextView)findViewById(R.id.status);
+        this.status = status;
+
+        this.loading = loading;
+        lfu = new LocationFinderUtil(this,loading,status);
 
         if( InternetCheckUtil.isConnectivityAvailable() ){
             Log.e(TAG," Internet connection available.");
@@ -38,9 +43,8 @@ public class AppInitializerActivity extends AppCompatActivity {
         }
         else{
             Log.e(TAG, " Internet connection not available.");
-            final TextView noInternet = (TextView)findViewById(R.id.noInternet);
-            noInternet.setVisibility(View.VISIBLE);
 
+            status.setVisibility(View.VISIBLE);
             final ImageButton retry = (ImageButton) findViewById(R.id.retry);
             retry.setVisibility(View.VISIBLE);
 
@@ -49,7 +53,7 @@ public class AppInitializerActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (InternetCheckUtil.isConnectivityAvailable()) {
                         Log.e(TAG, " Internet connection available after retry.");
-                        noInternet.setVisibility(View.GONE);
+                        status.setVisibility(View.GONE);
                         retry.setVisibility(View.GONE);
                         loading.setVisibility(View.VISIBLE);
                         getHotelsDataFromServer(lfu);
@@ -62,12 +66,13 @@ public class AppInitializerActivity extends AppCompatActivity {
     private void getHotelsDataFromServer(LocationFinderUtil lfu){
         Log.e(TAG, " getHotelsDataFromServer method started.");
         if(lfu.checkGooglePlayServiceAvailablity()){
+            status.setVisibility(View.VISIBLE);
+            status.setText("checking location settings.");
             lfu.buildGoogleApiClient();
             lfu.buildLocationRequest();
             lfu.buildLocationSettingsRequest();
             lfu.connectGoogleAPIClient();
             lfu.checkLocationSettings();
-
         }
     }
 
@@ -78,8 +83,10 @@ public class AppInitializerActivity extends AppCompatActivity {
             case REQUEST_CHECK_LOCATION_SETTINGS:
                 switch (resultCode) {
                     case Activity.RESULT_OK:
-                        Log.e(TAG," REQUEST_CHECK_LOCATION_SETTINGS is RESULT_OK");
+                        Log.e(TAG, " REQUEST_CHECK_LOCATION_SETTINGS is RESULT_OK");
                         lfu.requestLocationUpdates();
+                        loading.setProgress(35);
+                        status.setText("fetching current Location");
                         break;
                     case Activity.RESULT_CANCELED:
                         Log.e(TAG," REQUEST_CHECK_LOCATION_SETTINGS is RESULT_CANCELED");
@@ -94,6 +101,7 @@ public class AppInitializerActivity extends AppCompatActivity {
 
     public void gotoDisplayHotelsActivity(JSONObject response) {
         Log.e(TAG," gotoDisplayHotelsActivity method started.");
+        loading.setProgress(100);
         Intent displayHotelsIntent = new Intent(this, DisplayHotelsActivity.class);
         displayHotelsIntent.putExtra("hotelData",response.toString());
         startActivity(displayHotelsIntent);

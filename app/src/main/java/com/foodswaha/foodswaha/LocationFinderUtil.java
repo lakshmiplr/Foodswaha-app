@@ -7,6 +7,8 @@ import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -45,21 +47,23 @@ public class LocationFinderUtil implements
     private Activity activity;
     private AppInitializerActivity appInitializerActivity;
     private static LocationFinderUtil instance;
+    private ProgressBar loading;
+    private TextView status;
 
 
-    LocationFinderUtil(AppInitializerActivity appInitializerActivity){
+    LocationFinderUtil(AppInitializerActivity appInitializerActivity,ProgressBar loading,TextView status){
         Log.e(TAG, " constructor started.");
         this.context = appInitializerActivity;
         this.activity = appInitializerActivity;
         this.appInitializerActivity = appInitializerActivity;
         this.instance = this;
-
+        this.loading = loading;
+        this.status = status;
     }
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private LocationSettingsRequest mLocationSettingsRequest;
-    private Location mCurrentLocation;
     private JSONObject mJsonResponse;
 
 
@@ -131,17 +135,21 @@ public class LocationFinderUtil implements
     }
 
     public void requestLocationUpdates(){
-        Log.e(TAG, " requestLocationUpdates method started.");
+        Log.e(TAG, " requesting LocationUpdates from GoogleAPIServices.");
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        loading.setProgress(40);
     }
 
+    //callback method for checkLocationSettings()
     @Override
     public void onResult(LocationSettingsResult result) {
         final Status status = result.getStatus();
         switch (status.getStatusCode()) {
             case LocationSettingsStatusCodes.SUCCESS:
                 Log.e(TAG, " LocationSettingsStatusCodes SUCCESS.");
+                this.status.setText("fetching current Location");
                 requestLocationUpdates();
+                loading.setProgress(35);
                 break;
             case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                 try {
@@ -168,40 +176,43 @@ public class LocationFinderUtil implements
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.e(TAG, " onConnected method started.");
+        Log.e(TAG, " Connection to GoogleAPIServices Success.");
+        loading.setProgress(25);
     }
 
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.e(TAG, " onConnectionSuspended method started. "+i);
+        Log.e(TAG, " Connection to GoogleAPIServices Suspended. "+i);
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e(TAG, " onConnectionFailed method started.");
+        Log.e(TAG, " Connection to GoogleAPIServices Failed.");
         if (connectionResult.hasResolution()) {
             try {
                 Log.e(TAG, " onConnectionFailed doing CONNECTION_FAILURE_RESOLUTION_REQUEST");
+                Log.e(TAG, " Trying to resolve connection failure.");
                 connectionResult.startResolutionForResult(activity, CONNECTION_FAILURE_RESOLUTION_REQUEST_CODE);
             } catch (IntentSender.SendIntentException e) {
                 Log.e(TAG, " Exception occurred while doing CONNECTION_FAILURE_RESOLUTION_REQUEST "+e);
             }
         }
     }
-
+    //callback method for requestLocationUpdates()
     @Override
     public void onLocationChanged(Location location) {
         Log.e(TAG, " onLocationChanged method started. with location "+location);
-        if (mCurrentLocation == null && location != null) {
-            mCurrentLocation = location;
+        if ( location != null) {
+            loading.setProgress(75);
             if (mGoogleApiClient.isConnected()) {
                 Log.e(TAG, " trying to removeLocationUpdates from google.");
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
                 mGoogleApiClient.disconnect();
                 Log.e(TAG, "mGoogleApiClient got disconnected.");
             }
-            buildJsonObjectRequest(mCurrentLocation);
+            status.setText("fetching restaurants");
+            buildJsonObjectRequest(location);
         }
     }
 
@@ -214,7 +225,7 @@ public class LocationFinderUtil implements
         Log.e(TAG, "getJsonResponseData method started.giving JSONObject as "+mJsonResponse);
         return mJsonResponse;
     }
-
+    //sending location data to server.
     public  void buildJsonObjectRequest(Location location) {
         Log.e(TAG, "buildJsonObjectRequest method started.with location as "+location);
         JsonObjectRequest jsonObjectRequest = null;
@@ -238,6 +249,7 @@ public class LocationFinderUtil implements
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Log.e(TAG, "error occurred while getting hotel data from server. "+error);
                 }
             });
         } catch (JSONException e) {
