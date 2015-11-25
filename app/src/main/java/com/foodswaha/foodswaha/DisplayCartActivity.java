@@ -3,6 +3,7 @@ package com.foodswaha.foodswaha;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -40,6 +41,7 @@ public class DisplayCartActivity extends AppCompatActivity {
     private void dispalycart(){
 
         ((TextView)findViewById(R.id.cart)).setText(String.valueOf(cartInstance.getCountOfItems()));
+        ((TextView)findViewById(R.id.cart)).setTypeface(null, Typeface.BOLD);
         ((TextView)findViewById(R.id.total)).setText(String.valueOf(cartInstance.getTotalBill()));
 
         final ListView cartItemsListView = (ListView)findViewById(R.id.cart_items);

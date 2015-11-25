@@ -3,6 +3,7 @@ package com.foodswaha.foodswaha;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -69,8 +70,8 @@ public class DisplayMenuActivity extends AppCompatActivity {
         chooseDeliveryType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent loginIntent = new Intent(DisplayMenuActivity.this, ChooseDeliveryTypeActivity.class);
-                startActivity(loginIntent);
+                Intent chooseDeliveryTypeIntent = new Intent(DisplayMenuActivity.this, ChooseDeliveryTypeActivity.class);
+                startActivity(chooseDeliveryTypeIntent);
             }
         });
 
@@ -164,6 +165,7 @@ public class DisplayMenuActivity extends AppCompatActivity {
         if (cartInstance.getCountOfItems() > 0) {
             cartRelativeLayOut.setVisibility(View.VISIBLE);
             ((TextView) cartRelativeLayOut.findViewById(R.id.cart)).setText(String.valueOf(cartInstance.getCountOfItems()));
+            ((TextView)cartRelativeLayOut.findViewById(R.id.cart)).setTypeface(null, Typeface.BOLD);
             ((TextView) cartRelativeLayOut.findViewById(R.id.total)).setText(String.valueOf(cartInstance.getTotalBill()));
         } else {
             cartRelativeLayOut.setVisibility(View.GONE);

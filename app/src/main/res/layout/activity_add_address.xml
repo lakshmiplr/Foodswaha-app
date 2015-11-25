@@ -29,7 +29,7 @@
         android:layout_below="@+id/toolbar"
         android:layout_alignLeft="@+id/toolbar"
         android:layout_alignStart="@+id/toolbar"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="20dp"
         android:hint="door number/office name"
         android:singleLine="true"
         android:inputType="textNoSuggestions"
@@ -120,15 +120,18 @@
             android:gravity="center"
             android:layout_centerInParent="true" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/checkout"
-            android:background="@android:color/transparent"
-            android:layout_gravity="center_vertical|right"
-            android:src="@drawable/next"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true" />
     </RelativeLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkout"
+        android:background="@android:color/transparent"
+        android:layout_gravity="center_vertical|right"
+        android:src="@drawable/next"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp" />
 
 </RelativeLayout>

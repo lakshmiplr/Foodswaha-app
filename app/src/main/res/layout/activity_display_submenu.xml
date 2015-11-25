@@ -36,22 +36,22 @@
         android:visibility="visible">
 
         <TextView
-            android:layout_width="48dp"
+            android:layout_width="32dp"
             android:layout_height="32dp"
             android:text="0"
             android:id="@+id/cart"
-            android:background="@drawable/cart_skyblue"
-            android:textColor="#ffffff"
-            android:gravity="top|center_horizontal"
+            android:background="@drawable/bag_white"
+            android:textColor="#F44336"
             android:textStyle="bold"
             android:visibility="visible"
             android:layout_gravity="left|center_vertical"
-            android:textSize="15dp"
+            android:textSize="17dp"
             android:layout_marginTop="0dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="false"
             android:layout_alignParentBottom="false"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:gravity="bottom|center" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -116,7 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/home"
-        android:src="@drawable/home1"
+        android:src="@drawable/home_white"
         android:layout_alignParentTop="false"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="false"

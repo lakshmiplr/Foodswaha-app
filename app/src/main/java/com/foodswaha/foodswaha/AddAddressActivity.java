@@ -70,7 +70,17 @@ public class AddAddressActivity extends AppCompatActivity {
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getIntent().getStringExtra("edit")!=null){
+                boolean correctValues = true;
+                if(flatNumber.getText().toString().length()<1){
+                    flatNumber.setError("flatnumber is needed.");
+                    correctValues = false;
+                }
+                if(streetName.getText().toString().length()<3){
+                    streetName.setError("streetdetails needed");
+                    correctValues = false;
+                }
+                if(correctValues){
+                    if(getIntent().getStringExtra("edit")!=null){
                     JSONObject addressObject  = LoginActivity.getAddressJSONObject();
                     JSONArray addressesJSONArray = addressObject.optJSONArray("addresses");
 
@@ -88,7 +98,7 @@ public class AddAddressActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else if(getIntent().getStringExtra("type").equals("new")){
+                    }else if(getIntent().getStringExtra("type").equals("new")){
                     JSONObject addressObject  = LoginActivity.getAddressJSONObject();
                     JSONArray addressesJSONArray = addressObject.optJSONArray("addresses");
 
@@ -107,7 +117,7 @@ public class AddAddressActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else if(getIntent().getStringExtra("type").equals("first")){
+                    }else if(getIntent().getStringExtra("type").equals("first")){
                     JSONObject addressObject  = LoginActivity.getAddressJSONObject();
 
                     try {
@@ -128,12 +138,10 @@ public class AddAddressActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    }
+                    Intent gotoPaymentIntent = new Intent(AddAddressActivity.this, PaymentActivity.class);
+                    startActivity(gotoPaymentIntent);
                 }
-
-
-                Intent gotoPaymentIntent = new Intent(AddAddressActivity.this, PaymentActivity.class);
-                startActivity(gotoPaymentIntent);
-
             }
         });
     }
