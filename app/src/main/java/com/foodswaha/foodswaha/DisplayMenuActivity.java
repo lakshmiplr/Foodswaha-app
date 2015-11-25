@@ -55,8 +55,11 @@ public class DisplayMenuActivity extends AppCompatActivity {
         hotelName.setText(HotelsFragment.getHolder().hotelName.getText());
         min.setText("min: " + HotelsFragment.getHolder().hotelMinOrder.getText());
         delTime.setText(" time" + HotelsFragment.getHolder().hotelDTime.getText());
-        delFee.setText(" fee" + HotelsFragment.getHolder().hotelDFee.getText());
-
+        if("".equals(HotelsFragment.getHolder().hotelDFee.getText())){
+            delFee.setText(" free");
+        }else{
+            delFee.setText(" fee" + HotelsFragment.getHolder().hotelDFee.getText());
+        }
         final View cartRelativeLayOut = findViewById(R.id.cartRelativeLayOut);
         ((TextView) cartRelativeLayOut.findViewById(R.id.cart)).setOnClickListener(new View.OnClickListener() {
             @Override
