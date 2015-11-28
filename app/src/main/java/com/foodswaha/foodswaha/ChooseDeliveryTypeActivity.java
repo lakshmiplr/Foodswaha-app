@@ -18,7 +18,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 
@@ -26,11 +28,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ChooseDeliveryTypeActivity extends AppCompatActivity {
+public class ChooseDeliveryTypeActivity extends AppCompatActivity
+         implements GoogleApiClient.OnConnectionFailedListener{
 
     Cart cartInstance = Cart.getInstance();
     private static String cdt ="delivery";
-    GoogleApiClient googleApiClient = DisplayHotelsActivity.getGoogleApiClient();
     private static JSONObject addressJSONObject = LoginActivity.getAddressJSONObject();
     private static String mobileNumber= LoginActivity.getMobileNumber();
     private static int ADDRESS_COUNT= LoginActivity.getAddressCount();
@@ -51,6 +53,15 @@ public class ChooseDeliveryTypeActivity extends AppCompatActivity {
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        final GoogleApiClient googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         TextView dTime = (TextView) findViewById(R.id.dtime);
         TextView dFee = (TextView) findViewById(R.id.dfee);
@@ -114,9 +125,14 @@ public class ChooseDeliveryTypeActivity extends AppCompatActivity {
             }else{
                 ADDRESS_COUNT = addressesJSONArray.length();
             }
-            if(ADDRESS_COUNT==0){
+            if(addressJSONObject.optString("email")==null){
                 Intent gotoAddFirstAddressIntent = new Intent(ChooseDeliveryTypeActivity.this, AddAddressActivity.class);
                 gotoAddFirstAddressIntent.putExtra("type", "first");
+                startActivity(gotoAddFirstAddressIntent);
+            }
+            else if(ADDRESS_COUNT==0&&addressJSONObject.optString("email")!=null){
+                Intent gotoAddFirstAddressIntent = new Intent(ChooseDeliveryTypeActivity.this, AddAddressActivity.class);
+                gotoAddFirstAddressIntent.putExtra("type","new");
                 startActivity(gotoAddFirstAddressIntent);
             }else{
                 Intent gotoAddressActivity = new Intent(ChooseDeliveryTypeActivity.this,DisplayAddressActivity.class);
@@ -142,11 +158,18 @@ public class ChooseDeliveryTypeActivity extends AppCompatActivity {
                                         LoginActivity.setMobileNumber(mobileNumber);
                                         LoginActivity.setAddressCount(ADDRESS_COUNT);
                                     }
-                                    if(ADDRESS_COUNT==0){
+                                    if(response.optString("email")==null){
                                         Intent gotoAddFirstAddressIntent = new Intent(ChooseDeliveryTypeActivity.this, AddAddressActivity.class);
-                                        gotoAddFirstAddressIntent.putExtra("type","first");
+                                        gotoAddFirstAddressIntent.putExtra("type", "first");
                                         startActivity(gotoAddFirstAddressIntent);
-                                    }else{
+                                    }
+                                    else if(ADDRESS_COUNT==0&&response.optString("email")!=null){
+                                        Intent gotoAddFirstAddressIntent = new Intent(ChooseDeliveryTypeActivity.this, AddAddressActivity.class);
+                                        gotoAddFirstAddressIntent.putExtra("type","new");
+                                        startActivity(gotoAddFirstAddressIntent);
+                                    }
+
+                                    else{
                                         Intent gotoAddressActivity = new Intent(ChooseDeliveryTypeActivity.this,DisplayAddressActivity.class);
                                         startActivity(gotoAddressActivity);
                                     }
@@ -168,5 +191,19 @@ public class ChooseDeliveryTypeActivity extends AppCompatActivity {
 
     public static String getCdt() {
         return cdt;
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        addressJSONObject = LoginActivity.getAddressJSONObject();
+        mobileNumber= LoginActivity.getMobileNumber();
+        ADDRESS_COUNT= LoginActivity.getAddressCount();
+        email=LoginActivity.getEmail();
     }
 }

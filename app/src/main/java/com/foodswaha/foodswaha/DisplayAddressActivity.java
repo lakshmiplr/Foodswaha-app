@@ -79,7 +79,7 @@ public class DisplayAddressActivity extends AppCompatActivity {
         try{
 
             addressList.clear();
-            JSONArray addressesJSONArray = response.getJSONArray("addresses");
+            JSONArray addressesJSONArray = response.optJSONArray("addresses");
                 JSONObject address;
                 for(int i = 0; i < addressesJSONArray.length(); i++){;
                     address = addressesJSONArray.getJSONObject(i);
