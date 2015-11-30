@@ -81,7 +81,7 @@ public class DisplayAddressActivity extends AppCompatActivity {
             addressList.clear();
             JSONArray addressesJSONArray = response.optJSONArray("addresses");
                 JSONObject address;
-                for(int i = 0; i < addressesJSONArray.length(); i++){;
+                for(int i = 0; i < addressesJSONArray.length(); i++){
                     address = addressesJSONArray.getJSONObject(i);
                     if(DisplayHotelsActivity.getAREA().equals(address.optString("area"))){
                         addressList.add(

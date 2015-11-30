@@ -342,6 +342,9 @@ public class AddAddressActivity extends AppCompatActivity {
                                 "\"city\":\""+city.getText().toString()+"\"," +
                                 "\"landmark\":\""+landMark.getText().toString()+"\""+
                                 "}");
+                        String deliveryAddress = flatNumber.getText().toString()+","+streetName.getText().toString()+","
+                                +area.getText().toString() +","+city.getText().toString()+","+landMark.getText().toString();
+                        LoginActivity.setDeliveryAddress(deliveryAddress);
                         addressesJSONArray.put(Integer.parseInt(getIntent().getStringExtra("id")),address);
                         addressObject.put("mobile",mobileNumber.getText());
                         LoginActivity.setAddressJSONObject(addressObject);
@@ -361,6 +364,10 @@ public class AddAddressActivity extends AppCompatActivity {
                                 "\"landmark\":\""+landMark.getText().toString()+"\""+
                                 "}");
 
+                        String deliveryAddress = flatNumber.getText().toString()+","+streetName.getText().toString()+","
+                                +area.getText().toString() +","+city.getText().toString()+","+landMark.getText().toString();
+                        LoginActivity.setDeliveryAddress(deliveryAddress);
+
                         addressesJSONArray.put(address);
                         addressObject.put("mobile",mobileNumber.getText());
                         LoginActivity.setAddressJSONObject(addressObject);
@@ -378,6 +385,11 @@ public class AddAddressActivity extends AppCompatActivity {
                                 "\"city\":\""+city.getText().toString()+"\"," +
                                 "\"landmark\":\""+landMark.getText().toString()+"\""+
                                 "}");
+
+                        String deliveryAddress = flatNumber.getText().toString()+","+streetName.getText().toString()+","
+                                +area.getText().toString() +","+city.getText().toString()+","+landMark.getText().toString();
+                        LoginActivity.setDeliveryAddress(deliveryAddress);
+
                         JSONArray addressJSONArray = new JSONArray();
                         addressJSONArray.put(address);
                         addressObject.put("addresses",addressJSONArray);
@@ -437,13 +449,14 @@ public class AddAddressActivity extends AppCompatActivity {
     }
 
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         if(LoginActivity.getAddressCount()==0){
             Intent chooseDeliveryTypeActivity = new Intent(AddAddressActivity.this, ChooseDeliveryTypeActivity.class);
             startActivity(chooseDeliveryTypeActivity);
         }
-    }
+        super.onBackPressed();
+    }*/
 
     private void promptSpeechInput() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);

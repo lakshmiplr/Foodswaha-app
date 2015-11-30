@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/address"
+        android:id="@+id/deliveryTypeText"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/radioButton"
         android:layout_toEndOf="@+id/radioButton"

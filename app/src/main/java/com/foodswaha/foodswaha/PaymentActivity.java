@@ -9,9 +9,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.payu.india.Extras.PayUChecksum;
 import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
@@ -21,6 +26,7 @@ import com.payu.india.Payu.PayuConstants;
 import com.payu.india.Payu.PayuErrors;
 import com.payu.india.PostParams.PaymentPostParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +36,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Iterator;
 
 public class PaymentActivity extends AppCompatActivity {
@@ -41,6 +49,9 @@ public class PaymentActivity extends AppCompatActivity {
     private String var1;
     private String key;
     private PostData postData;
+
+    Cart cartInstance = Cart.getInstance();
+    private static final String PUT_ORDER_DETAILS_CREATE_URL = "http://104.199.135.27:8080/order/create";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +67,15 @@ public class PaymentActivity extends AppCompatActivity {
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        final Button ordersendButton = (Button) findViewById(R.id.ordersend);
+        ordersendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendOrderDetailsToServer();
+            }
+        });
+
+
         final ImageButton paymoney = (ImageButton) findViewById(R.id.payumoney);
         paymoney.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,6 +248,62 @@ public class PaymentActivity extends AppCompatActivity {
             // something went wrong
             Toast.makeText(this,postData.getResult(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void sendOrderDetailsToServer(){
+        JSONObject orderObject = new JSONObject();
+        try {
+            orderObject.put("email",LoginActivity.getEmail());
+            orderObject.put("mobile",LoginActivity.getMobileNumber());
+            orderObject.put("hotelid",HotelsFragment.getHolder().hotelId);
+            orderObject.put("hotelname",HotelsFragment.getHolder().hotelName.getText());
+            orderObject.put("area",DisplayHotelsActivity.getAREA());
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("h:m:s a");
+            String date = dateFormat.format(calendar.getTime());
+            String time = timeFormat.format(calendar.getTime());
+            orderObject.put("date",date);
+            orderObject.put("time",time);
+            orderObject.put("hotelimageurl",HotelsFragment.getHolder().hotelImageURL);
+            orderObject.put("deliverytype",ChooseDeliveryTypeActivity.getCdt());
+            orderObject.put("address",LoginActivity.getDeliveryAddress());
+            orderObject.put("total", cartInstance.getTotalBill());
+            orderObject.put("status","live");
+            JSONArray cartJSONArray = new JSONArray();
+            for(SubMenu item :cartInstance.getAllCartItems()){
+                JSONObject cartJSONObject = new JSONObject("{\"itemname\":\""+item.getName()+"\"," +
+                        "\"itemprice\":\""+item.getCost()+"\"," +
+                        "\"itemcount\":\""+item.getQuantity()+"\"" +
+                        "}");
+                cartJSONArray.put(cartJSONObject);
+            }
+            orderObject.put("cart",cartJSONArray);
+            sendCreateOrderRequestToServer(orderObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendCreateOrderRequestToServer(JSONObject orderObject){
+        JsonObjectRequest jsonObjectPost = new JsonObjectRequest(Request.Method.PUT, PUT_ORDER_DETAILS_CREATE_URL,orderObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+
+                        }
+                        catch (Exception e) {
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectPost);
     }
 
 }

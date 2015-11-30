@@ -57,7 +57,7 @@ public class MoreFragment extends Fragment implements
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        signInOutTextView.setText("signIn");
+                        signInOutTextView.setText("signin");
                         LoginActivity.setAddressJSONObject(null);
                     }
                 });
@@ -76,7 +76,7 @@ public class MoreFragment extends Fragment implements
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            signInOutTextView.setText("signOut");
+            signInOutTextView.setText("signout");
         }
     }
 
@@ -86,7 +86,7 @@ public class MoreFragment extends Fragment implements
     }
 
     private void signInOut() {
-        if(signInOutTextView.getText().toString().equals("signIn")){
+        if(signInOutTextView.getText().toString().equals("signin")){
             signIn();
         }else{
             signOut();

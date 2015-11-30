@@ -1,23 +1,21 @@
 package com.foodswaha.foodswaha;
 
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class DispalyHotelAddressActivity extends AppCompatActivity {
-
-    Cart cartInstance = Cart.getInstance();
+public class DisplayOrderDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dispaly_hotel_address);
+        setContentView(R.layout.activity_display_order_details);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -27,23 +25,26 @@ public class DispalyHotelAddressActivity extends AppCompatActivity {
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
-        final String hotelAddress = HotelsFragment.getHolder().hotelAddress;
-        TextView hotelAddressTextView = (TextView)findViewById(R.id.hotelAddress);
-        hotelAddressTextView.setText(hotelAddress);
+
+        OrderAdapter.Holder holder = OrdersFragment.getHolder();
+
+        TextView status = (TextView) findViewById(R.id.status);
+        TextView deliveryType = (TextView) findViewById(R.id.deliveryTypeText);
+        TextView address = (TextView) findViewById(R.id.address);
 
         final TextView total = ((TextView) findViewById(R.id.total));
-        total.setText(String.valueOf(cartInstance.getTotalBill()));
+        total.setText(holder.total.getText());
 
-        final View gotoPayment = findViewById(R.id.checkout);
-        gotoPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginActivity.setDeliveryAddress(hotelAddress);
-                Intent gotoPaymentIntent = new Intent(DispalyHotelAddressActivity.this, PaymentActivity.class);
-                startActivity(gotoPaymentIntent);
+        status.setText("Order Status : "+holder.status.toUpperCase());
+        deliveryType.setText("Order Type : "+holder.deliveryType.toUpperCase());
+        address.setText(holder.address);
 
-            }
-        });
+        OrderItemAdapter adapter = new OrderItemAdapter(DisplayOrderDetails.this,
+                R.layout.activity_display_order_item_details, holder.orderItemList);
+        ListView orderItemDetailsListView = (ListView)findViewById(R.id.orderItems);
+
+        orderItemDetailsListView.setAdapter(adapter);
+
     }
 
 }

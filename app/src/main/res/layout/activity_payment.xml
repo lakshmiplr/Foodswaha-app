@@ -33,4 +33,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="161dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="send"
+        android:id="@+id/ordersend"
+        android:layout_below="@+id/payumoney"
+        android:layout_alignLeft="@+id/payumoney"
+        android:layout_alignStart="@+id/payumoney"
+        android:layout_marginTop="71dp" />
+
 </RelativeLayout>

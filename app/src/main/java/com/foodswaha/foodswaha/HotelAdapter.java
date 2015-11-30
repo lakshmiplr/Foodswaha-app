@@ -91,6 +91,7 @@ public class HotelAdapter extends ArrayAdapter<Hotel> implements Filterable{
         holder.hotelFoodTypes.setText(hotel.getFoodTypes());
         String imageUrl = HOTEL_IMAGE_REQUEST_URL+hotel.getImageUrl();
         setImage(holder.hotelImage, imageUrl);
+        holder.hotelImageURL = imageUrl;
 
         return row;
     }
@@ -107,6 +108,7 @@ public class HotelAdapter extends ArrayAdapter<Hotel> implements Filterable{
         NetworkImageView hotelImage;
         TextView hotelFoodTypes;
         ImageView hoteldeliveryChargeImage;
+        String hotelImageURL;
     }
     public void setImage(final NetworkImageView image,final String url) {
         ImageLoader imageLoader = VolleyRequestQueueFactory.getInstance().getImageLoader();

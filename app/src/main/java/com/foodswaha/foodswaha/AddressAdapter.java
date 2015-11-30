@@ -58,7 +58,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new Holder();
-            holder.address = (TextView) row.findViewById(R.id.address);
+            holder.address = (TextView) row.findViewById(R.id.deliveryTypeText);
             holder.radioButton = (RadioButton) row.findViewById(R.id.radioButton);
             holder.editAddress = (ImageButton) row.findViewById(R.id.editAddress);
             holder.deleteAddress = (ImageButton) row.findViewById(R.id.deleteAddress);
@@ -71,6 +71,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
             final TextView finalCity = holder.city;
             final TextView finalLandMark = holder.landMark;
             final TextView finalId = holder.id;
+            final TextView deliveryAddress = holder.address;
             holder.radioButton.setOnClickListener(new View.OnClickListener() {
                 boolean checked = true;
                 @Override
@@ -80,6 +81,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
                             selectedRadioButton.setChecked(false);
                             selectedEditAddress.setVisibility(View.GONE);
                             selectedDeleteAddress.setVisibility(View.GONE);
+                            LoginActivity.setDeliveryAddress(deliveryAddress.getText().toString());
                         }
                         selectedRadioButton = finalRadioButton;
                         selectedEditAddress = finalEditAddress;
@@ -152,6 +154,8 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         holder.city.setText(address.getCity());
         holder.landMark.setText(address.getLandmark());
         holder.id.setText(Integer.toString(position));
+        String deliveryAddress = address.getFlatNumber()+","+address.getStreetName()+","+address.getArea()
+                +","+address.getCity()+","+address.getLandmark();
         if(position==0){
             holder.radioButton.setChecked(true);
             holder.editAddress.setVisibility(View.VISIBLE);
@@ -159,10 +163,10 @@ public class AddressAdapter extends ArrayAdapter<Address> {
             selectedRadioButton = holder.radioButton;
             selectedEditAddress = holder.editAddress;
             selectedDeleteAddress = holder.deleteAddress;
+            LoginActivity.setDeliveryAddress(deliveryAddress);
         }
 
-        holder.address.setText(address.getFlatNumber()+","+address.getStreetName()+","+address.getArea()
-        +","+address.getCity()+","+address.getLandmark());
+        holder.address.setText(deliveryAddress);
 
         return row;
     }

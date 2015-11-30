@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static final int RC_SIGN_IN = 9001;
     private static String email="";
     private static String mobileNumber="";
+    private static String deliveryAddress="";
     private static JSONObject addressJSONObject;
     private static int ADDRESS_COUNT=0;
     private static final String GET_USER_ADDRESS_LIST_URL = "http://104.199.135.27:8080/address";
@@ -201,5 +202,13 @@ public class LoginActivity extends AppCompatActivity implements
 
     public static void setAddressCount(int addressCount) {
         ADDRESS_COUNT = addressCount;
+    }
+
+    public static String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public static void setDeliveryAddress(String deliveryAddress) {
+        LoginActivity.deliveryAddress = deliveryAddress;
     }
 }
