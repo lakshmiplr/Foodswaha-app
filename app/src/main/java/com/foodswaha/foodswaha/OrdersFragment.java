@@ -14,7 +14,7 @@ import android.widget.ListView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -42,8 +42,9 @@ public class OrdersFragment extends Fragment implements
     private static ArrayAdapter adapter;
     private ListView orderListView;
 
-    private static OrderAdapter.Holder  holder;
     private static final String GET_ORDER_DETAILS_URL = "http://104.199.135.27:8080/order/get";
+    private static List<Order> orderList;
+    private static Order selectedOrder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +56,9 @@ public class OrdersFragment extends Fragment implements
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
 
-                holder = (OrderAdapter.Holder) view.getTag();
+                if(orderList!=null){
+                    selectedOrder = orderList.get(position);
+                }
                 Intent displayOrderDetailsIntent = new Intent(getContext(), DisplayOrderDetails.class);
                 startActivity(displayOrderDetailsIntent);
 
@@ -103,32 +106,37 @@ public class OrdersFragment extends Fragment implements
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
-            JsonObjectRequest jsonObjectRequest = null;
+            JsonArrayRequest jsonArrayRequest = null;
             if(adapter==null){
                 try {
-                    jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, GET_ORDER_DETAILS_URL,new JSONObject("{\"email\":\""+acct.getEmail()+"\"}"),
-                            new Response.Listener<JSONObject>() {
+                    jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, GET_ORDER_DETAILS_URL,new JSONObject("{\"email\":\""+acct.getEmail()+"\"}"),
+                            new Response.Listener<JSONArray>() {
                                 @Override
-                                public void onResponse(JSONObject response) {
+                                public void onResponse(JSONArray response) {
                                     try {
-                                        List<Order> orderList = new ArrayList<Order>();
-                                        List<OrderItem> orderItemList = new ArrayList<OrderItem>();
+                                        orderList = new ArrayList<Order>();
                                         OrderItem orderItem;
-                                        JSONArray orderItemJSONArray = response.optJSONArray("cart");
-                                        if(orderItemJSONArray!=null){
-                                            JSONObject orderItemJSONObject;
-                                            for(int i = 0; i < orderItemJSONArray.length(); i++){
-                                                orderItemJSONObject = orderItemJSONArray.getJSONObject(i);
-                                                orderItem = new OrderItem(orderItemJSONObject.optString("itemname"),
-                                                                orderItemJSONObject.optString("itemcount"),orderItemJSONObject.optString("itemprice"));
-                                                orderItemList.add(orderItem);
+                                        List<OrderItem> orderItemList =null;
+                                        for(int i=0;i<response.length();i++){
+                                            JSONObject orderJSONObject = response.getJSONObject(i);
+                                            JSONArray orderItemJSONArray = orderJSONObject.optJSONArray("cart");
+                                            if(orderItemJSONArray!=null){
+                                                JSONObject orderItemJSONObject;
+                                                orderItemList = new ArrayList<OrderItem>();
+                                                for(int j = 0; j < orderItemJSONArray.length(); j++){
+                                                    orderItemJSONObject = orderItemJSONArray.getJSONObject(j);
+                                                    orderItem = new OrderItem(orderItemJSONObject.optString("itemname"),
+                                                            orderItemJSONObject.optString("itemcount"),orderItemJSONObject.optString("itemprice"));
+                                                    orderItemList.add(orderItem);
+                                                }
                                             }
+                                            Order order =new Order(orderJSONObject.optString("hotelimageurl"),orderJSONObject.optString("hotelname"),
+                                                    orderJSONObject.optString("area"),orderJSONObject.optString("date"),orderJSONObject.optString("time"),
+                                                    orderJSONObject.optString("total"),orderJSONObject.optString("status"),
+                                                    orderJSONObject.optString("deliverytype"),orderJSONObject.optString("address"),orderItemList);
+                                            orderList.add(order);
                                         }
-                                        Order order =new Order(response.optString("hotelimageurl"),response.optString("hotelname"),
-                                                response.optString("area"),response.optString("date"),"",
-                                                response.optString("total"),response.optString("status"),
-                                                response.optString("deliverytype"),response.optString("address"),orderItemList);
-                                        orderList.add(order);
+
 
                                         adapter = new OrderAdapter(getContext(),
                                                 R.layout.activity_display_order_item, orderList);
@@ -148,7 +156,7 @@ public class OrdersFragment extends Fragment implements
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonObjectRequest);
+                VolleyRequestQueueFactory.getInstance().getRequestQueue().add(jsonArrayRequest);
             }else{
                 orderListView.setAdapter(adapter);
             }
@@ -171,9 +179,11 @@ public class OrdersFragment extends Fragment implements
         }
     }
 
-    public static OrderAdapter.Holder getHolder() {
-        return holder;
+    public static void setAdapter(ArrayAdapter adapter) {
+        OrdersFragment.adapter = adapter;
     }
 
-
+    public static Order getSelectedOrder() {
+        return selectedOrder;
+    }
 }

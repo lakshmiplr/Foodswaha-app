@@ -26,21 +26,21 @@ public class DisplayOrderDetails extends AppCompatActivity {
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-        OrderAdapter.Holder holder = OrdersFragment.getHolder();
+        Order selectedOrder = OrdersFragment.getSelectedOrder();
 
         TextView status = (TextView) findViewById(R.id.status);
         TextView deliveryType = (TextView) findViewById(R.id.deliveryTypeText);
         TextView address = (TextView) findViewById(R.id.address);
 
         final TextView total = ((TextView) findViewById(R.id.total));
-        total.setText(holder.total.getText());
+        total.setText(selectedOrder.getTotal());
 
-        status.setText("Order Status : "+holder.status.toUpperCase());
-        deliveryType.setText("Order Type : "+holder.deliveryType.toUpperCase());
-        address.setText(holder.address);
+        status.setText("Order Status : "+selectedOrder.getStatus().toUpperCase());
+        deliveryType.setText("Order Type : "+selectedOrder.getDeliveryType().toUpperCase());
+        address.setText(selectedOrder.getAddress());
 
         OrderItemAdapter adapter = new OrderItemAdapter(DisplayOrderDetails.this,
-                R.layout.activity_display_order_item_details, holder.orderItemList);
+                R.layout.activity_display_order_item_details, selectedOrder.getOrderItemList());
         ListView orderItemDetailsListView = (ListView)findViewById(R.id.orderItems);
 
         orderItemDetailsListView.setAdapter(adapter);

@@ -71,6 +71,7 @@ public class PaymentActivity extends AppCompatActivity {
         ordersendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                OrdersFragment.setAdapter(null);
                 sendOrderDetailsToServer();
             }
         });

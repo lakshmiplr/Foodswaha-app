@@ -59,6 +59,7 @@ public class MoreFragment extends Fragment implements
                     public void onResult(Status status) {
                         signInOutTextView.setText("signin");
                         LoginActivity.setAddressJSONObject(null);
+                        OrdersFragment.setAdapter(null);
                     }
                 });
     }

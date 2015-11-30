@@ -58,10 +58,6 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         holder.date.setText(order.getDate());
         holder.time.setText(order.getTime());
         holder.total.setText(order.getTotal()+" Rs");
-        holder.status = order.getStatus();
-        holder.deliveryType = order.getDeliveryType();
-        holder.address = order.getAddress();
-        holder.orderItemList = order.getOrderItemList();
         setImage(holder.hotelImage, order.getImageUrl());
 
         return row;
@@ -73,10 +69,6 @@ public class OrderAdapter extends ArrayAdapter<Order> {
         TextView date;
         TextView time;
         TextView total;
-        String status;
-        String deliveryType;
-        String address;
-        List<OrderItem> orderItemList;
     }
 
     public void setImage(final NetworkImageView image,final String url) {
