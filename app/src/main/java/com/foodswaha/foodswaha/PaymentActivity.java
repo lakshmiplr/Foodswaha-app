@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,14 +18,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.payu.india.Extras.PayUChecksum;
-import com.payu.india.Model.PaymentParams;
-import com.payu.india.Model.PayuConfig;
-import com.payu.india.Model.PayuHashes;
-import com.payu.india.Model.PostData;
-import com.payu.india.Payu.PayuConstants;
-import com.payu.india.Payu.PayuErrors;
-import com.payu.india.PostParams.PaymentPostParams;
+
+import com.payUMoney.sdk.SdkConstants;
+import com.payUMoney.sdk.SdkSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,20 +32,17 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.UUID;
 
 public class PaymentActivity extends AppCompatActivity {
 
-    PaymentParams mPaymentParams = new PaymentParams();
-    PayuHashes mPayUHashes ;
-    PayuConfig payuConfig;
-    private PayUChecksum checksum;
-    private String var1;
-    private String key;
-    private PostData postData;
-
+    HashMap<String, String> params = new HashMap<>();
     Cart cartInstance = Cart.getInstance();
     private static final String PUT_ORDER_DETAILS_CREATE_URL = "http://104.199.135.27:8080/order/create";
 
@@ -67,189 +60,15 @@ public class PaymentActivity extends AppCompatActivity {
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
-        final Button ordersendButton = (Button) findViewById(R.id.ordersend);
-        ordersendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrdersFragment.setAdapter(null);
-                sendOrderDetailsToServer();
-            }
-        });
-
-
         final ImageButton paymoney = (ImageButton) findViewById(R.id.payumoney);
         paymoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchPayumoney();
+                launchPayuMoney();
             }
         });
     }
 
-    private void launchPayumoney() {
-
-        mPaymentParams.setKey("0MQaQP");
-        mPaymentParams.setAmount("15.0");
-        mPaymentParams.setProductInfo("Tshirt");
-        mPaymentParams.setFirstName("foodswaha");
-        mPaymentParams.setEmail("foodswaha@gmail.com");
-        mPaymentParams.setTxnId("0123479543680");
-        mPaymentParams.setSurl("https://payu.herokuapp.com/success");
-        mPaymentParams.setFurl("https://payu.herokuapp.com/failure");
-        mPaymentParams.setUdf1("udf1l");
-        mPaymentParams.setUdf2("udf2");
-        mPaymentParams.setUdf3("udf3");
-        mPaymentParams.setUdf4("udf4");
-        mPaymentParams.setUdf5("udf5");
-        // lets try to get the post params
-        generateHashFromServer(mPaymentParams);
-
-//        postData = new PayuWalletPostParams(mPaymentDefaultParams).getPayuWalletPostParams();
-
-
-    }
-
-    public  void generateHashFromServer(PaymentParams mPaymentParams){
-
-        StringBuffer postParamsBuffer = new StringBuffer();
-        postParamsBuffer.append(concatParams(PayuConstants.KEY, mPaymentParams.getKey()));
-        postParamsBuffer.append(concatParams(PayuConstants.AMOUNT, mPaymentParams.getAmount()));
-        postParamsBuffer.append(concatParams(PayuConstants.TXNID, mPaymentParams.getTxnId()));
-        postParamsBuffer.append(concatParams(PayuConstants.EMAIL, null == mPaymentParams.getEmail() ? "" : mPaymentParams.getEmail()));
-        postParamsBuffer.append(concatParams(PayuConstants.PRODUCT_INFO, mPaymentParams.getProductInfo()));
-        postParamsBuffer.append(concatParams(PayuConstants.FIRST_NAME, null == mPaymentParams.getFirstName() ? "" : mPaymentParams.getFirstName()));
-        postParamsBuffer.append(concatParams(PayuConstants.UDF1, mPaymentParams.getUdf1() == null ? "" : mPaymentParams.getUdf1()));
-        postParamsBuffer.append(concatParams(PayuConstants.UDF2, mPaymentParams.getUdf2() == null ? "" : mPaymentParams.getUdf2()));
-        postParamsBuffer.append(concatParams(PayuConstants.UDF3, mPaymentParams.getUdf3() == null ? "" : mPaymentParams.getUdf3()));
-        postParamsBuffer.append(concatParams(PayuConstants.UDF4, mPaymentParams.getUdf4() == null ? "" : mPaymentParams.getUdf4()));
-        postParamsBuffer.append(concatParams(PayuConstants.UDF5, mPaymentParams.getUdf5() == null ? "" : mPaymentParams.getUdf5()));
-        postParamsBuffer.append(concatParams(PayuConstants.USER_CREDENTIALS, mPaymentParams.getUserCredentials() == null ? PayuConstants.DEFAULT : mPaymentParams.getUserCredentials()));
-
-        // for offer_key
-        if(null != mPaymentParams.getOfferKey())
-            postParamsBuffer.append(concatParams(PayuConstants.OFFER_KEY, mPaymentParams.getOfferKey()));
-        // for check_isDomestic
-
-        String postParams = postParamsBuffer.charAt(postParamsBuffer.length() - 1) == '&' ? postParamsBuffer.substring(0, postParamsBuffer.length() - 1).toString() : postParamsBuffer.toString();
-        // make api call
-        GetHashesFromServerTask getHashesFromServerTask = new GetHashesFromServerTask();
-        getHashesFromServerTask.execute(postParams);
-
-    }
-
-    protected String concatParams(String key, String value) {
-        return key + "=" + value + "&";
-    }
-
-    class GetHashesFromServerTask extends AsyncTask<String, String, PayuHashes> {
-
-        @Override
-        protected PayuHashes doInBackground(String ... postParams) {
-            PayuHashes payuHashes = new PayuHashes();
-            try {
-//                URL url = new URL(PayuConstants.MOBILE_TEST_FETCH_DATA_URL);
-//                        URL url = new URL("http://10.100.81.49:80/merchant/postservice?form=2");;
-
-                URL url = new URL("https://payu.herokuapp.com/get_hash");
-
-                // get the payuConfig first
-                String postParam = postParams[0];
-
-                byte[] postParamsByte = postParam.getBytes("UTF-8");
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                conn.setRequestProperty("Content-Length", String.valueOf(postParamsByte.length));
-                conn.setDoOutput(true);
-                conn.getOutputStream().write(postParamsByte);
-
-                InputStream responseInputStream = conn.getInputStream();
-                StringBuffer responseStringBuffer = new StringBuffer();
-                byte[] byteContainer = new byte[1024];
-                for (int i; (i = responseInputStream.read(byteContainer)) != -1; ) {
-                    responseStringBuffer.append(new String(byteContainer, 0, i));
-                }
-
-                JSONObject response = new JSONObject(responseStringBuffer.toString());
-
-                Iterator<String> payuHashIterator = response.keys();
-                while(payuHashIterator.hasNext()){
-                    String key = payuHashIterator.next();
-                    switch (key){
-                        case "payment_hash":
-                            payuHashes.setPaymentHash(response.getString(key));
-                            break;
-                        case "get_merchant_ibibo_codes_hash": //
-                            payuHashes.setMerchantIbiboCodesHash(response.getString(key));
-                            break;
-                        case "vas_for_mobile_sdk_hash":
-                            payuHashes.setVasForMobileSdkHash(response.getString(key));
-                            break;
-                        case "payment_related_details_for_mobile_sdk_hash":
-                            payuHashes.setPaymentRelatedDetailsForMobileSdkHash(response.getString(key));
-                            break;
-                        case "delete_user_card_hash":
-                            payuHashes.setDeleteCardHash(response.getString(key));
-                            break;
-                        case "get_user_cards_hash":
-                            payuHashes.setStoredCardsHash(response.getString(key));
-                            break;
-                        case "edit_user_card_hash":
-                            payuHashes.setEditCardHash(response.getString(key));
-                            break;
-                        case "save_user_card_hash":
-                            payuHashes.setSaveCardHash(response.getString(key));
-                            break;
-                        case "check_offer_status_hash":
-                            payuHashes.setCheckOfferStatusHash(response.getString(key));
-                            break;
-                        case "check_isDomestic_hash":
-                            payuHashes.setCheckIsDomesticHash(response.getString(key));
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return payuHashes;
-        }
-
-        @Override
-        protected void onPostExecute(PayuHashes payuHashes) {
-            super.onPostExecute(payuHashes);
-            mPayUHashes = payuHashes;
-            mPaymentParams.setHash(mPayUHashes.getPaymentHash());
-            launchPayumoneyActivity();
-
-
-
-        }
-    }
-
-    private void launchPayumoneyActivity() {
-        postData = new PaymentPostParams(mPaymentParams, PayuConstants.PAYU_MONEY).getPaymentPostParams();
-        if (postData.getCode() == PayuErrors.NO_ERROR){
-            PayuConfig payuConfig = new PayuConfig();
-            payuConfig.setEnvironment(PayuConstants.PRODUCTION_ENV);
-            payuConfig.setData(postData.getResult());
-            Intent intent = new Intent(this,PaymentsActivity.class);
-            intent.putExtra(PayuConstants.PAYU_CONFIG,payuConfig);
-            startActivityForResult(intent, PayuConstants.PAYU_REQUEST_CODE);
-        } else {
-            // something went wrong
-            Toast.makeText(this,postData.getResult(), Toast.LENGTH_LONG).show();
-        }
-    }
 
     private void sendOrderDetailsToServer(){
         JSONObject orderObject = new JSONObject();
@@ -287,6 +106,83 @@ public class PaymentActivity extends AppCompatActivity {
         }
     }
 
+    private void launchPayuMoney() {
+        if (SdkSession.getInstance(this) == null) {
+            SdkSession.startPaymentProcess(this, params);
+        } else {
+            SdkSession.createNewInstance(this);
+        }
+        String transID = uuidString();
+        Log.i("app_activity", "transaction is" + transID);
+        String hashSequence = "aAWjO9" + "|" + transID + "|" + 2 + "|" + "product_name" + "|" + "lakshmi" + "|"
+                + "lakshmi.plr@gmail.com" + "|" + "" + "|" + "" + "|" + "" + "|" + "" + "|" + "" + "|" + "4w5lreTZ";
+        params.put("key", "aAWjO9");
+        params.put("MerchantId", "5306536");
+        String hash = hashCal(hashSequence);
+        params.put("TxnId", transID);
+        params.put("SURL", "https://www.payumoney.com/mobileapp/payumoney/success.php");
+        params.put("FURL", "https://www.payumoney.com/mobileapp/payumoney/failure.php");
+        params.put("ProductInfo", "product_name");
+        params.put("firstName", "lakshmi");
+        params.put("Email", "lakshmi.plr@gmail.com");
+        params.put("Phone", "9886403405");
+        params.put("Amount", "2");
+        params.put("hash", hash);
+        params.put("udf1", "");
+        params.put("udf2", "");
+        params.put("udf3", "");
+        params.put("udf4", "");
+        params.put("udf5", "");
+        SdkSession.startPaymentProcess(this, params);
+    }
+    public static String hashCal(String str) {
+        byte[] hashseq = str.getBytes();
+        StringBuilder hexString = new StringBuilder();
+        try {
+            MessageDigest algorithm = MessageDigest.getInstance("SHA-512");
+            algorithm.reset();
+            algorithm.update(hashseq);
+            byte messageDigest[] = algorithm.digest();
+            for (byte aMessageDigest : messageDigest) {
+                String hex = Integer.toHexString(0xFF & aMessageDigest);
+                if (hex.length() == 1) {
+                    hexString.append("0");
+                }
+                hexString.append(hex);
+            }
+        } catch (NoSuchAlgorithmException ignored) {
+        }
+        return hexString.toString();
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if(data!=null) {
+        if (requestCode == SdkSession.PAYMENT_SUCCESS) {
+            if (resultCode == RESULT_OK) {
+                Log.i("app_activity", "success");
+                Log.i("paymentID", data.getStringExtra("paymentId"));
+                sendOrderDetailsToServer();
+            }
+
+            if (resultCode == RESULT_CANCELED) {
+                Log.i("app_activity", "failure");
+            }
+            //Write your code if there's no result
+        }
+    }
+    public static String randomStringOfLength(int length) {
+        StringBuffer buffer = new StringBuffer();
+        while (buffer.length() < length) {
+            buffer.append(uuidString());
+        }
+
+        //this part controls the length of the returned string
+        return buffer.substring(0, length);
+    }
+
+
+    private static String uuidString() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
     private void sendCreateOrderRequestToServer(JSONObject orderObject){
         JsonObjectRequest jsonObjectPost = new JsonObjectRequest(Request.Method.PUT, PUT_ORDER_DETAILS_CREATE_URL,orderObject,
                 new Response.Listener<JSONObject>() {

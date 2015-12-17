@@ -3,6 +3,9 @@
     <style name="FoodSwahaTheme" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
 
+    <style name="FoodSwahaTheme1" parent="Theme.AppCompat.Light">
+    </style>
+
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">#3B5998</item>
         <item name="tabIndicatorHeight">3dp</item>
